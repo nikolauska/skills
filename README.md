@@ -50,7 +50,7 @@ claude plugin marketplace update niko-skills
 copilot plugin update niko-skills
 ```
 
-Every release must bump `1.0.0` consistently in both plugin manifests and the
+Every release must bump the version consistently in both plugin manifests and the
 marketplace metadata. Keep any credentials outside this repository.
 
 ## Skill categories

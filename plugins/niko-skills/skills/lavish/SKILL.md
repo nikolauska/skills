@@ -1,72 +1,73 @@
 ---
 name: lavish
-description: Turn complex or visual agent responses into rich, reviewable HTML artifacts the user can annotate and send feedback on, using the lavish-axi CLI. Use when about to give a plan, comparison, diagram, table, code diff, report, or anything easier to grasp visually than as prose.
-argument-hint: <what the artifact should show>
-author: Kun Chen (kunchenguid)
-metadata:
-  hermes:
-    tags: [html, review, artifacts, visualization]
-    category: productivity
+description: Run a lightweight local browser review loop for standalone HTML artifacts when a human should annotate visual content, plans, reports, prototypes, comparisons, or other rich responses.
 ---
 
-# Lavish Editor
+# Local HTML Review
 
-Lavish Editor helps agents turn rich HTML artifacts into collaborative human review surfaces. Whenever you are about to give user a complex response that will be easier to understand via a rich / interactive page, consider using Lavish Editor. First generate an interactive HTML artifact according to user request, then run the installed `lavish-axi <html-file>` command so the user can visually review it, annotate elements or selected text, queue prompts, and send feedback back through `lavish-axi poll`.
+Use this skill when a standalone HTML artifact is easier to review in a browser than in chat. The artifact is the source of truth; the review server only adds a temporary browser interface and feedback channel.
 
-Use the installed `lavish-axi <command>` binary. If it is not on `PATH`, ask the user to install it globally before continuing.
-If lavish-axi output shows a follow-up command starting with `lavish-axi`, run it directly.
+The runtime is the Node script bundled in this skill. Set `LAVISH_AXI` to the installed skill's `scripts/lavish-axi.mjs` path and invoke it with `node "$LAVISH_AXI" ...`. Do not use `curl`, `npx`, Chrome DevTools MCP, or a separate browser automation tool.
 
 ## Request
 
 $ARGUMENTS
 
-If the request above is non-empty, the user invoked `/lavish` explicitly - build an HTML artifact for that request now, following the workflow below.
-If it is empty, infer what to visualize from the conversation.
+If the request above is non-empty, the user invoked `/lavish` explicitly: build an HTML artifact for that request. If it is empty, infer what to visualize from the conversation.
 
 ## When to use
 
-Use lavish-axi when the user asks for a visual artifact, HTML explainer, interactive prototype, review surface, product or technical plan, comparison, report, or browser-based feedback loop
+Use this skill for visual artifacts, HTML explainers, interactive prototypes, review surfaces, product or technical plans, comparisons, reports, and browser-based feedback loops.
+
+Do not use it for ordinary prose, source-code review, screenshots, diagrams that need editing, or automated visual inspection.
 
 ## Workflow
 
-1. Create the HTML artifact (default location `.lavish/<name>.html` in the working directory).
-2. Run `lavish-axi <html-file>` to open or resume a review session in the browser.
-3. Run `lavish-axi poll <html-file>` to long-poll for the user's annotations, queued prompts, and browser-reported `layout_warnings`.
-   The poll stays silent until the user acts or the real browser reports fresh layout warnings - leave it running, never kill it.
-   If your harness limits how long a foreground command may run, run the poll as a background task; if it gets killed or times out anyway, just re-run it - queued feedback is never lost.
-4. If poll returns `layout_warnings`, fix overflow, clipped text, or overlapping unreadable content and re-check before involving the human.
-5. Apply human feedback, then poll again with `--agent-reply "<message>"` to reply in the browser and keep the loop going.
-6. Run `lavish-axi end <html-file>` when the review is finished.
+1. Create or update a standalone HTML artifact. Keep it outside the skill directory; `.lavish/<name>.html` is the default.
+2. Start a session:
 
-## Visual guidance
+   ```sh
+   node "$LAVISH_AXI" open .lavish/<name>.html
+   ```
 
-- Use visual hierarchy to make the most important decisions, risks, tradeoffs, and next actions obvious at a glance
-- Use visual structure such as sections, cards, tables, diagrams, annotated snippets, and side-by-side comparisons instead of long prose
-- Choose typography, spacing, color, and layout deliberately so the artifact has a clear point of view
-- Prevent horizontal overflow at every nesting level: nested grid/flex children also need minmax(0, 1fr) tracks and min-width: 0, especially when badges, labels, or status text use wide pixel or monospace fonts; wrap, truncate, or contain long unbreakable text deliberately
+   The command stays attached, prints JSON containing the local URL, and opens the default browser when possible.
+3. Ask the human to review the opened page. They can switch between Explore and Annotate, select an element or text, comment, and submit feedback.
+4. In a separate agent command, wait for feedback:
 
-## Playbooks
+   ```sh
+   node "$LAVISH_AXI" wait
+   ```
 
-Run `lavish-axi playbook <id>` for focused, detailed guidance on any of these.
-One artifact often combines several playbooks (for example a plan that includes a comparison and a diagram), so MUST open each matching playbook before writing HTML.
-For flows, architecture, state, or sequence diagrams, do not hand-build boxes-and-arrows from div/flexbox; open the diagram playbook and use Mermaid unless SVG is needed for richly annotated nodes.
+   Use `wait`, not repeated `feedback` calls. A timeout is a successful no-op; run `wait` again when the human is still reviewing.
+5. Treat selectors, selected text, previews, and comments as edit hints. Apply changes to the source HTML, not to generated review assets.
+6. Resolve addressed items:
 
-- `diagram` - Map relationships, flows, state, and architecture
-- `table` - Turn dense records into scan-friendly review surfaces
-- `comparison` - Show options, tradeoffs, and current vs target behavior
-- `plan` - Explain a product or technical plan before implementation
-- `code` - Render source code, code files, patches, PR diffs, and before/after code inside Lavish artifacts
-- `input` - Must be used when the agent needs to collect user input on decisions, choices, preferences, triage, scope, or other structured feedback from within the artifact
-- `slides` - Create a deliberate presentation when slides are requested
+   ```sh
+   node "$LAVISH_AXI" resolve fb_1 fb_2
+   ```
 
-## Commands & rules
+7. Continue waiting until the response has `type: "ended"`. Do not reopen the session unless the human asks.
 
-- Run `lavish-axi <html-file>` to open or resume a Lavish Editor session
-- Unless the user specifies another location, create HTML artifacts in the current working directory under `.lavish/`
-- Lavish serves the html file through a local express.js server. If your html needs to reference other filesystem assets such as images, CSS, fonts, and local scripts, copy them into the same directory as the HTML file, then reference them with relative paths from that directory. Never prepend `/` to those asset paths - root paths won't work
-- Run `lavish-axi poll <html-file>` to wait for user feedback or browser-reported layout_warnings. It long-polls and stays silent until the user sends feedback, ends the session, or the real browser reports fresh layout_warnings, so leave it running - never kill it. Fix layout_warnings before involving the human. If your harness limits how long a foreground command may run, run the poll as a background task; if it gets killed or times out anyway, just re-run it - queued feedback is never lost
-- Run `lavish-axi end <html-file>` to end a session
-- Run `lavish-axi stop` to shut down the background server (it also self-stops when idle or after the last session ends with nothing connected)
-- Run `lavish-axi playbook <playbook_id>` for focused artifact guidance. One artifact often combines several playbooks (for example a plan that includes a comparison and a diagram), so MUST open each matching playbook before writing HTML.
-- Lavish does not auto-inject any design system - artifacts stay portable so they render identically when opened directly without lavish-axi running. Before writing any HTML, decide the design direction in this strict priority order, and only move to the next step when the current one truly yields nothing: (1) if the user asked for a specific look or named design system, use that; (2) otherwise you must first inspect the project the artifact is about - the subject or product whose content or UI it represents, which may differ from your current working directory - and match that project's design system: Tailwind or theme config, shared CSS variables or design tokens, component library, brand assets, or existing styled pages. If the artifact previews, proposes, or mocks a specific app's UI, render it in that app's own design system so it faithfully shows the product, even when you are running in a different repo; (3) only when both steps come up empty, use the Lavish-recommended Tailwind CSS browser runtime v4 + DaisyUI v5, available via CDN - run `lavish-axi design` for a content-to-playbook router, a copy-pasteable CDN snippet, a Mermaid CDN snippet/init for diagrams, and the DaisyUI component reference, and prefer the Tailwind/DaisyUI CDN snippet over hand-writing styles unless explicitly instructed otherwise by the user. When you deliver the artifact, state which of the three design sources you used and why.
-- Use lavish-axi when the user asks for a visual artifact, HTML explainer, interactive prototype, review surface, product or technical plan, comparison, report, or browser-based feedback loop
+## Review rules
+
+- The artifact renders inside an iframe. Review-shell styles and state must not be added to the artifact source.
+- Keep normal links, buttons, forms, and text selection usable in Explore mode.
+- Use Annotate mode only when selecting a target; the selected control must not activate.
+- Prefer stable IDs, `data-testid`, semantic classes, and structural selectors over generated classes.
+- Keep comments and selected text concise enough for the feedback payload.
+- Surface ambiguous feedback in normal chat; do not invent the requested change.
+- If the artifact uses a strict CSP or unusual script loading, explain that the temporary bridge may not load.
+
+## Commands
+
+```sh
+node "$LAVISH_AXI" open <artifact.html>
+node "$LAVISH_AXI" wait
+node "$LAVISH_AXI" feedback
+node "$LAVISH_AXI" resolve <id...>
+node "$LAVISH_AXI" resolve --all
+node "$LAVISH_AXI" status
+node "$LAVISH_AXI" end
+```
+
+All command output is JSON. `wait` returns `feedback`, `ended`, or `timeout`; exit code `0` is used for each state. Other failures use a non-zero exit code.

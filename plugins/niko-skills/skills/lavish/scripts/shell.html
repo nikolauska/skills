@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML Review</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="/review.css" rel="stylesheet">
+    <script>window.__REVIEW__ = { token: __REVIEW_TOKEN__, artifactUrl: "/artifact/" };</script>
+    <script src="/shell.js" defer></script>
+  </head>
+  <body class="bg-base-200">
+    <div class="drawer lg:drawer-open h-screen">
+      <input id="review-drawer" type="checkbox" class="drawer-toggle">
+      <main class="drawer-content flex min-h-0 flex-col">
+        <nav class="navbar min-h-14 border-b border-base-300 bg-base-100 px-4">
+          <label for="review-drawer" class="btn btn-square btn-ghost lg:hidden" aria-label="Open review panel">☰</label>
+          <div class="flex-1"><span class="text-lg font-semibold">HTML Review</span><span id="reload-state" class="badge badge-ghost ml-3">Connected</span></div>
+          <button id="end-session" class="btn btn-error btn-sm">End session</button>
+        </nav>
+        <section class="min-h-0 flex-1 p-3"><iframe id="artifact-frame" title="Artifact under review" src="/artifact/" class="h-full w-full rounded-box border border-base-300 bg-white"></iframe></section>
+      </main>
+      <aside class="drawer-side z-10">
+        <label for="review-drawer" aria-label="Close review panel" class="drawer-overlay"></label>
+        <div class="flex w-80 max-w-[90vw] flex-col gap-4 overflow-y-auto bg-base-100 p-4">
+          <div><h1 class="text-xl font-bold">Review feedback</h1><p class="text-sm text-base-content/60">Select something in the artifact, then leave a comment.</p></div>
+          <div role="tablist" class="tabs tabs-boxed">
+            <button id="explore-mode" role="tab" class="tab tab-active">Explore</button>
+            <button id="annotate-mode" role="tab" class="tab">Annotate</button>
+          </div>
+          <div class="rounded-box border border-base-300 bg-base-200 p-3"><div class="text-xs font-semibold uppercase text-base-content/60">Current target</div><p id="target-summary" class="mt-1 whitespace-pre-wrap text-sm">Nothing selected</p></div>
+          <form id="feedback-form" class="space-y-2">
+            <label for="comment" class="label"><span class="label-text font-semibold">Comment</span></label>
+            <textarea id="comment" class="textarea textarea-bordered min-h-28 w-full" maxlength="4000" placeholder="What should change?"></textarea>
+            <button class="btn btn-primary w-full" type="submit">Add feedback</button>
+          </form>
+          <div class="divider my-0">Pending</div>
+          <div id="feedback-list" class="space-y-2" aria-live="polite"></div>
+          <div id="session-ended" class="alert alert-success hidden">This review session has ended.</div>
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>
