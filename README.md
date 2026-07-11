@@ -1,6 +1,6 @@
 # Niko Skills
 
-Private, Git-backed skills for Codex, Claude Code, and GitHub Copilot CLI.
+Git-backed skills for Codex, Claude Code, and GitHub Copilot CLI.
 
 The repository has one installable plugin, `niko-skills`. The skill files under
 `plugins/niko-skills/skills/` are the canonical source. The Codex marketplace
@@ -9,9 +9,10 @@ CLI share `.claude-plugin/marketplace.json`.
 
 ## Install on a device
 
-Authenticate to the private GitHub repository using SSH, a Git credential
-helper, or `gh auth login`. Do not put tokens in repository URLs. For
-non-interactive updates, use `GH_TOKEN` or `GITHUB_TOKEN` in the environment.
+The public repository needs no authentication. For private forks or a future
+private mirror, use SSH, a Git credential helper, or `gh auth login`. Do not
+put tokens in repository URLs. For non-interactive private updates, use
+`GH_TOKEN` or `GITHUB_TOKEN` in the environment.
 
 ### Codex
 
@@ -50,8 +51,7 @@ copilot plugin update niko-skills
 ```
 
 Every release must bump `1.0.0` consistently in both plugin manifests and the
-marketplace metadata. Use normal Git authentication for private repository
-access; keep credentials outside this repository.
+marketplace metadata. Keep any credentials outside this repository.
 
 ## Skill categories
 

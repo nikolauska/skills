@@ -18,7 +18,7 @@
 
 ## Domain & Context
 
-- Goal: Distribute the `niko-skills` shared plugin from one private Git repository to Codex, Claude Code, and GitHub Copilot CLI.
+- Goal: Distribute the `niko-skills` shared plugin from one Git repository to Codex, Claude Code, and GitHub Copilot CLI.
 - Type: Plugin marketplace repository.
 - Source of truth: `plugins/niko-skills/skills/` contains the canonical skill payload.
 - Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and the two plugin manifests.
@@ -32,7 +32,7 @@
 ## Execution Context
 
 - Run on: Host.
-- Distribution: Private Git repository; install and update through each client’s marketplace commands.
+- Distribution: Git repository; install and update through each client’s marketplace commands.
 - Deploys to: User-level plugin caches on Codex, Claude Code, and GitHub Copilot CLI.
 
 ## Commands
@@ -98,7 +98,7 @@ README.md                     # Installation and update guide
 - Branch: `main`.
 - Commit: Conventional Commit format with one logical change per commit and a short reason.
 - Hooks: Do not bypass hooks with `--no-verify`.
-- Remote: Private GitHub repository `nikolauska/skills`.
+- Remote: GitHub repository `nikolauska/skills`.
 - Push: Push normal commits; never force-push shared branches.
 
 ## Tool Preferences
