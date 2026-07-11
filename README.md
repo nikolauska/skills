@@ -49,8 +49,8 @@ claude plugin marketplace update niko-skills
 copilot plugin update niko-skills
 ```
 
-Every release must bump `1.0.0` consistently in both plugin manifests and both
-marketplace entries. Use normal Git authentication for private repository
+Every release must bump `1.0.0` consistently in both plugin manifests and the
+marketplace metadata. Use normal Git authentication for private repository
 access; keep credentials outside this repository.
 
 ## Skill categories
@@ -73,7 +73,7 @@ python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
 python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null
-python3 /home/nlehto/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/niko-skills
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills
 ```
 
 When available, also run `claude plugin validate .` and install the local
