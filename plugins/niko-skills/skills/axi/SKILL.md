@@ -179,7 +179,7 @@ npx skills add <owner>/<repo> --skill <name>
 
 - **Single source of truth**: generate `SKILL.md` from the same content your no-args home view prints, so the skill never drifts from the CLI's own guidance. Add a `--check` build step to CI that fails if the committed skill is stale
 - **Strip live state**: a skill is static, so omit dynamic data (open sessions, current items) that only the hook can show
-- **Non-interactive commands**: rewrite command examples to a form the agent can run without a global install (e.g. `npx -y mytool ...`), since a skill may be installed without the binary on PATH
+- **Non-interactive commands**: check that command-line dependencies are installed and ask the user to install missing binaries globally; do not download dependencies implicitly.
 - **Trigger-shaped frontmatter**: include `name` and a `description` written as a trigger — terse and outcome-focused so the agent loads it on the right intent
 - **Document both paths**: in your README, present the hook and the skill as two ways to achieve the same thing, and make clear the user only needs one
 
