@@ -1,0 +1,20 @@
+{
+  "name": "niko-skills",
+  "interface": {
+    "displayName": "Niko Skills"
+  },
+  "plugins": [
+    {
+      "name": "niko-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/niko-skills"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
