@@ -17,7 +17,7 @@ put tokens in repository URLs. For non-interactive private updates, use
 ### Codex
 
 ```sh
-codex plugin marketplace add nikolauska/skills --sparse .agents/plugins plugins
+codex plugin marketplace add nikolauska/skills
 codex plugin add niko-skills@niko-skills
 ```
 
