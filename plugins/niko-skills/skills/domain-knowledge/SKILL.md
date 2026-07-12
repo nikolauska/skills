@@ -1,114 +1,122 @@
 ---
 name: domain-knowledge
 description: >
-  Maintains general-purpose business domain knowledge in `docs/domain/` with a concise `docs/domain.md` index.
-  Use when creating, updating, reviewing, finding, or synchronizing cross-functional concepts, products, workflows,
-  terminology, or business rules; do not use for code, API, architecture, or implementation documentation.
+  Builds and maintains a code-informed business handbook in `docs/domain/` with a `docs/domain.md` index.
+  Use when discovering, documenting, reviewing, finding, or synchronizing business and product knowledge,
+  including customer needs, product behavior, workflows, rules, value, improvement opportunities, positioning,
+  or customer-safe explanations; do not use for code, API, architecture, or implementation documentation.
 ---
 
 # Domain Knowledge
 
 ## Objective
 
-- Maintain plain-language business knowledge that can be shared across sales, marketing, support, and engineering.
-- Keep one focused topic per file under `docs/domain/` and make every topic discoverable from `docs/domain.md`.
-- Confirm business meaning with the user or a domain expert instead of inferring it from implementation.
+- Explain what the business or product is, how it works for customers, why it matters, and where it can improve.
+- Maintain confirmed, plain-language knowledge shared by product, sales, marketing, support, and engineering.
+- Derive current product behavior from the repository before asking people to restate what the code already shows.
 
 ## Safety and constraints
 
-- Treat the user or domain expert as the source of truth for business meaning. Use code and technical documentation only to surface terminology or contradictions.
-- Never read or open `.env` files, and never include code, code identifiers, APIs, databases, architecture, deployment details, internal technical workarounds, secrets, credentials, private keys, personal data, or customer-sensitive data.
-- Do not publish unresolved claims. If a fact cannot be confirmed, pause and ask; never fill the gap with an assumption.
+- Never read `.env` files or include secrets, credentials, private keys, personal data, or customer-sensitive data.
+- Read implementation details as evidence, but keep code identifiers, APIs, databases, architecture, deployment details, and internal workarounds out of domain documents.
+- Treat code and tests as evidence of current observable behavior, not business intent, rationale, customer value, or sales claims.
+- Publish only code-confirmed behavior or claims confirmed by the user or a domain expert. Keep unresolved questions and proposed interpretations out of the handbook.
 - Do not browse the web or call external systems unless the user explicitly requests it.
-- Manage only `docs/domain.md` and `docs/domain/*.md`. Do not modify `CONTEXT.md`, `docs/adr/`, or migrate legacy documents unless explicitly asked.
-- Do not write or repair files until the user approves the confirmed draft or proposed repair.
+- Manage only `docs/domain.md` and Markdown files under `docs/domain/`. Do not modify `CONTEXT.md`, `docs/adr/`, or migrate legacy documents unless explicitly asked.
+- Show changed document drafts and obtain approval before writing them.
 
 ## Inputs and outputs
 
-- Read `docs/domain.md`, relevant files in `docs/domain/`, and relevant human-facing project documentation.
-- Inspect implementation only when it helps identify a term or a possible disagreement; do not treat it as a business specification.
-- Create or update one topic file at `docs/domain/<kebab-case-topic>.md`.
-- Maintain `docs/domain.md` as the short, human-readable index of all topic files.
+- Read relevant source, tests, existing domain documents, and human-facing project documentation.
+- Maintain `docs/domain.md` as a concise, optionally grouped map of the handbook.
+- Create or update coherent, kebab-case topic files under `docs/domain/`; choose file boundaries by reader need rather than a fixed taxonomy.
+- For analysis or review requests, report coverage, contradictions, gaps, and proposed improvements without editing unless asked.
 
 ## Workflow
 
-### 1. Discover the collection
+### 1. Discover from the repository
 
-1. Determine whether the request is to create, update, find, review, or repair the collection. If unclear, ask one question.
-2. Read the existing index and the relevant topic files. If the directory or index is missing, plan to create it lazily with the first approved topic.
-3. Search relevant human-facing documentation for established terminology.
-4. Inspect code only to identify candidate terms or contradictions. Report those as questions; never convert them directly into domain knowledge.
-5. Report missing, stale, duplicate, or orphaned index entries before proposing repairs.
+Before asking business questions:
 
-### 2. Interview for a new or changed topic
+1. Read the existing domain index, relevant topic files, and human-facing documentation.
+2. Search the repository for the relevant concepts and terminology.
+3. Trace the applicable behavior end to end through entrypoints, callers, rules, state transitions, tests, and customer-visible outcomes.
+4. Build an evidence map separating:
+   - current behavior supported by code or tests;
+   - business meaning already confirmed by domain documentation;
+   - conflicts, missing meaning, and claims that still need confirmation.
+5. Summarize what is established and what remains unknown. Do not ask the user to repeat facts the repository already establishes.
 
-Ask exactly one question at a time and include a recommended answer. Wait for the user's answer before asking the next question.
+Scale exploration to the request: inspect the relevant flow thoroughly, not every unrelated file in the repository.
 
-Resolve these questions in order:
+### 2. Fill the important gaps
 
-1. What is the topic and what should readers understand or do after reading it?
-2. Which business terms are canonical, and which aliases should be avoided?
-3. What does the topic include and exclude?
-4. Which people, organizations, products, or concepts are involved, and how do they relate?
-5. What is the normal business flow or lifecycle?
-6. Which rules, exceptions, boundaries, and customer-facing behaviors matter?
-7. Which concrete scenarios or examples make the meaning unambiguous?
-8. Which related topics should readers follow?
+- Ask only questions that materially affect business meaning, boundaries, value, improvement, or customer communication.
+- Ask questions sequentially when one answer determines the next; otherwise use a small, related batch.
+- Confirm intent, rationale, canonical terminology, customer needs, value, positioning, proof, and sales claims with the user or a domain expert.
+- Challenge vague terms and test rules with concrete scenarios.
+- When sources disagree, present the evidence and ask which business meaning is correct. Never silently choose a source.
+- Keep unknowns in the conversation or review report until resolved.
 
-Challenge vague terms, contradictions, and unsupported assumptions with concrete scenarios. For an update, re-confirm every changed business claim and preserve unrelated confirmed content. If the user cannot answer a question, stop publication until it is resolved.
+### 3. Model the business adaptively
 
-### 3. Draft and approve the topic
+Use only the lenses that help readers understand the subject:
 
-Draft the complete file in plain language. Every topic file must contain:
+- identity, purpose, scope, and terminology;
+- customers, users, stakeholders, needs, and desired outcomes;
+- concepts, actors, relationships, incentives, and value exchange;
+- customer-visible capabilities, workflows, lifecycle, states, rules, boundaries, and exceptions;
+- business model, value drivers, success measures, limitations, and risks;
+- positioning, alternatives, differentiation, proof points, objections, and customer-safe explanations;
+- pain points and approved improvement opportunities;
+- concrete scenarios and related knowledge.
 
-- `# Topic name`
-- `## Summary`
-- `## Scope and boundaries`
-- `## Examples`
+Every topic needs a clear title and short plain-language overview. Add other sections only when they improve understanding; never add empty or irrelevant sections.
 
-Add `## Business rules`, `## Lifecycle`, `## Terminology`, or `## Related concepts` only when they improve that topic. Do not add empty sections.
+Distinguish the current state from approved opportunities or future intent. Do not present a proposal as existing behavior.
 
-Show the full topic draft and its proposed index entry. The index entry must be one sentence of at most 25 words with a relative link to the matching topic file under `docs/domain/`. Ask for approval before writing either file.
+### 4. Draft and approve
 
-### 4. Write and synchronize
+1. Draft complete changed topic files in language suitable for internal business readers.
+2. Include reusable customer messaging only when its claims are confirmed and safe to share externally.
+3. Draft the matching `docs/domain.md` navigation changes with concise descriptions and grouped links when grouping helps discovery.
+4. Show the drafts and clearly identify behavior confirmed from code, human-confirmed meaning, and any excluded unresolved questions.
+5. Obtain approval before writing the changed handbook files.
 
-1. Create `docs/domain/` and `docs/domain.md` only when an approved topic requires them.
-2. Write the approved topic file using a stable kebab-case slug.
-3. Add or update exactly one matching index entry.
-4. Keep the index introduction clear that the collection is general business knowledge, not implementation documentation.
-5. When repairing the collection, ask about each content change one at a time and apply only approved repairs.
+### 5. Write and synchronize
 
-### 5. Find or review existing knowledge
+1. Create `docs/domain/` and `docs/domain.md` lazily when the first approved document requires them.
+2. Write only the approved documents.
+3. Add, update, regroup, or remove index entries so every handbook file remains discoverable and accurately described.
+4. Preserve unrelated confirmed content during updates.
 
-- For a find request, read the index first, then open the linked full topic files needed to answer the request. Do not edit.
-- For a review request, report factual, audience, terminology, scope, link, and index problems first. Ask for approval before repairs.
-- Treat a conflict between code and a domain document as a discrepancy to resolve with the user, not as permission to rewrite the document.
+### 6. Find, explain, or review
 
-### 6. Validate the result
+- For a find or explanation request, read the index, relevant topic files, and supporting implementation when current behavior matters. Do not edit.
+- For a review, compare the handbook with relevant code and tests, then report stale behavior, factual gaps, contradictions, weak explanations, unsupported claims, and improvement opportunities.
+- For positioning or sales help, derive candidate explanations from confirmed knowledge, label them as proposals, and request confirmation before adding them to the handbook.
+
+### 7. Validate
 
 Before finishing, verify:
 
-- Every topic file is focused on one topic and linked from `docs/domain.md`.
-- Every index link resolves to an existing file, with no duplicate topic entries.
-- Each index summary is one sentence and no more than 25 words.
-- Required sections exist and optional sections are non-empty when present.
-- The content contains no implementation details, prohibited sensitive data, unresolved questions, or unconfirmed business claims.
-- The index and topic file use consistent canonical terminology and plain language.
+- Every handbook file is linked from `docs/domain.md`, every link resolves, and no entry is duplicated or stale.
+- File boundaries and sections fit the subject instead of following an arbitrary template.
+- Current behavior, approved opportunities, and future intent are clearly distinguished.
+- Customer messaging has confirmed support and does not overstate value, proof, differentiation, or capability.
+- Terminology is consistent and the content is understandable without implementation knowledge.
+- No prohibited implementation details, sensitive data, or unresolved claims were published.
 
 ## Edge cases
 
-- If `docs/domain.md` is missing, create its introduction and first entry together with the first approved topic.
-- If a likely domain document exists outside `docs/domain/`, mention it but do not move or rewrite it without an explicit migration request.
-- If a requested topic is actually technical documentation, explain the boundary and direct it to the appropriate documentation location.
-- If code, existing docs, and the user disagree, preserve no source automatically; present the conflict and ask the user to resolve it.
-
-## Resources
-
-This skill intentionally has no scripts, references, or assets. Its reliability comes from the explicit interview, approval gate, and structural validation checklist.
+- If the collection is missing, propose the smallest useful first document and index entry after discovery.
+- If relevant knowledge exists elsewhere, use it as evidence but do not migrate it without an explicit request.
+- If repository behavior cannot be determined confidently, explain the gap and ask rather than guessing.
+- If a topic is primarily technical, keep only its customer-visible business behavior here and direct implementation details to technical documentation.
+- If the requested improvement or sales claim is not established, report it as a proposal outside the handbook until confirmed.
 
 ## Output rules
 
-- Write only approved, general-purpose business knowledge.
-- Prefer concrete language and examples over implementation vocabulary.
-- Do not add a topic to the index until its facts are confirmed.
-- Report the files changed and validation performed at the end of an editing session.
+- Lead with the discovered business understanding, not the exploration process.
+- Prefer concrete behavior, outcomes, rules, and examples over slogans or implementation vocabulary.
+- Report changed files, confirmations still needed, and validation performed at the end of an editing session.
