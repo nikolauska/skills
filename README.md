@@ -63,7 +63,7 @@ Use these categories when browsing the collection:
 | Browser and performance | `a11y-debugging`, `chrome-devtools`, `chrome-devtools-axi`, `debug-optimize-lcp` |
 | Code quality and diagnosis | `architecture-review`, `diagnose`, `review`, `reviewing-skills`, `security-review`, `simplify`, `style-review`, `test-review` |
 | Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `no-mistakes`, `pr`, `triage` |
-| Documentation and agent authoring | `doc-review`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
+| Documentation and agent authoring | `doc-review`, `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
 | Workflow and tooling | `cpp-pro`, `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `tdd` |
 
 ## Validate locally

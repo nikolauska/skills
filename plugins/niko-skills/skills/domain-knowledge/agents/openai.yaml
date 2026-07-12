@@ -1,0 +1,4 @@
+interface:
+  display_name: "Domain Knowledge"
+  short_description: "Curate cross-functional domain documentation"
+  default_prompt: "Use $domain-knowledge to create, update, review, find, or synchronize general business knowledge in docs/domain/ and docs/domain.md. Ask one question at a time and confirm business facts before writing."
