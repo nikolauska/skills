@@ -1,6 +1,6 @@
 # LCP Debugging Snippets
 
-Use these JavaScript snippets with the `evaluate_script` tool to extract deep insights from the page.
+Use these JavaScript snippets with `chrome-devtools-axi eval` to inspect the page.
 
 ## 1. Identify LCP Element
 

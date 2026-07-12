@@ -1,6 +1,6 @@
 # Accessibility Debugging Snippets
 
-Use these JavaScript snippets with the `evaluate_script` tool.
+Use these JavaScript snippets with `chrome-devtools-axi eval`.
 
 ## 1. Find Orphaned Form Inputs
 
@@ -25,7 +25,7 @@ Finds form inputs that lack an associated label (no `label[for]`, `aria-label`, 
 
 ## 2. Measure Tap Target Size
 
-Returns the bounding box dimensions of an element. Pass the element's `uid` from the snapshot as an argument to `evaluate_script`.
+Returns the bounding box dimensions of an element selected in the evaluation expression.
 
 ```js
 el => {
