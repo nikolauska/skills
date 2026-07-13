@@ -1,0 +1,4 @@
+interface:
+  display_name: "Elixir"
+  short_description: "Build and review Elixir and Phoenix code"
+  default_prompt: "Use $elixir to implement or review this Elixir/Phoenix change using the relevant focused references and project-local validation commands."
