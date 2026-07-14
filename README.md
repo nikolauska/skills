@@ -65,7 +65,7 @@ Use these categories when browsing the collection:
 | Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr`, `triage` |
 | Languages and frameworks | `cpp-pro`, `daisyui`, `elixir`, `mjml` |
 | Documentation and agent authoring | `doc-review`, `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
-| Workflow and tooling | `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `tdd` |
+| Workflow and tooling | `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `tdd`, `vsdevshell` |
 
 ## Validate locally
 

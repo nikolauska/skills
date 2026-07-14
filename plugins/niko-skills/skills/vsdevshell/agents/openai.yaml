@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual Studio Developer Shell"
+  short_description: "Load Windows Visual Studio build tools"
+  default_prompt: "Use $vsdevshell to load the Visual Studio developer environment and run this Windows build command."
