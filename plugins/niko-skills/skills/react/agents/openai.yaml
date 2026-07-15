@@ -1,0 +1,4 @@
+interface:
+  display_name: "React"
+  short_description: "Build and review idiomatic React code"
+  default_prompt: "Use $react to implement or review this React change with minimal Effects, compiler-aware optimization, and the Rules of React."
