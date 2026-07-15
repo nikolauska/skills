@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clockify CLI"
+  short_description: "Track and report time through Clockify CLI"
+  default_prompt: "Use $clockify-cli to inspect my Clockify workspace and perform the requested time-tracking task."
