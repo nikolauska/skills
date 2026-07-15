@@ -45,7 +45,7 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/valid
 # lint whitespace
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
 # count skill entrypoints
-test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 33  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
+test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 34  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
 ```
 
 ## Structure

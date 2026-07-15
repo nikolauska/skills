@@ -1,0 +1,4 @@
+interface:
+  display_name: "Redux"
+  short_description: "Build modern Redux Toolkit and RTK Query code"
+  default_prompt: "Use $redux to implement or review this Redux Toolkit or RTK Query change with modern, efficient patterns."
