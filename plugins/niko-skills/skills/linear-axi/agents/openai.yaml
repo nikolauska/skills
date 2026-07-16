@@ -1,4 +1,0 @@
-interface:
-  display_name: "linear-axi"
-  short_description: "Operate Linear with token-efficient CLI output"
-  default_prompt: "Use $linear-axi to inspect Linear and perform the requested issue or project operation."
