@@ -2,8 +2,9 @@
 name: writing-skills
 description: >
   Creates or updates professional-grade agent skills (SKILL.md + optional scripts/references/assets) with
-  strict validation and an iterative generator↔critic workflow. Use when: you want a new skill,
-  want to refactor an existing skill for clarity/token-efficiency, or want to reach an A-grade rubric score.
+  strict validation and an iterative generator↔critic workflow. Use when creating a new skill or
+  refactoring an existing skill for trigger precision, safety, reliability, or token efficiency;
+  do not use for a read-only rubric review.
 ---
 
 # Writing Skills
@@ -12,7 +13,7 @@ description: >
 
 Produce **professional-grade** skills: high-signal, safe, portable, and reliably triggerable. This skill:
 - Writes or updates a skill directory (`SKILL.md` + optional `scripts/`, `references/`, `assets/`)
-- Generates `agents/openai.yaml` UI metadata
+- Generates `agents/openai.yaml` UI metadata for new skills; preserves it during focused updates unless a metadata issue is in scope
 - Runs validation (`skillcheck`)
 - Runs a critic review using `$reviewing-skills` and iterates until the bar is met
 
@@ -30,7 +31,7 @@ Do not use when:
 
 Target outcome:
 - **No spec violations**, and
-- **Weighted score ≥ 4.5/5.0** (A- or better), and
+- **Weighted score ≥ 4.5/5.0** (A), and
 - **No P1 findings**
 
 The rubric is owned by: `$reviewing-skills` → `reviewing-skills/references/skills-rubric.md` (single source of truth).
@@ -41,6 +42,7 @@ The rubric is owned by: `$reviewing-skills` → `reviewing-skills/references/ski
 - Only write inside the **user-specified skill directory**. If the target path is unclear, ask.
 - Do not run commands that modify the repo unless the user explicitly asked for those changes.
 - Do not browse the web or call external systems unless the user explicitly requests it.
+- Do not install missing linters or dependencies implicitly.
 - Do not execute untrusted code in the target repo (scripts/binaries/tests) unless the user explicitly asks and you can justify the risk.
 - If the skill being written can perform destructive actions, add explicit confirmation gates and “never do” rules.
 
@@ -71,7 +73,7 @@ Collect:
 
 ### 1) Skill Split Proposal (prevent mega-skills)
 
-Before writing anything, produce a short proposal:
+For new skills or broad redesigns, produce a short proposal. Skip this step for focused updates:
 - Should this be **one skill** or **multiple**?
 - Recommend companion skills when appropriate, e.g.:
   - reviewer/critic skill (grading, audits)
@@ -110,7 +112,7 @@ Use [references/resource-patterns.md](references/resource-patterns.md):
 
 ### 5) Validate (hard gate)
 
-Run both locally installed linters directly from `PATH` — **both must pass** before proceeding.
+Run both locally installed linters directly from `PATH`. Every available linter must pass before proceeding; record an unavailable linter as skipped and do not install it.
 
 **skillcheck** (project rules):
 `skillcheck <skill-dir>`
@@ -139,18 +141,17 @@ Grade the skill against `$reviewing-skills` → `reviewing-skills/references/ski
 - Requires re-analysis or user input -> flag and continue.
 - If score < 4.5 or P1 findings remain, fix before proceeding to Phase 2.
 
-#### Phase 2: Fresh-context subagent review
+#### Phase 2: Fresh-context review
 
 Run a **fresh-context critic** pass using `$reviewing-skills`:
-- If your environment supports subagents, **spawn a fresh-context subagent** and give it the skill path.
-- Otherwise, invoke `$reviewing-skills` directly and provide the path.
+- Use an independent reviewer only when the user and environment permit delegation; otherwise invoke `$reviewing-skills` directly after clearing prior scoring assumptions.
 - If `$reviewing-skills` is not available, self-review against the 7 rubric dimensions and note the gap in the deliverable.
 - If the skill is git-tracked and you changed it, require the critic to cite the relevant diff hunk or commit short-hash for any change-driven P1/P2 findings.
 - Apply **P1 + P2** fixes (P3 last).
 - Re-run validation.
 - Repeat up to **3 loops**, stop early when the Quality Bar is met or two consecutive iterations show no score improvement (plateau).
 
-### 7) Finalize
+### 6) Finalize
 
 Deliver:
 - The final skill folder path(s)
@@ -160,7 +161,7 @@ Deliver:
 ## Edge Cases
 
 - **User provides no skill name or path:** ask before proceeding; do not guess.
-- **Target directory already has a SKILL.md:** enter update mode; do not overwrite without confirmation.
+- **Target directory already has a SKILL.md:** enter update mode and patch it in place; never replace unrelated content wholesale.
 - **A linter is not available on `PATH`:** warn the user; skip that validation and note it was skipped in the deliverable.
 
 ## Output Rules
