@@ -1,73 +1,57 @@
 ---
 name: pr
-description: Create a pull request with review and verify. Use when the branch is ready to merge.
+description: Creates or updates a pull request after review and verification. Use when a branch is ready for remote review or the user asks to revise its existing pull request; do not use for local-only commits or unfinished implementation.
 ---
 
-# PR
+# Pull Request
 
-Two modes: **Create** (default) — push and open a PR; **Update** — rewrite an existing PR's description without pushing. Detect which by checking for an open PR on the current branch before acting.
+Use **Create mode** when the current branch has no open pull request and **Update mode** when one already exists. Read repository instructions and resolve the configured base branch, remote, and PR template instead of assuming `main` or `origin`.
+
+## Safety
+
+- Never read credential files or include secrets, tokens, private keys, customer data, or credential-bearing URLs in commits, PR text, commands, or logs.
+- Do not push, rewrite history, rename branches, or modify a pull request until the user approves the exact title and body.
+- Never rewrite published history or force-push without separate explicit approval.
+- Link or close an issue only when its relationship is confirmed; do not infer `Fixes #...` from a loose keyword match.
 
 ## Conventions
 
-- Title: Conventional Commit format (`type(scope): description`), under 60 chars, no trailing period
-- Body: follow `.github/pull_request_template.md` if it exists — fill in each section, do not add or remove sections
-- Keep it short — the fewest bullets that convey the change. Omit anything a reviewer would infer from the diff: mechanical steps, refactors in service of the main change, file moves, renames
-- Bullets: high-signal plain English only; describe reviewer-relevant *what* and *why* — no code blocks, no prose paragraphs, no implementation bookkeeping
-- Motivation: optional and brief (1-2 sentences); include only when the *why* isn't obvious from the summary
-- If an issue matches the branch work, add `Fixes #<number>` at the end of the body
+- Follow repository-specific title and body rules first. Otherwise use a Conventional Commit title under 60 characters with no trailing period.
+- Fill every section of `.github/pull_request_template.md` when present; do not add or remove its sections.
+- Keep the body concise: reviewer-relevant behavior and motivation, validation, and confirmed issue linkage. Omit mechanical details visible in the diff.
 
 ## Workflow
 
-1. **Check preconditions** (all must pass before continuing):
-   - working directory is clean (`git status`)
-   - branch has commits ahead of `main` (`git log main..HEAD --oneline`)
-   - project verification passes (run the project's test/lint/typecheck command)
-2. **Prepare review context**:
-   - if the implementation happened in a long session, suggest the user run `handoff` and re-run `/pr` in a fresh session for a cleaner review; otherwise proceed
-3. **Run the review skill** (if available):
-   - if there are must-fix findings, stop and report them — do not create the PR
-4. **Gather context**:
-   - read `.github/pull_request_template.md` if it exists
-   - run `git log main..HEAD --oneline` to see commits
-   - run `git diff main...HEAD --stat` to see changed files
-   - run `git diff main...HEAD` to read the full diff
-   - run `gh issue list` to check for an associated issue
-5. **Audit the commits** (`/pr` opens a PR; it does not clean up history for you — fix it here):
-   - every commit follows the project's commit conventions (`AGENTS.md` / `CONTRIBUTING` / the `git`
-     skill), including **one logical change per commit**
-   - if any commit violates, **stop and fix the history first** (split/reword per the `git` skill),
-     then re-audit — do not open the PR on non-compliant commits
-6. **Draft the PR**:
-   - infer a title from the commits and diff
-   - fill in the template body (or use a sensible default structure)
-   - render the title and body in the conversation and wait for approval — do not push before sign-off
-   - if the branch has a throwaway name, rename it first: `git branch -m <topic>`
-7. **Push if needed**:
-   - check remote tracking: `git status -sb`
-   - if not pushed: `git push -u origin HEAD`
-8. **Create the PR**:
-   - `gh pr create --title "..." --body "..."`
-9. **Return only the PR URL**
+### 1. Resolve mode and context
 
-## Rules
+1. Confirm the current repository, branch, remote, default base branch, working-tree state, and whether an open PR exists for the branch.
+2. Read repository instructions and the PR template when present.
+3. Inspect the commits and full diff against the resolved base branch.
+4. Check the diff and proposed PR text for sensitive data before any external action.
 
-- Never create a PR with uncommitted changes in the working directory
-- Never create a PR without running verification first
-- Never create a PR with must-fix review findings
-- Never open a PR whose commits violate the project's convention or bundle unrelated changes — fix the history first
-- Never push without checking remote tracking status first
-- Always check for associated issues
+### 2A. Update an existing PR
 
-## See also
+1. Read the current PR title, body, URL, review state, and changed diff.
+2. Draft only the requested title or body changes, preserving required template sections.
+3. Show the exact final title and body and wait for approval.
+4. Update the existing PR without pushing unrelated local commits.
+5. Read the PR back, verify the title and body, and return its URL.
 
-- `git` for commit conventions and rewriting history before push
-- `review` for severity and gating decisions
-- `doc-review` for user-facing drift checks before merge
+### 2B. Create a PR
 
-## Red flags
+1. Require a clean working tree and at least one branch commit ahead of the resolved base.
+2. Run the repository's required lint, test, type-check, and build commands. Report unavailable or prohibitively large checks instead of silently skipping them.
+3. Run the `review` skill when available. Stop on must-fix findings.
+4. Audit commit scope and messages. If history needs rewriting, explain the exact rewrite and obtain approval before changing it; re-audit afterward.
+5. Search for related issues and include closing syntax only for a relationship confirmed by the user or explicit repository evidence.
+6. Draft the exact title and body, show both, and wait for approval.
+7. Check tracking state, then push the current branch to the resolved remote if needed. Never force-push.
+8. Create the PR against the resolved base, read it back, and verify title, body, head, and base.
+9. Return the PR URL and name the validation and review gates that passed.
 
-- Skipping verification because "tests passed earlier"
-- Skipping the review because it takes time
-- Opening a PR with commits that bundle unrelated changes (e.g. a refactor and a feature in one commit)
-- Pushing before checking if the branch already tracks a remote
-- Creating the PR without checking for associated issues
+## Failure handling
+
+- If verification or review fails, stop before pushing and report the smallest actionable failure.
+- If a push or PR mutation returns an ambiguous transport error, read remote state before retrying.
+- If the branch already has a PR after a race, switch to Update mode rather than creating a duplicate.
+- If authentication is missing, ask the user to authenticate the installed GitHub client; never request or inspect a token.
