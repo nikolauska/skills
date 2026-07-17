@@ -1,6 +1,6 @@
 ---
 name: diagnose
-description: Disciplined diagnosis loop for hard bugs and performance regressions. Reproduce → minimise → hypothesise → instrument → fix → regression-test. Use when user says "diagnose this" / "debug this", reports a bug, says something is broken/throwing/failing, or describes a performance regression.
+description: Diagnoses hard bugs and performance regressions through reproducible evidence, ranked hypotheses, and targeted instrumentation. Use when a user asks to diagnose or debug broken, failing, throwing, flaky, or regressed behavior; do not use when the root cause is already established and only implementation is requested.
 ---
 
 # Diagnose
@@ -8,6 +8,13 @@ description: Disciplined diagnosis loop for hard bugs and performance regression
 A discipline for hard bugs. Skip phases only when explicitly justified.
 
 When exploring the codebase, use the project's domain glossary to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
+
+## Guardrails
+
+- Never read credential files or retain secrets, personal data, or production payloads in fixtures, logs, or traces; sanitize captured artifacts first.
+- Do not contact external or production systems, add production instrumentation, or mutate production data without explicit user authorization.
+- Do not install missing browsers, profilers, fuzzers, or test dependencies implicitly; report the unavailable check.
+- Diagnosis alone is read-only. Apply a fix only when the user requested implementation or approves it after the root cause is established.
 
 ## Phase 1 — Build a feedback loop
 
@@ -21,7 +28,7 @@ Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give
 2. **Curl / HTTP script** against a running dev server.
 3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
 4. **Headless browser script** (Playwright / Puppeteer) — drives the UI, asserts on DOM/console/network.
-5. **Replay a captured trace.** Save a real network request / payload / event log to disk; replay it through the code path in isolation.
+5. **Replay a captured trace.** Sanitize a real network request, payload, or event log before saving it; replay it through the code path in isolation.
 6. **Throwaway harness.** Spin up a minimal subset of the system (one service, mocked deps) that exercises the bug code path with a single function call.
 7. **Property / fuzz loop.** If the bug is "sometimes wrong output", run 1000 random inputs and look for the failure mode.
 8. **Bisection harness.** If the bug appeared between two known states (commit, dataset, version), automate "boot at state X, check, repeat" so you can `git bisect run` it.
@@ -48,7 +55,7 @@ The goal is not a clean repro but a **higher reproduction rate**. Loop the trigg
 
 Stop and say so explicitly. List what you tried. Ask the user for: (a) access to whatever environment reproduces it, (b) a captured artifact (HAR file, log dump, core dump, screen recording with timestamps), or (c) permission to add temporary production instrumentation. Do **not** proceed to hypothesise without a loop.
 
-Do not proceed to Phase 2 until you have a loop you believe in.
+Do not claim a root cause without a loop. If static evidence suggests a cause, label it tentative and state what would verify it.
 
 ## Phase 2 — Reproduce
 
@@ -68,7 +75,7 @@ Generate **3–5 ranked hypotheses** before testing any of them. Single-hypothes
 
 Each hypothesis must be **falsifiable**: state the prediction it makes.
 
-> Format: "If <X> is the cause, then <changing Y> will make the bug disappear / <changing Z> will make it worse."
+> Format: "If `X` is the cause, then changing `Y` will make the bug disappear or changing `Z` will make it worse."
 
 If you cannot state the prediction, the hypothesis is a vibe — discard or sharpen it.
 
@@ -90,6 +97,8 @@ Tool preference:
 
 ## Phase 5 — Fix + regression test
 
+Enter this phase only when implementation is authorized. Otherwise, report the confirmed root cause, evidence, and smallest fix direction, then stop.
+
 Write the regression test **before the fix** — but only if there is a **correct seam** for it.
 
 A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.
@@ -110,8 +119,8 @@ Required before declaring done:
 
 - [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
 - [ ] Regression test passes (or absence of seam is documented)
-- [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
+- [ ] All `[DEBUG-...]` instrumentation removed (search the prefix with `rg`)
 - [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
 - [ ] The hypothesis that turned out correct is stated in the commit / PR message — so the next debugger learns
 
-**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
+**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling), recommend an `architecture-review` with the specifics. Make the recommendation after the fix, when implementation was authorized, because the evidence is then complete.

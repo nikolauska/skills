@@ -28,11 +28,11 @@ capture() {
 
 # --- edit below ---------------------------------------------------------
 
-step "Open the app at http://localhost:3000 and sign in."
+step "Open the app at http://localhost:3000. Complete any required sign-in yourself; do not enter credentials here."
 
 capture ERRORED "Click the 'Export' button. Did it throw an error? (y/n)"
 
-capture ERROR_MSG "Paste the error message (or 'none'):"
+capture ERROR_MSG "Paste a sanitized error message with credentials and personal data removed (or 'none'):"
 
 # --- edit above ---------------------------------------------------------
 
