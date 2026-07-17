@@ -1,6 +1,6 @@
 ---
 name: correctness-review
-description: Review whether changed logic does what it claims — bugs, edge cases, broken contracts. Use when reviewing a diff for correctness, not just style or structure.
+description: Reviews whether changed logic does what it claims, including bugs, edge cases, and broken contracts. Use when reviewing a diff for correctness; do not use for style-only or structural reviews.
 ---
 
 # Correctness Review
@@ -52,7 +52,7 @@ Flag a bug only with a concrete trigger: name the input or sequence and the wron
 
 ## Output
 
-For each finding: **label** (Critical / Fix / Consider / Nit — see `review`), **file**, **the bug**, **triggering input → wrong result**, **fix direction**.
+For each finding: **label** (Critical = blocks release; Fix = should change; Consider = tradeoff; Nit = minor), **file**, **the bug**, **triggering input → wrong result**, **fix direction**.
 
 - Bad: "This function looks fragile and could misbehave." (no trigger)
 - Good: **Critical** — `pricing.ts:40` `applyDiscount` uses `>` not `>=`, so an order exactly at the threshold gets nothing (total 100, threshold 100 → 0% instead of 10%).
