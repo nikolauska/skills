@@ -1,86 +1,50 @@
 ---
 name: cpp-pro
-description: Use when building C++ applications requiring modern C++20/23 features, template metaprogramming, or high-performance systems. Invoke for concepts, ranges, coroutines, SIMD optimization, memory management.
+description: Guides implementation, refactoring, debugging, and performance work in modern C++ codebases. Use for C++ source, headers, templates, CMake targets, ownership, concurrency, or measured optimization; do not use for C-only projects or generic build infrastructure.
 license: MIT
-metadata:
-  author: https://github.com/Jeffallan
-  version: "1.0.0"
-  domain: language
-  triggers: C++, C++20, C++23, modern C++, template metaprogramming, systems programming, performance optimization, SIMD, memory management, CMake
-  role: specialist
-  scope: implementation
-  output-format: code
-  related-skills: rust-engineer, embedded-systems
 ---
 
 # C++ Pro
 
-Senior C++ developer with deep expertise in modern C++20/23, systems programming, high-performance computing, and zero-overhead abstractions.
+Work with the language standard, toolchain, conventions, and performance requirements already established by the repository.
 
-## Role Definition
+## Guardrails
 
-You are a senior C++ engineer with 15+ years of systems programming experience. You specialize in modern C++20/23, template metaprogramming, performance optimization, and building production-grade systems with emphasis on safety, efficiency, and maintainability. You follow C++ Core Guidelines and leverage cutting-edge language features.
+- Never read credential files or expose secrets through commands, logs, crash dumps, or examples.
+- Do not install dependencies, change the supported language standard, or alter public ABI without explicit user approval.
+- Do not claim a performance improvement without a comparable measurement.
+- Do not introduce raw owning pointers, detached threads, or custom lock-free memory reclamation without a demonstrated requirement and focused verification.
+- Prefer the standard library and existing project dependencies over custom utilities or new packages.
 
-## When to Use This Skill
+## Workflow
 
-- Building high-performance C++ applications
-- Implementing template metaprogramming solutions
-- Optimizing memory-critical systems
-- Developing concurrent and parallel algorithms
-- Creating custom allocators and memory pools
-- Systems programming and embedded development
+1. Read repository instructions, the build configuration, and nearby code to identify the supported C++ standard, compilers, warning policy, ownership model, error model, and test commands.
+2. Trace the changed interface through its callers. State any compatibility, lifetime, threading, or ABI constraints before editing.
+3. Choose the smallest language or library feature supported by every target compiler. Reuse existing project patterns; use templates, concepts, coroutines, SIMD, or custom allocation only when the requirement needs them.
+4. Implement with explicit ownership and lifetime:
+   - Prefer values, references, and `std::unique_ptr`; use `std::shared_ptr` only for genuinely shared lifetime.
+   - Use RAII for resources and scoped synchronization.
+   - Preserve the project's exception, error-code, or `std::expected` convention.
+   - Keep headers self-contained and minimize exposed implementation details.
+5. Add or update the smallest test that fails without the change. Include boundary, lifetime, or concurrency coverage when that is the risk being changed.
+6. Run the repository's narrowest relevant format, build, and test commands. Treat new compiler warnings as failures.
+7. For memory or concurrency changes, run the repository's configured sanitizer when available. For optimization work, compare the same benchmark or profile before and after under equivalent conditions.
 
-## Core Workflow
+## Decision rules
 
-1. **Analyze architecture** - Review build system, compiler flags, performance requirements
-2. **Design with concepts** - Create type-safe interfaces using C++20 concepts
-3. **Implement zero-cost** - Apply RAII, constexpr, and zero-overhead abstractions
-4. **Verify quality** - Run sanitizers, static analysis, and performance benchmarks
-5. **Optimize** - Profile, measure, and apply targeted optimizations
+- Use concepts when they improve a public template's diagnostics or express a real semantic constraint; otherwise keep the existing constraint style.
+- Prefer standard algorithms and synchronization primitives. Use lock-free structures only after profiling demonstrates contention and the design includes safe reclamation.
+- Prefer portable code. Isolate compiler intrinsics behind an existing platform boundary and retain a tested fallback.
+- Preserve source and ABI compatibility unless the user explicitly accepts a break.
+- Do not add a header, implementation file, CMake target, test framework, or benchmark unless the change requires it.
 
-## Reference Guide
+## Failure handling
 
-Load detailed guidance based on context:
+- On a compiler error, read the first relevant diagnostic and its instantiation context before changing code.
+- On a sanitizer failure, preserve the report, minimize the triggering input, and fix the ownership or bounds error rather than suppressing it.
+- On a flaky concurrency failure, reproduce with a bounded stress case and verify the happens-before relationship; do not add sleeps as synchronization.
+- If a required compiler, sanitizer, or benchmark tool is unavailable, report the skipped check instead of installing it implicitly.
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Modern C++ Features | `references/modern-cpp.md` | C++20/23 features, concepts, ranges, coroutines |
-| Template Metaprogramming | `references/templates.md` | Variadic templates, SFINAE, type traits, CRTP |
-| Memory & Performance | `references/memory-performance.md` | Allocators, SIMD, cache optimization, move semantics |
-| Concurrency | `references/concurrency.md` | Atomics, lock-free structures, thread pools, coroutines |
-| Build & Tooling | `references/build-tooling.md` | CMake, sanitizers, static analysis, testing |
+## Output
 
-## Constraints
-
-### MUST DO
-- Follow C++ Core Guidelines
-- Use concepts for template constraints
-- Apply RAII universally
-- Use `auto` with type deduction
-- Prefer `std::unique_ptr` and `std::shared_ptr`
-- Enable all compiler warnings (-Wall -Wextra -Wpedantic)
-- Run AddressSanitizer and UndefinedBehaviorSanitizer
-- Write const-correct code
-
-### MUST NOT DO
-- Use raw `new`/`delete` (prefer smart pointers)
-- Ignore compiler warnings
-- Use C-style casts (use static_cast, etc.)
-- Mix exception and error code patterns inconsistently
-- Write non-const-correct code
-- Use `using namespace std` in headers
-- Ignore undefined behavior
-- Skip move semantics for expensive types
-
-## Output Templates
-
-When implementing C++ features, provide:
-1. Header file with interfaces and templates
-2. Implementation file (when needed)
-3. CMakeLists.txt updates (if applicable)
-4. Test file demonstrating usage
-5. Brief explanation of design decisions and performance characteristics
-
-## Knowledge Reference
-
-C++20/23, concepts, ranges, coroutines, modules, template metaprogramming, SFINAE, type traits, CRTP, smart pointers, custom allocators, move semantics, RAII, SIMD, atomics, lock-free programming, CMake, Conan, sanitizers, clang-tidy, cppcheck, Catch2, GoogleTest
+Report the behavior changed, compatibility or performance implications, and exact validation run. Distinguish measured results from expectations and list any skipped checks.
