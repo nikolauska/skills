@@ -10,7 +10,7 @@ The issue may sit in `ready-for-agent` for days or weeks. The codebase will chan
 
 - **Do** describe interfaces, types, and behavioral contracts
 - **Do** name specific types, function signatures, or config shapes that the agent should look for or modify
-- **Don't** reference file paths — they go stale
+- Prefer durable interfaces and symbols; include a file path only as a verified navigation aid, not as the contract
 - **Don't** reference line numbers
 - **Don't** assume the current implementation structure will remain the same
 
@@ -162,7 +162,7 @@ The function around line 150 has the issue.
 This is bad because:
 - No category
 - Vague description ("the triage thing is broken")
-- References file paths and line numbers that will go stale
+- Relies on file paths and line numbers instead of behavioral contracts
 - No acceptance criteria
 - No scope boundaries
 - No description of current vs desired behavior

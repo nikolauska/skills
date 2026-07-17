@@ -94,8 +94,8 @@ Only when an **enhancement** (not a bug) is rejected as `wontfix`. The flow:
 
 ## Updating or removing out-of-scope files
 
-If the maintainer changes their mind about a previously rejected concept:
+If the maintainer explicitly approves reversing a previously rejected concept:
 
-- Delete the `.out-of-scope/` file
+- Delete the exact `.out-of-scope/` file through version control so the decision remains recoverable in history
 - The skill does not need to reopen old issues — they're historical records
 - The new issue that triggered the reconsideration proceeds through normal triage
