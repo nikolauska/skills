@@ -25,10 +25,12 @@ Finds form inputs that lack an associated label (no `label[for]`, `aria-label`, 
 
 ## 2. Measure Tap Target Size
 
-Returns the bounding box dimensions of an element selected in the evaluation expression.
+Returns the bounding box dimensions of the first element matching `SELECTOR`. Replace `SELECTOR` with a CSS selector before running it.
 
 ```js
-el => {
+() => {
+  const el = document.querySelector('SELECTOR');
+  if (!el) return {error: 'Element not found'};
   const rect = el.getBoundingClientRect();
   return {width: rect.width, height: rect.height};
 };
@@ -36,12 +38,14 @@ el => {
 
 ## 3. Check Color Contrast
 
-Approximates the contrast ratio between an element's text color and its nearest opaque ancestor background. Pass the element's `uid` to test against WCAG AA (4.5:1 for normal text, 3:1 for large text).
+Approximates the contrast ratio between an element's text color and its nearest opaque ancestor background. Replace `SELECTOR` with a CSS selector before running it.
 
 **Note**: This still cannot model gradients, images, shadows, or semi-transparent overlays precisely. Treat it as a debugging aid, not a compliance verdict.
 
 ```js
-el => {
+() => {
+  const el = document.querySelector('SELECTOR');
+  if (!el) return {error: 'Element not found'};
   function getRGB(colorStr) {
     const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
     return match

@@ -24,14 +24,14 @@ async () => {
       resolve({
         supported: true,
         found: Boolean(last),
-        element: last.element?.tagName,
-        id: last.element?.id,
-        className: last.element?.className,
-        url: last.url,
-        startTime: last.startTime,
-        renderTime: last.renderTime,
-        loadTime: last.loadTime,
-        size: last.size,
+        element: last?.element?.tagName,
+        id: last?.element?.id,
+        className: last?.element?.className,
+        url: last?.url,
+        startTime: last?.startTime,
+        renderTime: last?.renderTime,
+        loadTime: last?.loadTime,
+        size: last?.size,
       });
     }).observe({type: 'largest-contentful-paint', buffered: true});
   });
