@@ -1,22 +1,23 @@
 ---
 name: axi
 description: >
-  Agent eXperience Interface (AXI) — ergonomic standards for building CLI tools that agents
-  use via shell execution. Use when building, modifying, or reviewing any agent-facing CLI.
+  Defines Agent eXperience Interface (AXI) standards for CLI tools that agents use through
+  shell execution. Use when building, modifying, or reviewing an agent-facing CLI.
 ---
 
 # Agent eXperience Interface (AXI)
 
 AXI defines ergonomic standards for building CLI tools that autonomous agents interact with through shell execution.
 
-## Before you start
+## Guardrails
 
-Read the [TOON specification](https://toonformat.dev/reference/spec.html) before building any AXI output.
+- Never print secrets, credentials, environment values, or raw dependency responses; redact sensitive fields in data and errors.
+- Do not install dependencies or modify shell, agent, or project configuration without explicit user approval.
+- Use an installed TOON encoder. If none is available, ask the user to install one globally; do not invent an encoder or download a package implicitly.
 
 ## 1. Token-efficient output
 
 Use [TOON](https://toonformat.dev/) (Token-Oriented Object Notation) as the output format on stdout.
-TOON provides ~40% token savings over equivalent JSON while remaining readable by agents.
 Convert to TOON at the output boundary — keep internal logic on JSON.
 
 ```
@@ -158,7 +159,7 @@ help[2]:
 - **Idempotent**: repeated installs with the same path are silent no-ops
 - **Directory-scoped**: show only state relevant to the current working directory
 - **Token-budget-aware**: this context loads on _every_ session — ruthlessly minimize it. Include just enough for the agent to orient and act; deep data belongs in explicit invocations
-- **Lifecycle capture**: use session-end hooks to capture what happened (transcripts, files touched, specs referenced) so future session-start context gets richer over time
+- **Lifecycle capture**: capture only the minimum metadata the user explicitly enabled. Do not retain transcript contents, secrets, or file contents without separate informed consent and a documented retention policy
 
 **How to integrate with each app:**
 
@@ -174,10 +175,10 @@ It loads on demand when the agent recognizes a matching task, carries no per-ses
 Recommend the hook first (ambient context plus live state) and the skill second (lower overhead, broader agent support) - they are complementary, and a user installs whichever fits, or both.
 
 ```sh
-npx skills add <owner>/<repo> --skill <name>
+skills add <owner>/<repo> --skill <name>
 ```
 
-- **Single source of truth**: generate `SKILL.md` from the same content your no-args home view prints, so the skill never drifts from the CLI's own guidance. Add a `--check` build step to CI that fails if the committed skill is stale
+- **Single source of truth**: generate both `SKILL.md` and the no-args guidance from shared static source content. Add a `--check` build step to CI that fails if the committed skill is stale
 - **Strip live state**: a skill is static, so omit dynamic data (open sessions, current items) that only the hook can show
 - **Non-interactive commands**: check that command-line dependencies are installed and ask the user to install missing binaries globally; do not download dependencies implicitly.
 - **Trigger-shaped frontmatter**: include `name` and a `description` written as a trigger — terse and outcome-focused so the agent loads it on the right intent
