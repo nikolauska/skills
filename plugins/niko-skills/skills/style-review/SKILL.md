@@ -1,11 +1,13 @@
 ---
 name: style-review
-description: Review code style, naming, patterns, and consistency. Use when reviewing code quality or style drift.
+description: Reviews code style, naming, patterns, and consistency against repository evidence. Use when assessing code-quality or style drift; do not use for correctness, security, architecture, or test-coverage defects.
 ---
 
 # Style Review
 
 Review naming, coding patterns, and style consistency against the codebase's existing conventions.
+
+This is a read-only review. Do not edit files, read credentials, run untrusted code, or contact external systems unless the user explicitly asks.
 
 ## Scope
 
@@ -52,12 +54,12 @@ Sections 1 and 3 require evidence of a local convention — cite the nearby code
 
 1. Identify local style conventions from nearby code.
 2. Compare against repo-wide documented conventions.
-3. Find concrete deviations with evidence. For large diffs (more than 3 files), fan out **fast-tier** readers — one per file or logical area — to surface candidate findings. Verify each before reporting.
+3. Find concrete deviations with evidence. For large diffs, use parallel readers when available, one per file or logical area; otherwise inspect them sequentially. Verify every candidate before reporting.
 4. Report findings ordered by severity.
 
 ## Output
 
-For each finding: **label** (Critical / Fix / Consider / Nit — see `review`), **file**, **violated convention**, **evidence** (cite both the offending line and the code that establishes the convention), **fix direction**.
+For each finding: **label** (Critical = blocks release; Fix = should change; Consider = tradeoff; Nit = minor), **file**, **violated convention**, **evidence** (cite both the offending line and the code that establishes the convention), **fix direction**.
 
 - Bad: "`getUserData` — inconsistent, should be `fetchUserData`." (no evidence)
 - Good: **Fix** — `src/api/user.ts:12` `getUserData` breaks the fetch-prefix convention (9 of 10 siblings in `src/api/` use `fetch*`). Rename to `fetchUserData`.
