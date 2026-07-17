@@ -13,7 +13,7 @@ compatibility: "Requires an MJML 4.x executable available on PATH."
 
 # MJML — Responsive Email Developer
 
-Generate valid, cross-client MJML 4.x templates and compile them to production-ready HTML. The primary goal is compatibility: Outlook (2013–365), Gmail (web/app), Apple Mail, and major mobile clients. Every output must pass strict validation and be checked against Gmail's clipping threshold.
+Generate valid MJML 4.x templates and compile them to HTML designed for common Outlook, Gmail, Apple Mail, and mobile-client constraints. Strict compilation verifies MJML structure, not rendering in every client.
 
 ---
 
@@ -25,7 +25,7 @@ Generate valid, cross-client MJML 4.x templates and compile them to production-r
 4. **Load component references** — Read only the relevant files from the Component Index below before writing MJML.
 5. **Generate MJML** — Write complete MJML starting from `<mjml>` with a full `<mj-head>`.
 6. **Compile and validate** — Follow `compilation.md`; compilation must use the available `mjml` executable and strict validation.
-7. **Inspect output** — Confirm compilation succeeded, the HTML is non-empty, and its size does not exceed 102,400 bytes.
+7. **Inspect output** — Confirm compilation succeeded, the HTML is non-empty, and its size stays within the project's email budget (102,400 bytes when none is defined). Run existing client-render or screenshot checks when available; otherwise report client rendering as unverified.
 8. **Deliver artifacts** — Deliver `.mjml` source and compiled `.html` only after successful compilation. If MJML is unavailable and the user declines installation, deliver the source plus the exact blocked validation command; never fabricate compiled HTML.
 
 ## Guardrails
@@ -33,8 +33,10 @@ Generate valid, cross-client MJML 4.x templates and compile them to production-r
 - Never overwrite an existing source or output file without user confirmation.
 - Never install MJML, create a `package.json`, or access external systems without user confirmation.
 - Never use an implicit package downloader; run the installed `mjml` executable directly.
+- Treat `.mjmlconfig.js` and preprocessors as executable code: inspect them before compilation and do not run untrusted configuration.
 - Treat recipient data and email content as sensitive: do not expose it in logs or unrelated output.
 - Do not fetch remote images or fonts while authoring; reference supplied URLs only.
+- Preserve required unsubscribe, sender-identification, privacy, and tracking behavior unless the user explicitly requests a compliant change.
 
 ---
 
@@ -161,7 +163,7 @@ Hard rules:
 After successful compilation, deliver:
 
 1. **`<name>.mjml`** — complete MJML source (editable, version-controllable)
-2. **`<name>.html`** — compiled output (production-ready, send via ESP)
+2. **`<name>.html`** — strictly compiled output; describe client-render testing separately
 
 If compilation is blocked, deliver only the `.mjml` source and the blocking diagnostic.
 

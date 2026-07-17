@@ -8,6 +8,7 @@
 2. **Use the available executable** — Run `mjml` directly from `PATH`.
 3. **Verify source first** — Check that the `.mjml` file exists and contains valid XML before compiling.
 4. **Protect existing output** — If the output path exists, ask before overwriting it.
+5. **Inspect executable config** — Read any `.mjmlconfig.js` or configured preprocessors before compilation; do not execute untrusted project code.
 
 ---
 
@@ -31,7 +32,7 @@ mjml <source.mjml> -o <output.html> --config.minify=true --config.validationLeve
 - `--config.minify=true` — required to reduce payload size and remove whitespace between generated inline-block columns
 - `--config.validationLevel=strict` — fail fast on syntax errors during development
 
-After compilation, run `wc -c < <output.html>`. If it exceeds 102400 bytes, reduce generated markup or content and compile again.
+After compilation, run `wc -c < <output.html>`. Compare it with the project's email-size budget, defaulting to 102400 bytes when none is defined; reduce generated markup or content and compile again if over budget.
 
 ---
 
