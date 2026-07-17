@@ -1,59 +1,51 @@
 ---
 name: handoff
-description: Write forward-looking startup instructions for the next session, then reset context to save costs. Use when the context is getting long or before switching focus.
+description: Writes forward-looking startup instructions for a fresh session. Use when context is long, work must continue in another session, or the user is switching focus; do not use for progress reports or permanent project documentation.
 ---
 
 # Handoff
 
-Write the opening instructions your next session needs to pick up the work. The next session is a cold agent: same tools and checkout, zero memory of this one — its only input is this document. Every handoff is a briefing for a stranger, so it's a work order, not a report: it says what to do next, not what happened. There is no "we," nothing "we decided," no "where we left off" — if a line only makes sense to someone who was here, cut it. Size it to the next move, not to the session — a one-file fix earns a ten-line handoff, however long the session was.
+Create a brief work order that lets a fresh agent take the next action without conversation history.
 
-One variable: does the reader already share this project? If yes, pointers can be bare paths and ticket IDs. If not (a teammate, a different context), strip originating-project assumptions and spell out where things live.
+## Safety
+
+- Never include secrets, credentials, environment values, private customer data, or credential-bearing URLs.
+- Present the handoff in chat only. Do not write files, copy to a clipboard, send it externally, or reset context.
+- Tell the user to clear context only after they accept the handoff; the user controls that action.
 
 ## Workflow
 
-1. Write `Next` first: the one concrete action the next session starts with, specific enough for a cold start. Everything else gets in only by tracing to it.
-2. Admit each further line by one test: **could the cold agent execute Next without this?** If yes, cut it — however much work it represents. "Important context" and "we decided this" don't count; a decision is recorded only if Next would otherwise violate it, and then as the rule, not its history.
-3. If this conversation opened with a prior handoff, merge: carry what still constrains Next, drop the rest. Never append verbatim.
-4. Budget check: the whole handoff fits on one screen (~150 words; more only if Next is genuinely multi-step). Longer means you drifted into reporting — cut, don't reorganize.
-5. Present it directly in chat as one fenced Markdown block, ready to copy. Do not write it to a temp file or copy it to a clipboard.
-6. Ask whether it needs changes. If not, tell the user to copy it, run `/clear`, and paste it as the first message. If edits are requested, present only the revised block and ask again.
+1. Write `Next`: one concrete action specific enough to start without prior conversation.
+2. Add only facts that change how `Next` must be executed: files, constraints, settled rules, and live blockers.
+3. Point to repository files, commits, tickets, or safe URLs instead of copying their contents or narrating completed work.
+4. If a previous handoff exists, merge its still-relevant constraints; never append it verbatim.
+5. Keep the result near 150 words and on one screen unless the next action is genuinely multi-step.
+6. Present one fenced Markdown block and ask whether it needs changes. After acceptance, tell the user to copy it, clear context, and paste it as the first message.
 
 ## Format
 
-Exactly these three sections, in order — no others. If you're reaching for a heading like Status, Progress, Decisions, Done, Evidence, Dead ends, or Parked, that's the report shape: the content either earns one line under a section below or dies. Drop a section with nothing in it.
+Omit empty optional sections. Use no other sections.
 
-    # Handoff — <topic or ticket>
+```md
+# Handoff — <topic or ticket>
 
-    ## Next
-    <one concrete action, specific enough to start cold. One sentence.>
+## Next
+<one concrete action in one sentence>
 
-    ## What the next move needs   (≤5 bullets, one line each)
-    - <a file to touch / a rule to hold / a decision already made — stated as the rule, no backstory>
-    - <a live blocker, only if the move is waiting on one: "Blocked on X — who/what unblocks it">
+## What the next move needs
+- <file, constraint, settled rule, or live blocker; at most five one-line bullets>
 
-    ## Pointers
-    - <path, URL, or ticket ID — an address, not its contents>
+## Pointers
+- <path, safe URL, commit, or ticket ID; addresses only>
 
-    Start with Next.
+Start with Next.
+```
 
-The closing line is load-bearing: without a closing imperative the fresh session tends to summarize the handoff back or ask what to do, instead of acting on `Next`.
+The final imperative is required so the next session acts instead of summarizing the handoff.
 
-A decision goes in as its rule, not its history:
+## Quality gate
 
-    Report shape: "We chose the shared parser helper because the duplicate
-    implementation drifted and caused inconsistent results..."
-    Rule:         "- Use the shared parser helper, not a duplicate implementation. Settled."
-
-## The test
-
-Write only what the reader must do or not do next. A line earns its place by changing the next action — not by recording that something happened. Dead ends, settled-decision histories, and "what I accomplished" all fail it: the reader acts forward, and the code, `git log`, and standing docs (AGENTS.md, SPEC, TODO) already hold the past. Link to those; don't recount them. Never paste file contents, diffs, or command output.
-
-## Red flags
-
-- Reads like a report — narrates what happened instead of what to do next. The reader was never here; the past is unusable to them.
-- A dumping section — dead ends, decision backstories, deferred-work logs. If the next move won't act on it, the cold agent can't use it.
-- `Next` missing, vague, or not first.
-- Handoff longer than one screen, or longer than the work `Next` describes.
-- Restating what `git log`, the code, or standing docs already hold.
-- Prior handoff appended instead of merged.
-- Printing the handoff more than once without a requested revision.
+- `Next` is first, executable, and forward-looking.
+- Every other line changes the next action; history, dead ends, status, and deferred-work dumps are absent.
+- Rules state what to do, not the story of how they were chosen.
+- The handoff appears once unless the user requests a revision.
