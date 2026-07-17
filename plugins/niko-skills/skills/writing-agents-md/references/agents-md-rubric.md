@@ -30,6 +30,8 @@ Score based on:
 | Failure recovery | No ON FAIL rules | Generic ON FAIL | Per-command ON FAIL with concrete recovery steps |
 | “Never do” completeness | No forbidden actions | Partial list | Covers: competing package managers, hook bypass, secret access, generated file edits, force push |
 
+Failure recovery must be non-destructive. Database resets, broad file deletion, deployment, and publishing are never acceptable automatic recovery steps.
+
 ### 2) Codebase Context & Domain (Weight: 20%)
 
 | Criterion | 1 | 3 | 5 |

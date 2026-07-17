@@ -1,6 +1,6 @@
 # AGENTS.md Review Prompt
 
-Subagent prompt for reviewing and grading an AGENTS.md file. Used by the writing workflow's Quality Gate step.
+Prompt for independently reviewing and grading an AGENTS.md file. Used by the writing workflow's Quality Gate step.
 
 ## Objective
 
@@ -35,7 +35,7 @@ Read the AGENTS.md, then gather enough project context to verify its claims. Do 
 
 ## Review Dimensions
 
-Use the shared rubric (single source of truth): [references/agents-md-rubric.md](references/agents-md-rubric.md).
+Use the AGENTS.md rubric supplied with this review task as the single source of truth.
 
 Score 1–5 (half-points allowed) for:
 
@@ -49,7 +49,7 @@ Score 1–5 (half-points allowed) for:
 
 ## Scoring
 
-Compute weighted total + grade using the formula and grade scale in [references/agents-md-rubric.md](references/agents-md-rubric.md).
+Compute the weighted total and grade using the supplied rubric.
 
 ## Output Format
 
@@ -115,7 +115,7 @@ Produce this exact structure:
 ### Finding limits
 
 - **Maximum findings:** 15. If more issues exist, merge related items or drop lowest-priority P3 findings.
-- **Minimum findings:** 1. Even an excellent file has at least one improvement opportunity. If nothing substantive, note a P3 for token efficiency or future-proofing.
+- **Minimum findings:** 0. Do not invent an improvement when no evidence-backed issue exists.
 
 ## Review Guidelines
 
@@ -148,7 +148,3 @@ Judge from the perspective of an AI agent seeing this file for the first time wi
 4. **No fabrication** — if you can't verify a claim, mark it SKIP in Verification Results. Do not guess at what the project contains.
 5. **Consistent scoring** — apply the rubric tables mechanically. A dimension with all criteria at level 3 scores 3/5, not 4/5 because "it's pretty good." Half-points (e.g., 3.5) are allowed when criteria split between levels.
 6. **Single pass** — produce the report in one pass. Do not iterate or self-revise the scores.
-
-## Reference Output
-
-See [references/example-review.md](references/example-review.md) for a realistic example report.

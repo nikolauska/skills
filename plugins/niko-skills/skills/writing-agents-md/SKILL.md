@@ -29,7 +29,7 @@ Do not use when:
 
 Target outcome:
 - **No spec violations** (format/schema/validation checks), and
-- **Rubric score ≥ 4.5/5.0** (A- or better), and
+- **Rubric score ≥ 4.5/5.0** (A), and
 - **No P1 findings** in a critic review
 
 The rubric: [references/agents-md-rubric.md](references/agents-md-rubric.md) (single source of truth).
@@ -169,7 +169,7 @@ Locate main entry point(s), test runner entry & fixture locations, CI configurat
 
 Find exact commands from build config scripts, task runners (`Makefile`, `Justfile`, `Taskfile.yml`), or tool conventions. Include publish/release, docs, deploy/IaC, debug/REPL, codegen commands if scripts exist. Reflect pinned tool versions from CI or build config. Verify commands exist in config files — do NOT execute any commands during analysis (not even read-only ones). **Working directory:** For commands that must run from a subdirectory (e.g., migrations in a specific package), prefix with `cd <path> &&` in the Commands code block so the command is copy-pasteable from repo root.
 
-**Recovery steps:** For each command, determine the ON FAIL recovery action. Sources: companion `:fix` scripts (e.g., `lint` -> `lint:fix`), cache-clear commands (e.g., `rm -rf node_modules`), single-file re-run variants (e.g., `vitest run <file>`), or diagnostic steps (e.g., "check output for type errors"). If the tool has a well-known fix command, use it. If not, specify the diagnostic action.
+**Recovery steps:** For each command, determine a non-destructive ON FAIL action. Sources: companion `:fix` scripts (e.g., `lint` -> `lint:fix`), single-file re-run variants (e.g., `vitest run <file>`), or diagnostic steps (e.g., "check output for type errors"). Never recommend resets, broad deletion, deploys, or publishing as failure recovery.
 
 ### 4. Detect Architectural Patterns
 
@@ -191,170 +191,9 @@ Find exact commands from build config scripts, task runners (`Makefile`, `Justfi
 
 ## AGENTS.md Template
 
-Generate this exact structure. Terse language, minimal prose. **Omit sections with no concrete data.** Strip template/placeholder HTML comments. **Preserve** these comment types in output: `<!-- agents-md-version: N -->`, `<!-- GAPS: ... -->`, `<!-- REVIEW: ... -->`, `<!-- REMOVED: ... -->`, `<!-- version: YYYY-MM-DD -->` (if user-added).
+Read [references/agents-md-template.md](references/agents-md-template.md) before drafting. Use its exact section order, omit optional sections without evidence, remove all placeholders, and keep the schema version at `1` unless `references/schema-changelog.md` defines a migration.
 
-`agents-md-version` tracks the output schema — bump only when sections are added, removed, or restructured (not for content changes). Current schema: **1**. See `references/schema-changelog.md` for changelog.
-
-**Handling older schema versions:** When an existing AGENTS.md has an older `agents-md-version`, apply Auto-detect/Curated/Hybrid update policy as normal. Add any new sections introduced in the current schema version. Remove sections deprecated between versions. Bump the version tag to current.
-
-**Version tags:** Use `<!-- agents-md-version: 1 -->` as the mandatory schema version tag. A separate `<!-- version: YYYY-MM-DD -->` date tag may optionally be present (user-added, for tracking last regeneration) — preserve it if found but do not generate it.
-
-**Line budget:** Under 150 lines for single-package repos, under 200 for monorepos, up to 250 for complex multi-stack monorepos. When over budget, apply triage order from Analysis Phase.
-
-See `references/example-output.md` for a concrete Next.js + Prisma example.
-
-````markdown
-# AGENTS.md
-<!-- agents-md-version: 1 -->
-
-## CRITICAL
-
-- MUST: [package manager command]
-- MUST: [lint command] before commit
-- MUST: [test command] before PR
-- MUST: Use `[dependency command]` to change deps (DO NOT edit config manually)
-- NEVER: [forbidden tool/pattern]
-- NEVER: Force push (`git push --force`, `git push -f`) to shared branches
-- NEVER: Skip pre-commit hooks (--no-verify)
-- NEVER: Edit generated files in `[path]`
-- PREFER: Built-in tools (file reader, editor, glob, grep) over shell equivalents (`cat`, `sed`, `find`, `grep`)
-- ON FAIL: Read full error output before retry. Check Env for missing deps.
-- ON FAIL (lint): If autofix available: run `[lint:fix command]`, then re-run `[lint command]`. Fix remaining errors manually.
-- ON FAIL (test): Run single test file first: `[single test command]`
-- ON FAIL (monorepo): Verify working directory with `pwd`
-
-## Domain & Context
-
-- Goal: [1 sentence project purpose]
-- Type: [Library | Application | CLI/Tool | Both]
-- License: [SPDX identifier]
-- Key Terms:
-  - `[Term]`: [Definition]
-- Decisions: `[path to ADR/RFC dir]`
-
-## Data & State
-
-- Source of Truth: `[path to schema file]`
-- Database: [engine]
-- ORM/Driver: [name]
-- Migrations: `[path]` (commands in Commands section)
-- Seeding: `[path or reference to Commands]`
-- API Schema: `[path]` ([OpenAPI | GraphQL | Protobuf])
-- Codegen: `[command]` -> `[output path]` (generated -- do not edit)
-- Broker: [type]
-
-## Execution Context
-
-- Run on: [Host | Docker | Devcontainer | Nix | Hybrid | Serverless]
-- Prefix: [e.g., "docker compose exec app" or "N/A"]
-- Deploys to: [target]
-- Submodules: [paths]
-
-## Monorepo
-
-- Manager: [tool]
-- Root: [commands that affect all packages]
-- Scope: `[filter syntax]`
-- Packages: [pattern]
-- Deps: [root-level | package-level | both]
-
-| Type | Path | Stack |
-|------|------|-------|
-| [category] | `[path]` | [runtime/tools] |
-
-**Table compaction:** When multiple packages share the same type and stack, group them in a single row using brace expansion (e.g., `packages/{auth,billing,users}`). Use individual rows only where the stack differs meaningfully. Aim for under 12 rows. Every package must appear in the table — verify full coverage against the workspace listing.
-
-## Commands
-
-```bash
-# install
-[exact command]                # ON FAIL: [recovery step]
-# test:unit
-[exact command]                # ON FAIL: [recovery step]
-# lint
-[exact command]                # ON FAIL: [recovery step]
-# [additional detected categories...]
-[exact command]                # ON FAIL: [recovery step]
-```
-
-**ON FAIL comments:** Every command must include an inline `# ON FAIL: ...` comment with a concrete recovery step. Use the command's actual fix/retry mechanism (e.g., `# ON FAIL: rm -rf node_modules && pnpm install`). If no programmatic recovery exists, state the diagnostic step (e.g., `# ON FAIL: check output for type errors`). Omit ON FAIL only for commands where failure is self-explanatory (e.g., `dev` server start).
-
-## Structure
-
-```
-[dir]/          # [2-4 word purpose]
-[dir]/          # [2-4 word purpose] (generated -- do not edit)
-```
-
-## Patterns
-
-- **Module:** [ESM | CJS | dual]
-- **Async:** [async/await | callbacks | Promises | mixed (use X for new code)]
-- **Naming:** [file-naming-convention] files, [ComponentCase] components, [functionCase] functions
-- [Framework/architectural pattern]: [where it applies]
-
-## Search
-
-- Semantic: `[tool] [index] "[query]"` -- conceptual queries . Exact: `[grep tool] "[pattern]" [path]` -- regex . Files: `[glob pattern]`
-
-## Testing Strategy
-
-- Runner: [tool]
-- Fixtures: `[path]` [and/or factory library]
-- Separation: [method]
-- Coverage: [threshold or "No threshold"]
-- E2E: [tool]
-- Conventions: [key conventions]
-
-## Security
-
-- NEVER read/write: [paths]
-- NEVER log/commit: [patterns]
-- Secrets via: [mechanism]
-- CI secrets: [mechanism, e.g., "GitHub Actions secrets", "Vault"]
-- Dep scanning: `[command]`
-
-## Env
-
-- [Runtime]: [version or version file]
-
-```bash
-# Required vars
-[VAR]=[description]
-# Env-specific config
-[path or mechanism for dev/staging/prod differentiation]
-# Local setup
-[commands]
-```
-
-## Debugging
-
-- Logs: [how to access application logs locally]
-- REPL: `[command]`
-- Debugger: [launch config or attach instructions]
-
-## Git
-
-- Branch: `[pattern]`
-- Commit: `[format]`
-- Hooks: [description]
-- PR: [requirements]
-- Reviews: [conventions, e.g., "DB migrations require DBA review"]
-- PR template: `[path]`
-- Code owners: `[path]`
-
-## CI
-
-- Runs: [jobs]
-- Required checks: [list]
-- Artifacts: [location]
-
-## Tool Preferences
-
-| Task | Prefer | Avoid |
-|------|--------|-------|
-| [task] | [preferred tool] | [avoided alternative] |
-````
+Line budgets: under 150 lines for a single-package repository, under 200 for a monorepo, and up to 250 for a complex multi-stack monorepo. Apply the Analysis Phase priority order when trimming.
 
 ## When to Re-run
 
@@ -445,10 +284,10 @@ Grade the generated AGENTS.md using [references/agents-md-rubric.md](references/
 - Requires re-analysis or user input -> add `<!-- REVIEW: [description] -->` and continue.
 - If score < 4.5 or P1 findings remain, fix P1/P2 gaps and re-run Validation checks before proceeding.
 
-### Phase 2: Fresh-context subagent review
+### Phase 2: Fresh-context review
 
-Run a **fresh-context critic** pass using [references/review-prompt.md](references/review-prompt.md):
-- If your environment supports subagents, **spawn a fresh-context subagent** with the review prompt. Otherwise, perform the review directly following the prompt instructions.
+Run a fresh critic pass using [references/review-prompt.md](references/review-prompt.md) and [references/agents-md-rubric.md](references/agents-md-rubric.md):
+- Use an independent reviewer only when the user and environment permit delegation; otherwise perform a second direct pass after clearing prior scoring assumptions.
 - Apply **P1 + P2** fixes (P3 last).
 - Re-run Validation checks.
 - Repeat up to **3 loops**, stop early when the Quality Bar is met.
@@ -459,6 +298,6 @@ Run a **fresh-context critic** pass using [references/review-prompt.md](referenc
 1. **Minimal prose** — bullets/tables preferred; no placeholders (resolve or omit section); no examples (actual values only)
 2. **Line budget** — omit lowest-priority sections first (see triage order); ASCII only (no emoji)
 3. **Safety** — Safety / Constraints rules apply (no secrets, no web, no destructive commands)
-5. **Idempotency** — identical output on unchanged project (no timestamps, random values); deterministic alphabetical ordering
-6. **Tool priority** — use built-in file reader, glob, and grep tools as the PRIMARY method; Bash commands are FALLBACKS — use only when the agent lacks built-in equivalents
-7. **Resilience** — skip unreadable configs (including permission-denied errors), empty globs, binary files, and sections with no concrete data — never fabricate values. If analysis is incomplete, add `<!-- GAPS: [list of skipped categories] -->` as the first line of AGENTS.md
+4. **Idempotency** — identical output on unchanged project (no timestamps, random values); deterministic alphabetical ordering
+5. **Tool priority** — use built-in file reader, glob, and grep tools as the PRIMARY method; Bash commands are FALLBACKS — use only when the agent lacks built-in equivalents
+6. **Resilience** — skip unreadable configs (including permission-denied errors), empty globs, binary files, and sections with no concrete data — never fabricate values. If analysis is incomplete, add `<!-- GAPS: [list of skipped categories] -->` as the first line of AGENTS.md
