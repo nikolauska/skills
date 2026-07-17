@@ -1,11 +1,13 @@
 ---
 name: doc-review
-description: Review docs for drift, missing updates, and terminology changes. Use when code changes should be reflected in documentation.
+description: Reviews documentation for drift, missing updates, and terminology changes. Use when code changes may require matching documentation updates; do not use for general prose editing or unrelated documentation debt.
 ---
 
 # Documentation Review
 
 Review the docs the diff affects for drift — terms, contracts, and behavior the change made stale.
+
+This is a read-only review. Do not edit files, read credentials, or contact external systems unless the user explicitly asks.
 
 ## Scope
 
@@ -28,11 +30,11 @@ Apply these only to lines the change adds or modifies — never flag untouched t
 
 ## Workflow
 
-Read the diff, then the affected doc files. For changes touching many docs, fan out **fast-tier** readers — one per doc — to surface drift candidates. Verify each before reporting.
+Read the diff, then the affected doc files. For changes touching many docs, use parallel readers when available, one per doc; otherwise inspect them sequentially. Verify every candidate before reporting.
 
 ## Output
 
-For each finding: **label** (Critical / Fix / Consider / Nit — see `review`), **affected file**, **what drifted or is missing**, **fix direction**.
+For each finding: **label** (Critical = blocks release; Fix = should change; Consider = tradeoff; Nit = minor), **affected file**, **what drifted or is missing**, **fix direction**.
 
 - Bad: "README could explain the retry architecture in more depth."
 - Good: **Fix** — `docs/config.md` still says `maxRetries` defaults to 3; this diff changes it to 5 in `src/client.ts`.
