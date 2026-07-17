@@ -28,7 +28,7 @@ When reviewing a skill, verification typically covers:
 - Referenced local files exist (links in `SKILL.md`).
 - No deep reference chains (SKILL.md → reference → reference).
 - `agents/openai.yaml` sanity (if present): required keys present.
-- Optional validation run: `npx skillcheck <skill>` and/or `npx agnix <skill>` (SKIP if not available or user did not request execution).
+- Optional validation run: `skillcheck <skill>` and/or `agnix <skill>` using binaries already on `PATH` (SKIP if unavailable or execution was not requested).
 
 Rule: do not claim FAIL without evidence (file path + what you checked).
 

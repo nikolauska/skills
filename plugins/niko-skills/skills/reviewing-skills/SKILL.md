@@ -3,7 +3,8 @@ name: reviewing-skills
 description: >
   Reviews and grades an agent skill directory (SKILL.md plus supporting resources) for specification
   compliance, clarity, token efficiency, safety, robustness, and portability. Use when a user wants
-  a rubric-based critique with a weighted score/grade and concrete, minimal patch suggestions.
+  a rubric-based critique with a weighted score/grade and concrete, minimal patch suggestions; do
+  not use when the user wants implementation without a review report.
 ---
 
 # Reviewing Skills
@@ -69,7 +70,7 @@ If either binary is unavailable, report that validation was skipped; do not atte
    3. Any files under `<skill>/scripts/` referenced by `SKILL.md` (only those)
    4. Any files under `<skill>/references/` referenced by `SKILL.md` (only those)
 3. (If in a git repo) gather change context
-   - Prefer the repo’s base branch; if unknown, check `git remote show origin` for “HEAD branch”, otherwise try `main` then `master` (and state what you chose).
+   - Prefer the repo's locally configured remote HEAD (`git symbolic-ref refs/remotes/origin/HEAD`); otherwise try `main` then `master` and state what you chose. Do not contact a remote.
    - `git diff <base> -- <skill>/`
    - `git log --oneline -20 -- <skill>/`
    - For non-trivial diffs: `git log -p -5 -- <skill>/SKILL.md`
@@ -127,4 +128,3 @@ Do not read assets unless explicitly relevant.
 
 - “Use $reviewing-skills to review `./some-skill/` and provide a weighted grade, spec blockers, and prioritized patch text.”
 - “Use $reviewing-skills to do a forensic/diff-centric review of `./some-skill/` focusing on recent changes.”
-- For a worked example format, see [references/example-review.md](references/example-review.md).
