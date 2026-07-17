@@ -1,19 +1,21 @@
 ---
 name: lavish
-description: Run a lightweight local browser review loop for standalone HTML artifacts when a human should annotate visual content, plans, reports, prototypes, comparisons, or other rich responses.
+description: Runs a lightweight local browser review loop for standalone HTML artifacts. Use when a human should annotate visual plans, reports, prototypes, comparisons, or other rich responses; do not use for ordinary prose, source review, or automated browser inspection.
 ---
 
 # Local HTML Review
 
 Use this skill when a standalone HTML artifact is easier to review in a browser than in chat. The artifact is the source of truth; the review server only adds a temporary browser interface and feedback channel.
 
-The runtime is the Node script bundled in this skill. Set `LAVISH_AXI` to the installed skill's `scripts/lavish-axi.mjs` path and invoke it with `node "$LAVISH_AXI" ...`. Do not use `curl`, `npx`, Chrome DevTools MCP, or a separate browser automation tool.
+The runtime is the Node script bundled in this skill. Set `LAVISH_AXI` to the installed skill's `scripts/lavish-axi.mjs` path and invoke it with `node "$LAVISH_AXI" ...`.
 
-## Request
+## Safety
 
-$ARGUMENTS
-
-If the request above is non-empty, the user invoked `/lavish` explicitly: build an HTML artifact for that request. If it is empty, infer what to visualize from the conversation.
+- Build the artifact yourself or sanitize supplied HTML first; do not open untrusted scripts in the review runtime.
+- Keep each artifact and its assets in a dedicated directory such as `.lavish/<name>/`; never serve a repository root or a directory containing credentials, private data, or unrelated files.
+- Use local assets. If the artifact requires remote URLs, obtain user approval before opening it because the browser will contact those hosts.
+- Never include secrets, credentials, environment values, or private customer data in the artifact or feedback.
+- The server listens only on localhost. Do not change its bind address or expose it through a tunnel.
 
 ## When to use
 
@@ -23,11 +25,11 @@ Do not use it for ordinary prose, source-code review, screenshots, diagrams that
 
 ## Workflow
 
-1. Create or update a standalone HTML artifact. Keep it outside the skill directory; `.lavish/<name>.html` is the default.
+1. Create or update a standalone HTML artifact in an isolated directory outside the skill, defaulting to `.lavish/<name>/index.html`.
 2. Start a session:
 
    ```sh
-   node "$LAVISH_AXI" open .lavish/<name>.html
+   node "$LAVISH_AXI" open .lavish/<name>/index.html
    ```
 
    The command stays attached, prints JSON containing the local URL, and opens the default browser when possible.

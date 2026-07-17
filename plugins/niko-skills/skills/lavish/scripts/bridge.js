@@ -32,7 +32,7 @@
   }
 
   function preview(element) { return (element.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 160); }
-  function send(type, target = null) { parent.postMessage({ type, target }, location.origin); }
+  function send(type, target = null) { parent.postMessage({ type, target }, "*"); }
   function targetFor(element) { return { kind: "element", selector: selectorFor(element), tagName: element.tagName.toLowerCase(), textPreview: preview(element), selectedText: null, range: null }; }
 
   function ensureOverlay() {
@@ -76,7 +76,7 @@
   });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape") clear(); }, true);
   window.addEventListener("message", (event) => {
-    if (event.origin !== location.origin || event.source !== parent || event.data?.type !== "review:set-mode") return;
+    if (event.source !== parent || event.data?.type !== "review:set-mode") return;
     mode = event.data.mode === "annotate" ? "annotate" : "explore";
     if (mode === "explore") ensureOverlay().style.display = "none";
   });

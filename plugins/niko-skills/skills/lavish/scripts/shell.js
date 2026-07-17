@@ -19,7 +19,7 @@ async function api(endpoint, options = {}) {
 }
 
 function postToArtifact(message) {
-  frame.contentWindow?.postMessage(message, location.origin);
+  frame.contentWindow?.postMessage(message, "*");
 }
 
 function setMode(nextMode) {
@@ -89,7 +89,7 @@ async function refreshFeedback() {
 }
 
 window.addEventListener("message", (event) => {
-  if (event.origin !== location.origin || event.source !== frame.contentWindow) return;
+  if (event.source !== frame.contentWindow) return;
   if (!["review:target-selected", "review:text-selected", "review:target-cleared"].includes(event.data?.type)) return;
   target = event.data.type === "review:target-cleared" ? null : event.data.target;
   renderTarget();

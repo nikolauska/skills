@@ -46,7 +46,10 @@ test("serves the isolated shell, artifact, and local assets", async () => {
   const { state } = await fixture();
   const shell = await fetch(`${state.url}/`);
   assert.equal(shell.status, 200);
-  assert.match(await shell.text(), /HTML Review/);
+  const shellText = await shell.text();
+  assert.match(shellText, /HTML Review/);
+  assert.match(shellText, /sandbox="allow-scripts allow-forms"/);
+  assert.doesNotMatch(shellText, /https?:\/\//);
   const artifact = await fetch(`${state.url}/artifact/`);
   const artifactText = await artifact.text();
   assert.equal(artifact.status, 200);

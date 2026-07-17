@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HTML Review</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="/review.css" rel="stylesheet">
     <script>window.__REVIEW__ = { token: __REVIEW_TOKEN__, artifactUrl: "/artifact/" };</script>
     <script src="/shell.js" defer></script>
@@ -19,7 +17,7 @@
           <div class="flex-1"><span class="text-lg font-semibold">HTML Review</span><span id="reload-state" class="badge badge-ghost ml-3">Connected</span></div>
           <button id="end-session" class="btn btn-error btn-sm">End session</button>
         </nav>
-        <section class="min-h-0 flex-1 p-3"><iframe id="artifact-frame" title="Artifact under review" src="/artifact/" class="h-full w-full rounded-box border border-base-300 bg-white"></iframe></section>
+        <section class="min-h-0 flex-1 p-3"><iframe id="artifact-frame" title="Artifact under review" src="/artifact/" sandbox="allow-scripts allow-forms" class="h-full w-full rounded-box border border-base-300 bg-white"></iframe></section>
       </main>
       <aside class="drawer-side z-10">
         <label for="review-drawer" aria-label="Close review panel" class="drawer-overlay"></label>
