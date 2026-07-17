@@ -1,11 +1,13 @@
 ---
 name: architecture-review
-description: Review architecture, boundaries, and design consistency. Use when reviewing module boundaries, extension seams, or contract drift.
+description: Reviews architecture, boundaries, and design consistency. Use when reviewing module boundaries, extension seams, or contract drift; do not use for isolated correctness, style, or test-coverage reviews.
 ---
 
 # Architecture Review
 
 Review architecture quality, design consistency, extension seams, and pattern adherence.
+
+This is a read-only review. Do not edit files or run untrusted project code.
 
 ## Scope
 
@@ -54,14 +56,14 @@ Only report issues with concrete evidence in code, contracts, or dependency flow
 ## Workflow
 
 1. Build expected architecture map from project docs.
-2. Compare implementation against that map. For large diffs or audits spanning many modules, fan out **fast-tier** readers — one per module or boundary — to collect raw evidence. Verify findings in this session before reporting.
+2. Compare implementation against that map. For large diffs or audits spanning many modules, use parallel readers when available, one per module or boundary, to collect raw evidence; otherwise inspect boundaries sequentially. Verify every finding before reporting.
 3. Run cycle and indirection pass on core entrypoints.
 4. Check whether the change increases coupling or creates contract drift.
 5. Report findings ordered by severity.
 
 ## Output
 
-For each finding: **label** (Critical / Fix / Consider / Nit — see `review`), **impacted files**, **violated pattern**, **evidence**, **fix direction**.
+For each finding: **label** (Critical = blocks release; Fix = should change; Consider = tradeoff; Nit = minor), **impacted files**, **violated pattern**, **evidence**, **fix direction**.
 
 - Bad: "Consider: UserService is doing a lot; could be more decoupled." (taste, no contract, no evidence)
 - Good: **Fix** — `src/api/client.ts` imports `src/auth/session.ts` which imports it back (runtime cycle), violating the api→auth dependency direction in `docs/architecture.md`. Move `TokenStore` into `auth`.
