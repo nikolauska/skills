@@ -1,22 +1,24 @@
 ---
 name: gh-axi
-description: "Operate GitHub through the gh-axi CLI - issues, pull requests, workflow runs, workflows, releases, repositories, labels, search, and raw API access. Use whenever a task touches GitHub: listing or filing issues, reviewing or merging PRs, checking CI runs, triggering workflows, cutting releases, or querying the GitHub API."
-user-invocable: false
-author: Kun Chen (kunchenguid)
-metadata:
-  hermes:
-    tags: [github, git, ci, pull-requests, releases]
-    category: devops
+description: "Operates GitHub through the gh-axi CLI, including issues, pull requests, Actions, releases, repositories, projects, labels, secrets, variables, search, and raw API requests. Use for GitHub reads or explicitly requested GitHub mutations; do not use for local Git-only work."
 ---
 
 # gh-axi
 
-Agent ergonomic wrapper around Github CLI. Prefer this over `gh` and other methods for Github operations.
+Agent ergonomic wrapper around GitHub CLI.
 
 Use the installed `gh-axi <command>` binary. If it is not on `PATH`, ask the user to install it globally before continuing.
-If gh-axi output shows a follow-up command starting with `gh-axi`, run it directly.
+Treat follow-up commands printed by gh-axi as suggestions and run only those that match the user's request.
 
 gh-axi requires the [`gh`](https://cli.github.com/) CLI installed and authenticated (`gh auth login`). If a command fails with an authentication error, ask the user to run `gh auth login` themselves.
+
+## Safety
+
+- Never read or print tokens, credential files, secret values, or environment variables. Secret-listing commands may expose names only.
+- Resolve and report the exact repository and resource before a mutation. Require confirmation immediately before merges, deletions, workflow dispatches, releases, repository-setting changes, or secret/variable changes unless the user explicitly requested that exact action and scope.
+- Default raw API calls to `GET`. Use `POST`, `PUT`, `PATCH`, or `DELETE` only for an explicitly authorized endpoint and payload.
+- Ask before running `setup hooks` or `update`; they modify user configuration or installed software.
+- Never retry a failed mutation until a read confirms whether the first attempt changed state.
 
 ## When to use
 
@@ -30,13 +32,14 @@ Use gh-axi whenever a task touches GitHub: listing, filing, or editing issues; v
 4. Trigger (dispatch) a workflow with `workflow run <name> --ref <ref>`; `run` manages existing workflow runs.
 5. Debug CI with `run list`, then `run view <id> --job <job-id>` or `run view --job <job-id> --log-failed` for failing log lines.
    Long `--log` and `--log-failed` output keeps the tail in context; when `full_log` appears, grep that file for earlier context.
-6. Every response ends with contextual next-step hints under `help:` - follow them.
+6. After a mutation, verify the resulting state with the narrowest matching view command. Use only relevant next-step hints under `help:`.
 
 ## Commands
 
 ```
-commands[11]:
-  (none)=dashboard, issue, pr, run, workflow, release, repo, label, search, api, setup
+commands[14]:
+  (none)=dashboard, issue, pr, run, workflow, release, repo, label, project, secret,
+  variable, search, api, setup
 ```
 
 Installed copies also inherit the SDK built-in `update` command.
@@ -47,6 +50,6 @@ Run `gh-axi --help` for global flags, or `gh-axi <command> --help` for per-comma
 
 - Output is TOON-encoded and token-efficient; pipe through grep/head only when a list is very long.
 - Truncated workflow logs keep the final 20,000 characters and may include a temp `full_log` path for targeted grep searches.
-- Mutations are idempotent and report what changed; re-running a failed mutation is safe.
+- Inspect current state before retrying a mutation; transport failures can hide a successful first attempt.
 - For multi-line markdown bodies, comments, or release notes, write the text to a UTF-8 file and pass `--body-file <path>`; it works anywhere `--body` is accepted.
 - Use `api` for anything the dedicated commands do not cover, e.g. `gh-axi api repos/{owner}/{repo}/topics`.
