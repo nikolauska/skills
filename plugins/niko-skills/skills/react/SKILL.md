@@ -15,6 +15,14 @@ description: >
 - Prefer derived values and event handlers over redundant state and Effects.
 - Keep code compatible with React's rules and automatic compiler optimization.
 
+## Safety and Constraints
+
+- Read repository instructions and existing component patterns before choosing an approach.
+- Preserve public component behavior and accessibility semantics unless the user requests a change.
+- Never read or expose `.env` files, credentials, keys, tokens, or private user data.
+- Do not install or update packages, change React/compiler/framework versions, browse, or contact external systems unless the user requests it.
+- Use project-configured commands and dependencies; report unavailable checks instead of downloading tools implicitly.
+
 ## Workflow
 
 1. Inspect the target repository's instructions, package manifest, React and framework versions,
