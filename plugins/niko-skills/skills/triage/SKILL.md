@@ -24,7 +24,7 @@ Every comment or issue posted to the issue tracker during triage **must** start 
 ## Reference docs
 
 - [AGENT-BRIEF.md](AGENT-BRIEF.md) — how to write durable agent briefs
-- [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md) — how the `.out-of-scope/` knowledge base works
+- `$domain-knowledge` — how to find and maintain confirmed product knowledge in `docs/domain/`
 
 ## Roles
 
@@ -68,7 +68,7 @@ Show counts and a one-line summary per issue. Let the maintainer pick.
 
 ## Triage a specific issue
 
-1. **Gather context.** Confirm the tracker target, then read the full issue (body, comments, labels, reporter, dates). Parse prior triage notes so you do not re-ask resolved questions. Explore the codebase using the project's domain glossary, respecting ADRs in the area. Read relevant `.out-of-scope/*.md` files and surface any prior rejection that resembles this issue.
+1. **Gather context.** Confirm the tracker target, then read the full issue (body, comments, labels, reporter, dates). Parse prior triage notes so you do not re-ask resolved questions. Follow `$domain-knowledge` in read-only mode to inspect `docs/domain.md`, relevant topic files, human-facing documentation, code, and tests. Surface confirmed product scope, behavior, terminology, or prior decisions that affect the issue.
 
 2. **Recommend.** Tell the maintainer your category and state recommendation with reasoning, plus a brief codebase summary relevant to the issue. Wait for direction.
 
@@ -76,13 +76,15 @@ Show counts and a one-line summary per issue. Let the maintainer pick.
 
 4. **Grill (if needed).** If the issue needs fleshing out, run a `/grill-with-docs` session.
 
-5. **Apply the approved outcome:** Show the exact role changes, disclaimer-prefixed comment, repository file edit, and close action before applying them.
+5. **Apply the approved outcome:** Show the exact role changes, disclaimer-prefixed comment, proposed domain-document edit (if any), and close action before applying them.
    - `ready-for-agent` — post an agent brief comment ([AGENT-BRIEF.md](AGENT-BRIEF.md)).
    - `ready-for-human` — same structure as an agent brief, but note why it can't be delegated (judgment calls, external access, design decisions, manual testing).
    - `needs-info` — post triage notes (template below).
    - `wontfix` (bug) — polite explanation, then close.
-   - `wontfix` (enhancement) — write to `.out-of-scope/`, link to it from a comment, then close ([OUT-OF-SCOPE.md](OUT-OF-SCOPE.md)).
+   - `wontfix` (enhancement) — explain the confirmed product boundary, link any relevant domain topic, then close.
    - `needs-triage` — apply the role. Optional comment if there's partial progress.
+
+6. **Preserve confirmed product knowledge.** If the decision establishes durable product scope, customer-visible behavior, a business rule, canonical terminology, or approved future intent, follow `$domain-knowledge` to draft the smallest coherent update under `docs/domain/`. Obtain approval before writing it and keep issue status, reporter details, reproduction logs, implementation steps, temporary rationale, and unresolved questions out of the handbook. Do not require a handbook edit for routine triage decisions.
 
 ## Quick state override
 
@@ -92,6 +94,7 @@ If the maintainer says "move #42 to ready-for-agent", treat that exact role chan
 
 - If role labels conflict, stop before mutation and ask the maintainer which state is canonical.
 - If reproduction is unsafe or unavailable, report it as skipped and use `needs-info` only when the missing evidence is material.
+- If `$domain-knowledge` or the domain handbook is unavailable, continue triage and report the documentation step as skipped; do not create a substitute knowledge store.
 - If a tracker mutation fails ambiguously, read current state before retrying to avoid duplicate comments or transitions.
 
 ## Needs-info template
