@@ -1,21 +1,21 @@
 # When to Mock
 
-Mock at **system boundaries** only:
+Prefer fakes or mocks at slow, nondeterministic, destructive, or external boundaries:
 
 - External APIs (payment, email, etc.)
 - Databases (sometimes - prefer test DB)
 - Time/randomness
 - File system (sometimes)
 
-Don't mock:
+Avoid mocking:
 
-- Your own classes/modules
-- Internal collaborators
-- Anything you control
+- Internal collaborators whose calls are not observable behavior
+- Pure, fast code that can run directly
+- Data structures in place of meaningful fixtures
 
 ## Designing for Mockability
 
-At system boundaries, design interfaces that are easy to mock:
+Reuse existing project seams first. Add dependency injection only when the behavior needs a controllable boundary; do not create an interface solely to satisfy one test.
 
 **1. Use dependency injection**
 

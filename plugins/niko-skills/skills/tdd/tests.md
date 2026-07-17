@@ -2,7 +2,7 @@
 
 ## Good Tests
 
-**Integration-style**: Test through real interfaces, not mocks of internal parts.
+Test observable behavior through the narrowest stable interface that proves it.
 
 ```typescript
 // GOOD: Tests observable behavior
@@ -20,7 +20,7 @@ Characteristics:
 - Uses public API only
 - Survives internal refactors
 - Describes WHAT, not HOW
-- One logical assertion per test
+- Assertions jointly describe one behavior
 
 ## Bad Tests
 
@@ -37,7 +37,7 @@ test("checkout calls paymentService.process", async () => {
 
 Red flags:
 
-- Mocking internal collaborators
+- Mocking internal collaborators when their interaction is not part of the contract
 - Testing private methods
 - Asserting on call counts/order
 - Test breaks when refactoring without behavior change
@@ -45,17 +45,19 @@ Red flags:
 - Verifying through external means instead of interface
 
 ```typescript
-// BAD: Bypasses interface to verify
+// BRITTLE: Bypasses the public interface when retrieval is the behavior callers use
 test("createUser saves to database", async () => {
   await createUser({ name: "Alice" });
   const row = await db.query("SELECT * FROM users WHERE name = ?", ["Alice"]);
   expect(row).toBeDefined();
 });
 
-// GOOD: Verifies through interface
+// PREFERRED HERE: Verifies through the caller-visible retrieval interface
 test("createUser makes user retrievable", async () => {
   const user = await createUser({ name: "Alice" });
   const retrieved = await getUser(user.id);
   expect(retrieved.name).toBe("Alice");
 });
 ```
+
+Direct database or filesystem assertions are appropriate when persistence itself is the public boundary or no caller-visible read path exists. State why that lower-level assertion is necessary.

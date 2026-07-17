@@ -1,109 +1,51 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
+description: Implements features and bug fixes through a red-green-refactor loop. Use when the user asks for test-first development, TDD, or red-green-refactor; do not use when only test coverage or a review is requested.
 ---
 
 # Test-Driven Development
 
-## Philosophy
+Build one observable behavior at a time: write a focused failing test, make it pass with the smallest production change, then improve the code while it stays green.
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+## Guardrails
 
-**Good tests** are integration-style: they exercise real code paths through public APIs. They describe _what_ the system does, not _how_ it does it. A good test reads like a specification - "user can checkout with valid cart" tells you exactly what capability exists. These tests survive refactors because they don't care about internal structure.
+- Read repository instructions, the existing test framework, nearby tests, and public behavior before adding a test or dependency seam.
+- Never read credential files or use production credentials, services, databases, queues, or destructive fixtures in tests.
+- Do not install test packages, start external systems, or download tools unless the user explicitly requests it.
+- Keep tests deterministic and isolated from wall-clock time, randomness, network access, and shared persistent state through existing project seams.
+- Do not change an existing behavior assertion merely to make a production change pass unless the requested behavior itself changed.
 
-**Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
+## Choose the first behavior
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
+List the requested observable behaviors and start with the smallest one that proves the end-to-end path. Infer interface details from repository conventions and the request; ask the user only when a missing product decision materially changes behavior.
 
-## Anti-Pattern: Horizontal Slices
+Use [test examples](tests.md) to choose an observable seam and [mocking guidance](mocking.md) only when the behavior crosses a slow, nondeterministic, destructive, or external boundary.
 
-**DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
+## Cycle
 
-This produces **crap tests**:
+### Red
 
-- Tests written in bulk test _imagined_ behavior, not _actual_ behavior
-- You end up testing the _shape_ of things (data structures, function signatures) rather than user-facing behavior
-- Tests become insensitive to real changes - they pass when behavior breaks, fail when behavior is fine
-- You outrun your headlights, committing to test structure before understanding the implementation
+1. Add one focused test for one observable behavior through the narrowest stable interface.
+2. Run that test and confirm it fails for the expected missing or incorrect behavior, not because of syntax, setup, or unrelated failures.
+3. If it passes immediately, strengthen or replace it so it proves the requested change before touching production code.
 
-**Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat. Each test responds to what you learned from the previous cycle. Because you just wrote the code, you know exactly what behavior matters and how to verify it.
+### Green
 
-```
-WRONG (horizontal):
-  RED:   test1, test2, test3, test4, test5
-  GREEN: impl1, impl2, impl3, impl4, impl5
+1. Make the smallest coherent production change that passes the failing test.
+2. Run the focused test, then the nearest related tests.
+3. Do not add speculative options, abstractions, or behavior for later cycles.
 
-RIGHT (vertical):
-  RED→GREEN: test1→impl1
-  RED→GREEN: test2→impl2
-  RED→GREEN: test3→impl3
-  ...
-```
+### Refactor
 
-## Workflow
+1. Refactor only when the green code or test has concrete duplication or readability cost.
+2. Keep observable behavior and assertions unchanged.
+3. Run the focused test after each coherent refactor slice and return to green before starting another behavior.
 
-### 1. Planning
+Repeat Red → Green → Refactor for the next prioritized behavior. Never write the entire test suite before implementing the first slice.
 
-When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language, and respect ADRs in the area you're touching.
+## Completion
 
-Before writing any code:
-
-- [ ] Confirm with user what interface changes are needed
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
-- [ ] Design interfaces for [testability](interface-design.md)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] Get user approval on the plan
-
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
-
-**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
-
-### 2. Tracer Bullet
-
-Write ONE test that confirms ONE thing about the system:
-
-```
-RED:   Write test for first behavior → test fails
-GREEN: Write minimal code to pass → test passes
-```
-
-This is your tracer bullet - proves the path works end-to-end.
-
-### 3. Incremental Loop
-
-For each remaining behavior:
-
-```
-RED:   Write next test → fails
-GREEN: Minimal code to pass → passes
-```
-
-Rules:
-
-- One test at a time
-- Only enough code to pass current test
-- Don't anticipate future tests
-- Keep tests focused on observable behavior
-
-### 4. Refactor
-
-After all tests pass, look for [refactor candidates](refactoring.md):
-
-- [ ] Extract duplication
-- [ ] Deepen modules (move complexity behind simple interfaces)
-- [ ] Apply SOLID principles where natural
-- [ ] Consider what new code reveals about existing code
-- [ ] Run tests after each refactor step
-
-**Never refactor while RED.** Get to GREEN first.
-
-## Checklist Per Cycle
-
-```
-[ ] Test describes behavior, not implementation
-[ ] Test uses public interface only
-[ ] Test would survive internal refactor
-[ ] Code is minimal for this test
-[ ] No speculative features added
-```
+- Every new test was observed failing for the intended reason before its production change.
+- Tests assert observable results or effects and are not coupled unnecessarily to internal call order or private structure.
+- The repository's required formatter, lint, typecheck, focused tests, and broader test command pass, or skipped checks are named with reasons.
+- Report the behaviors covered and the commands that demonstrated red and green.
