@@ -47,7 +47,7 @@ git diff --check  # ON FAIL: fix whitespace errors in the reported files
 # validate Ponytail hook output
 node plugins/niko-skills/hooks/ponytail.js --self-check  # ON FAIL: inspect the hook renderer and host-specific JSON output
 # count skill entrypoints
-test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 32  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
+test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 26  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
 ```
 
 ## Structure

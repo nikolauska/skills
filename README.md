@@ -54,7 +54,7 @@ claude plugin marketplace update niko-skills
 copilot plugin update niko-skills
 ```
 
-Every release must bump the version consistently in both plugin manifests and the
+Every release must bump the version consistently in all plugin manifests and the
 marketplace metadata. Keep any credentials outside this repository.
 
 ## Skill categories
@@ -65,10 +65,10 @@ Use these categories when browsing the collection:
 | Category | Skills |
 | --- | --- |
 | Browser and performance | `chrome-devtools-axi` |
-| Code quality and diagnosis | `architecture-review`, `correctness-review`, `diagnose`, `ponytail`, `review`, `reviewing-skills`, `security-review`, `simplify`, `style-review`, `test-review` |
+| Code quality and diagnosis | `diagnose`, `ponytail`, `review`, `reviewing-skills`, `simplify` |
 | Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr`, `triage` |
 | Languages and frameworks | `cpp-pro`, `daisyui`, `elixir`, `mjml`, `react`, `redux` |
-| Documentation and agent authoring | `doc-review`, `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
+| Documentation and agent authoring | `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
 | Workflow and tooling | `clockify-cli`, `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `linear-axi`, `tdd`, `vsdevshell` |
 
 ## Validate locally

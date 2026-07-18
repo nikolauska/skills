@@ -123,4 +123,4 @@ Required before declaring done:
 - [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
 - [ ] The hypothesis that turned out correct is stated in the commit / PR message — so the next debugger learns
 
-**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling), recommend an `architecture-review` with the specifics. Make the recommendation after the fix, when implementation was authorized, because the evidence is then complete.
+**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling), recommend an architecture-focused `review` with the specifics. Make the recommendation after the fix, when implementation was authorized, because the evidence is then complete.
