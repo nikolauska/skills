@@ -21,7 +21,7 @@
 - Goal: Distribute the `niko-skills` shared plugin from one Git repository to Codex, Claude Code, and GitHub Copilot CLI.
 - Type: Plugin marketplace repository.
 - Source of truth: `plugins/niko-skills/skills/` contains the canonical skill payload.
-- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and the two plugin manifests.
+- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and the three client plugin manifests.
 
 ## Data & State
 
@@ -39,13 +39,15 @@
 
 ```bash
 # validate JSON
-python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
+python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/hooks.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/copilot-hooks.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
 # validate plugin
 python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills  # ON FAIL: fix manifest or SKILL.md frontmatter errors, then rerun
 # lint whitespace
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
+# validate Ponytail hook output
+node plugins/niko-skills/hooks/ponytail.js --self-check  # ON FAIL: inspect the hook renderer and host-specific JSON output
 # count skill entrypoints
-test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 31  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
+test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 32  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
 ```
 
 ## Structure
@@ -56,7 +58,9 @@ test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md |
 plugins/niko-skills/          # Cross-client plugin
 plugins/niko-skills/.codex-plugin/   # Codex manifest
 plugins/niko-skills/.claude-plugin/  # Claude/Copilot manifest
+plugins/niko-skills/.github/plugin/  # Copilot CLI manifest
 plugins/niko-skills/skills/   # Canonical skill payload
+plugins/niko-skills/hooks/    # Cross-client lifecycle hooks
 README.md                     # Installation and update guide
 ```
 
@@ -76,7 +80,7 @@ README.md                     # Installation and update guide
 ## Testing Strategy
 
 - Runner: Python standard-library JSON parsing plus the Codex plugin validator.
-- Coverage: Every skill directory must contain one valid `SKILL.md`; all four manifests/catalogs must parse.
+- Coverage: Every skill directory must contain one valid `SKILL.md`; all manifests, catalogs, and hook configs must parse.
 - Client smoke tests: When installed, run `claude plugin validate .` and `copilot plugin install ./plugins/niko-skills`.
 - Conventions: Validate locally before each focused commit; test marketplace add/update flows after pushing.
 

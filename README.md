@@ -7,6 +7,10 @@ The repository has one installable plugin, `niko-skills`. The skill files under
 catalog lives at `.agents/plugins/marketplace.json`; Claude Code and Copilot
 CLI share `.claude-plugin/marketplace.json`.
 
+Ponytail runs automatically for coding sessions and subagents. Its always-on
+lifecycle hooks require `node` on `PATH`; without Node, the skill remains
+available but automatic activation is skipped.
+
 ## Install on a device
 
 The public repository needs no authentication. For private forks or a future
@@ -21,7 +25,7 @@ codex plugin marketplace add nikolauska/skills
 codex plugin add niko-skills@niko-skills
 ```
 
-Start a new Codex session after installation.
+Open `/hooks`, review and trust the plugin hooks, then start a new Codex session.
 
 ### Claude Code
 
@@ -61,7 +65,7 @@ Use these categories when browsing the collection:
 | Category | Skills |
 | --- | --- |
 | Browser and performance | `chrome-devtools-axi` |
-| Code quality and diagnosis | `architecture-review`, `correctness-review`, `diagnose`, `review`, `reviewing-skills`, `security-review`, `simplify`, `style-review`, `test-review` |
+| Code quality and diagnosis | `architecture-review`, `correctness-review`, `diagnose`, `ponytail`, `review`, `reviewing-skills`, `security-review`, `simplify`, `style-review`, `test-review` |
 | Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr`, `triage` |
 | Languages and frameworks | `cpp-pro`, `daisyui`, `elixir`, `mjml`, `react`, `redux` |
 | Documentation and agent authoring | `doc-review`, `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
@@ -74,7 +78,11 @@ python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
 python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null
+python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null
+python3 -m json.tool plugins/niko-skills/hooks/hooks.json >/dev/null
+python3 -m json.tool plugins/niko-skills/hooks/copilot-hooks.json >/dev/null
 python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills
+node plugins/niko-skills/hooks/ponytail.js --self-check
 ```
 
 When available, also run `claude plugin validate .` and install the local

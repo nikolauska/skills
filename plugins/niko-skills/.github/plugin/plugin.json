@@ -10,6 +10,6 @@
   "repository": "https://github.com/nikolauska/skills",
   "license": "MIT",
   "keywords": ["development", "code-review", "documentation", "agents"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "skills": "skills/",
+  "hooks": "hooks/copilot-hooks.json"
 }

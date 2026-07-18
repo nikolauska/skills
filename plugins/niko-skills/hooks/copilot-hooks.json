@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "if command -v node >/dev/null 2>&1; then node \"${PLUGIN_ROOT}/hooks/ponytail.js\" sessionStart; fi",
+        "powershell": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:PLUGIN_ROOT\\hooks\\ponytail.js\" sessionStart }",
+        "timeoutSec": 5
+      }
+    ],
+    "subagentStart": [
+      {
+        "type": "command",
+        "bash": "if command -v node >/dev/null 2>&1; then node \"${PLUGIN_ROOT}/hooks/ponytail.js\" subagentStart; fi",
+        "powershell": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:PLUGIN_ROOT\\hooks\\ponytail.js\" subagentStart }",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

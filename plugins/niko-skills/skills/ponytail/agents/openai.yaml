@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail"
+  short_description: "Enforce deletion-first coding decisions"
+  default_prompt: "Use $ponytail to find the smallest correct solution for this coding task."
