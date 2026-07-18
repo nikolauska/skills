@@ -66,7 +66,7 @@ Use these categories when browsing the collection:
 | --- | --- |
 | Browser and performance | `chrome-devtools-axi` |
 | Code quality and diagnosis | `diagnose`, `ponytail`, `review`, `reviewing-skills`, `simplify` |
-| Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr`, `triage` |
+| Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr` |
 | Languages and frameworks | `cpp-pro`, `daisyui`, `elixir`, `mjml`, `react`, `redux` |
 | Documentation and agent authoring | `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
 | Workflow and tooling | `clockify-cli`, `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `linear-axi`, `tdd`, `vsdevshell` |
