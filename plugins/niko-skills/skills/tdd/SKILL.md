@@ -19,7 +19,7 @@ Build one observable behavior at a time: write a focused failing test, make it p
 
 List the requested observable behaviors and start with the smallest one that proves the end-to-end path. Infer interface details from repository conventions and the request; ask the user only when a missing product decision materially changes behavior.
 
-Use [test examples](tests.md) to choose an observable seam and [mocking guidance](mocking.md) only when the behavior crosses a slow, nondeterministic, destructive, or external boundary.
+Use [test examples](references/tests.md) to choose an observable seam and [mocking guidance](references/mocking.md) only when the behavior crosses a slow, nondeterministic, destructive, or external boundary.
 
 ## Cycle
 
