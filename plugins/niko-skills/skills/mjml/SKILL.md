@@ -24,7 +24,7 @@ Generate valid MJML 4.x templates and compile them to HTML designed for common O
 3. **Plan layout** — Choose the smallest structure that fits the content (single column, grid, hero + content, etc.).
 4. **Load component references** — Read only the relevant files from the Component Index below before writing MJML.
 5. **Generate MJML** — Write complete MJML starting from `<mjml>` with a full `<mj-head>`.
-6. **Compile and validate** — Follow `compilation.md`; compilation must use the available `mjml` executable and strict validation.
+6. **Compile and validate** — Follow `references/compilation.md`; compilation must use the available `mjml` executable and strict validation.
 7. **Inspect output** — Confirm compilation succeeded, the HTML is non-empty, and its size stays within the project's email budget (102,400 bytes when none is defined). Run existing client-render or screenshot checks when available; otherwise report client rendering as unverified.
 8. **Deliver artifacts** — Deliver `.mjml` source and compiled `.html` only after successful compilation. If MJML is unavailable and the user declines installation, deliver the source plus the exact blocked validation command; never fabricate compiled HTML.
 
@@ -134,19 +134,19 @@ Before writing any MJML, read the component file(s) for the components you'll us
 
 | Group | Components | Load when | File |
 |-------|-----------|-----------|------|
-| Head | mj-attributes, mj-font, mj-style, mj-preview, mj-breakpoint, mj-html-attributes | Setting up head, global styles | `components/head.md` |
-| Layout | mj-body, mj-section, mj-column, mj-group, mj-wrapper | Building structure / grid | `components/layout.md` |
-| Content | mj-text, mj-image, mj-button, mj-divider, mj-spacer, mj-table | Adding content blocks | `components/content.md` |
-| Interactive | mj-accordion, mj-carousel, mj-social, mj-navbar | Interactive or social elements | `components/interactive.md` |
-| Advanced | mj-hero, mj-raw, mj-include | Hero banners, template tags, partials | `components/advanced.md` |
+| Head | mj-attributes, mj-font, mj-style, mj-preview, mj-breakpoint, mj-html-attributes | Setting up head, global styles | `references/head.md` |
+| Layout | mj-body, mj-section, mj-column, mj-group, mj-wrapper | Building structure / grid | `references/layout.md` |
+| Content | mj-text, mj-image, mj-button, mj-divider, mj-spacer, mj-table | Adding content blocks | `references/content.md` |
+| Interactive | mj-accordion, mj-carousel, mj-social, mj-navbar | Interactive or social elements | `references/interactive.md` |
+| Advanced | mj-hero, mj-raw, mj-include | Hero banners, template tags, partials | `references/advanced.md` |
 
-General reference (hierarchy, ending tags, validation, width math, Gmail clip): `mjml-reference.md`
+General reference (hierarchy, ending tags, validation, width math, Gmail clip): `references/mjml-reference.md`
 
 ---
 
 ## Compilation
 
-Read `compilation.md` for the full workflow. Key command:
+Read `references/compilation.md` for the full workflow. Key command:
 
 ```bash
 mjml template.mjml -o dist/template.html --config.minify=true --config.validationLevel=strict
