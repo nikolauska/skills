@@ -7,13 +7,13 @@
   },
   "metadata": {
     "description": "Niko's reusable development skills for coding, review, documentation, and delivery workflows.",
-    "version": "1.0.14"
+    "version": "1.0.15"
   },
   "plugins": [
     {
       "name": "niko-skills",
       "description": "Reusable development workflows for Niko's coding agents.",
-      "version": "1.0.14",
+      "version": "1.0.15",
       "source": "./plugins/niko-skills",
       "category": "Productivity",
       "tags": ["development", "code-review", "documentation", "agents"]

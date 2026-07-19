@@ -18,28 +18,28 @@
 
 ## Domain & Context
 
-- Goal: Distribute the `niko-skills` shared plugin from one Git repository to Codex, Claude Code, and GitHub Copilot CLI.
-- Type: Plugin marketplace repository.
+- Goal: Distribute the `niko-skills` shared skill collection from one Git repository to Codex, Claude Code, GitHub Copilot CLI, and Pi.
+- Type: Plugin marketplace and Pi package repository.
 - Source of truth: `plugins/niko-skills/skills/` contains the canonical skill payload.
-- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and the three client plugin manifests.
+- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, the three client plugin manifests, and the repository-root Pi `package.json`.
 
 ## Data & State
 
 - No database, generated source, or external service configuration is stored here.
 - Credentials remain in each client’s local authentication or environment configuration.
-- Version changes must stay synchronized across both plugin manifests and marketplace metadata.
+- Version changes must stay synchronized across all versioned plugin manifests, marketplace metadata, and `package.json`.
 
 ## Execution Context
 
 - Run on: Host.
-- Distribution: Git repository; install and update through each client’s marketplace commands.
-- Deploys to: User-level plugin caches on Codex, Claude Code, and GitHub Copilot CLI.
+- Distribution: Git repository; install and update through each client’s marketplace or package commands.
+- Deploys to: User-level plugin or package caches on Codex, Claude Code, GitHub Copilot CLI, and Pi.
 
 ## Commands
 
 ```bash
 # validate JSON
-python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/hooks.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/copilot-hooks.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
+python3 -m json.tool package.json >/dev/null && python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/hooks.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/copilot-hooks.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
 # validate plugin
 python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills  # ON FAIL: fix manifest or SKILL.md frontmatter errors, then rerun
 # lint whitespace
@@ -51,6 +51,7 @@ node plugins/niko-skills/hooks/ponytail.js --self-check  # ON FAIL: inspect the 
 ## Structure
 
 ```
+package.json                  # Pi package manifest
 .agents/plugins/              # Codex marketplace catalog
 .claude-plugin/               # Claude Code and Copilot marketplace catalog
 plugins/niko-skills/          # Cross-client plugin
@@ -64,7 +65,7 @@ README.md                     # Installation and update guide
 
 ## Patterns
 
-- **Packaging:** Keep one canonical `SKILL.md` per skill; client manifests and catalogs are thin adapters.
+- **Packaging:** Keep one canonical `SKILL.md` per skill; client manifests, catalogs, and the Pi package manifest are thin adapters.
 - **Naming:** Use lowercase kebab-case for plugin and skill directories and matching frontmatter names.
 - **Organization:** Keep runtime skill directories flat; document human-facing categories in `README.md`.
 - **Dependencies:** Use installed CLI binaries and ask the user to install missing tools globally; never download them implicitly.
@@ -79,7 +80,7 @@ README.md                     # Installation and update guide
 
 - Runner: Python standard-library JSON parsing plus the Codex plugin validator.
 - Coverage: Every skill directory must contain one valid `SKILL.md`; all manifests, catalogs, and hook configs must parse.
-- Client smoke tests: When installed, run `claude plugin validate .` and `copilot plugin install ./plugins/niko-skills`.
+- Client smoke tests: When installed, run `claude plugin validate .`, `copilot plugin install ./plugins/niko-skills`, and `pi -e .`.
 - Conventions: Validate locally before each focused commit; test marketplace add/update flows after pushing.
 
 ## Security
@@ -106,7 +107,7 @@ README.md                     # Installation and update guide
 ## Tool Preferences
 
 | Task | Prefer | Avoid |
-|------|--------|-------|
+| ------ | -------- | ------- |
 | Edit files | `apply_patch` | Shell write tricks |
 | Search | `rg`, `rg --files` | Broad recursive scans |
 | Validate JSON | `python3 -m json.tool` | New validation dependencies |

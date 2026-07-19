@@ -1,15 +1,16 @@
 # Niko Skills
 
-Git-backed skills for Codex, Claude Code, and GitHub Copilot CLI.
+Git-backed skills for Codex, Claude Code, GitHub Copilot CLI, and Pi.
 
-The repository has one installable plugin, `niko-skills`. The skill files under
-`plugins/niko-skills/skills/` are the canonical source. The Codex marketplace
-catalog lives at `.agents/plugins/marketplace.json`; Claude Code and Copilot
-CLI share `.claude-plugin/marketplace.json`.
+The repository has one installable skill collection, `niko-skills`. The skill
+files under `plugins/niko-skills/skills/` are the canonical source. Codex,
+Claude Code, and Copilot use their marketplace catalogs and plugin manifests;
+Pi uses the repository-root `package.json` as a Git-backed Pi package.
 
-Ponytail runs automatically for coding sessions and subagents. Its always-on
-lifecycle hooks require `node` on `PATH`; without Node, the skill remains
-available but automatic activation is skipped.
+On Codex, Claude Code, and Copilot, Ponytail runs automatically for coding
+sessions and subagents. Its always-on lifecycle hooks require `node` on `PATH`;
+without Node, the skill remains available but automatic activation is skipped.
+Pi installs the shared skills but does not load these client-specific hooks.
 
 ## Install on a device
 
@@ -43,6 +44,18 @@ copilot plugin marketplace add nikolauska/skills
 copilot plugin install niko-skills@niko-skills
 ```
 
+### Pi
+
+Install the repository as a user-level Pi package:
+
+```sh
+pi install git:github.com/nikolauska/skills
+```
+
+Pi discovers the canonical skill directories through the `pi.skills` package
+manifest. Restart Pi after the initial installation, or run `/reload` in an
+existing session.
+
 ## Update
 
 Push a new commit after making changes, then refresh the marketplace and
@@ -52,14 +65,20 @@ update the plugin:
 codex plugin marketplace upgrade niko-skills
 claude plugin marketplace update niko-skills
 copilot plugin update niko-skills
+pi update --extension git:github.com/nikolauska/skills
 ```
 
-Every release must bump the version consistently in all plugin manifests and the
-marketplace metadata. Keep any credentials outside this repository.
+To update Pi itself and every unpinned Pi package together, run
+`pi update --all`. A Pi package installed with an `@tag` or `@commit` is pinned;
+install it again with a new ref to move it forward.
+
+Every release must bump the version consistently in all plugin manifests,
+marketplace metadata, and `package.json`. Keep any credentials outside this
+repository.
 
 ## Skill categories
 
-The runtime layout stays flat so all three clients discover skills directly.
+The runtime layout stays flat so all four clients discover skills directly.
 Use these categories when browsing the collection:
 
 | Category | Skills |
@@ -74,6 +93,7 @@ Use these categories when browsing the collection:
 ## Validate locally
 
 ```sh
+python3 -m json.tool package.json >/dev/null
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
 python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null
@@ -85,8 +105,9 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/valid
 node plugins/niko-skills/hooks/ponytail.js --self-check
 ```
 
-When available, also run `claude plugin validate .` and install the local
-plugin with `copilot plugin install ./plugins/niko-skills`.
+When available, also run `claude plugin validate .`, install the local plugin
+with `copilot plugin install ./plugins/niko-skills`, and smoke-test the Pi
+package with `pi -e .`.
 
 `codebase-memory-mcp-axi` is intentionally not vendored here. It remains a
 separate plugin and is only a reference for the cross-client manifest layout.
