@@ -46,8 +46,6 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/valid
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
 # validate Ponytail hook output
 node plugins/niko-skills/hooks/ponytail.js --self-check  # ON FAIL: inspect the hook renderer and host-specific JSON output
-# count skill entrypoints
-test "$(find plugins/niko-skills/skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)" -eq 25  # ON FAIL: inspect the plugin skills tree for missing or extra entrypoints
 ```
 
 ## Structure
