@@ -86,11 +86,16 @@ and ensure repeated setup is safe. Do not silence dependency lint rules to force
   functions globally or share cached results across component instances.
 - Fix rule violations instead of relying on compiler bailouts or memoization directives.
 
-## Sources
+## Local References
 
-- [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)
-- [React Compiler introduction](https://react.dev/learn/react-compiler/introduction)
-- [Rules of React](https://react.dev/reference/rules)
+Read only the reference that matches the task; external browsing is not required:
+
+- [Effects and derived state](references/effects.md) for Effect decisions, state resets,
+  subscriptions, and fetching.
+- [React Compiler and memoization](references/compiler.md) for compiler boundaries, manual
+  memoization, and adoption checks.
+- [Rules of React](references/rules.md) for purity, immutability, component invocation, and Hook
+  placement.
 
 ## Completion Check
 
