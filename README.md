@@ -1,16 +1,17 @@
 # Niko Skills
 
-Git-backed skills for Codex, Claude Code, GitHub Copilot CLI, and Pi.
+Git-backed skills for Codex, Claude Code, GitHub Copilot CLI, Oh My Pi, and Pi.
 
 The repository has one installable skill collection, `niko-skills`. The skill
 files under `plugins/niko-skills/skills/` are the canonical source. Codex,
-Claude Code, and Copilot use their marketplace catalogs and plugin manifests;
-Pi uses the repository-root `package.json` as a Git-backed Pi package.
+Claude Code, Copilot, and Oh My Pi use their marketplace catalogs and plugin
+manifests; Pi uses the repository-root `package.json` as a Git-backed Pi package.
 
 On Codex, Claude Code, and Copilot, Ponytail runs automatically for coding
 sessions and subagents. Its always-on lifecycle hooks require `node` on `PATH`;
 without Node, the skill remains available but automatic activation is skipped.
-Pi installs the shared skills but does not load these client-specific hooks.
+Oh My Pi and Pi install the shared skills but do not load these client-specific
+hooks.
 
 ## Install on a device
 
@@ -44,6 +45,19 @@ copilot plugin marketplace add nikolauska/skills
 copilot plugin install niko-skills@niko-skills
 ```
 
+### Oh My Pi
+
+Install the collection through its marketplace so Oh My Pi loads the plugin
+directory rather than the repository-root Pi package:
+
+```sh
+omp plugin marketplace add nikolauska/skills
+omp plugin install niko-skills@niko-skills
+```
+
+Start a new session after installation, or reload an existing session with
+`/reload-plugins`.
+
 ### Pi
 
 Install the repository as a user-level Pi package:
@@ -65,6 +79,7 @@ update the plugin:
 codex plugin marketplace upgrade niko-skills
 claude plugin marketplace update niko-skills
 copilot plugin update niko-skills
+omp plugin upgrade niko-skills@niko-skills
 pi update --extension git:github.com/nikolauska/skills
 ```
 
@@ -78,7 +93,7 @@ repository.
 
 ## Skill categories
 
-The runtime layout stays flat so all four clients discover skills directly.
+The runtime layout stays flat so all five clients discover skills directly.
 Use these categories when browsing the collection:
 
 | Category | Skills |
