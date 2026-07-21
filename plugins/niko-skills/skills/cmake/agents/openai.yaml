@@ -1,0 +1,4 @@
+interface:
+  display_name: "CMake"
+  short_description: "Build and maintain target-based CMake systems"
+  default_prompt: "Use $cmake to implement or review this CMake build-system change with target-based modeling and project-local validation."
