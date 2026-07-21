@@ -39,13 +39,11 @@
 
 ```bash
 # validate JSON
-python3 -m json.tool package.json >/dev/null && python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/hooks.json >/dev/null && python3 -m json.tool plugins/niko-skills/hooks/copilot-hooks.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
+python3 -m json.tool package.json >/dev/null && python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
 # validate plugin
 python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills  # ON FAIL: fix manifest or SKILL.md frontmatter errors, then rerun
 # lint whitespace
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
-# validate Ponytail hook output
-node plugins/niko-skills/hooks/ponytail.js --self-check  # ON FAIL: inspect the hook renderer and host-specific JSON output
 ```
 
 ## Structure
@@ -59,7 +57,6 @@ plugins/niko-skills/.codex-plugin/   # Codex manifest
 plugins/niko-skills/.claude-plugin/  # Claude/Copilot manifest
 plugins/niko-skills/.github/plugin/  # Copilot CLI manifest
 plugins/niko-skills/skills/   # Canonical skill payload
-plugins/niko-skills/hooks/    # Cross-client lifecycle hooks
 README.md                     # Installation and update guide
 ```
 

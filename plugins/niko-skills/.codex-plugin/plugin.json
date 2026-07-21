@@ -1,6 +1,6 @@
 {
   "name": "niko-skills",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Reusable development workflows for Niko's coding agents.",
   "author": {
     "name": "Niko Lehtovirta",
@@ -17,7 +17,7 @@
     "longDescription": "A personal collection of reusable skills for coding, review, documentation, and delivery workflows.",
     "developerName": "Niko Lehtovirta",
     "category": "Productivity",
-    "capabilities": ["Instructions", "Lifecycle hooks"],
+    "capabilities": ["Instructions"],
     "websiteURL": "https://github.com/nikolauska/skills",
     "defaultPrompt": [
       "Review this change for bugs and security risks.",
