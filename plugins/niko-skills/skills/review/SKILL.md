@@ -1,6 +1,6 @@
 ---
 name: review
-description: Reviews code changes, pull requests, files, or directories across correctness, style, architecture, documentation, security, and test adequacy. Use before merge, when auditing code, or when requesting one or more focused review dimensions; do not use when the user wants automatic fixes without a review report.
+description: Reviews code changes, pull requests, files, or directories across correctness, style, architecture, documentation, security, tests, and unnecessary complexity. Use before merge, when auditing code, or when requesting one or more focused review dimensions, including over-engineering or simplification; do not use when the user wants automatic fixes without a review report.
 ---
 
 # Review
@@ -17,7 +17,7 @@ For Self and PR, review the diff while reading enough surrounding code, tests, a
 
 ## Focus
 
-If the user names one or more dimensions, read and apply only those references. Otherwise read all six and run a full review:
+If the user names one or more dimensions, read and apply only those references. Otherwise read all seven and run a full review:
 
 | Dimension | Reference |
 | --- | --- |
@@ -27,8 +27,9 @@ If the user names one or more dimensions, read and apply only those references. 
 | Documentation | [Documentation](references/documentation.md) |
 | Security | [Security](references/security.md) |
 | Tests | [Tests](references/tests.md) |
+| Complexity | [Complexity](references/complexity.md) |
 
-Do not infer extra dimensions from the files involved. A focused security review remains security-only; a general review always covers all six dimensions.
+Do not infer extra dimensions from the files involved. A focused security review remains security-only; a general review always covers all seven dimensions.
 
 ## Safety
 
@@ -61,7 +62,7 @@ Order findings Critical, Fix, Consider, then Nit. Never soften a demonstrated bu
 
 ## Output
 
-Use one section per selected dimension. For each finding include severity, location, evidence, impact, and smallest fix direction, plus any proof fields required by that dimension's reference. Say when a selected dimension has no findings or was skipped.
+Use one section per selected dimension. For each finding include severity, location, evidence, impact, and smallest fix direction, plus any proof fields required by that dimension's reference. Complexity uses its reference's compact output instead; when it is the only selected dimension, omit this section and summary format entirely.
 
 End with one row per selected dimension:
 
@@ -69,4 +70,4 @@ End with one row per selected dimension:
 | --- | ---: | ---: | ---: |
 | Correctness | 0 | 0 | 0 |
 
-Count Consider and Nit as Optional. A full review includes all six rows; a focused review omits unselected dimensions. If no concrete issue survives verification, say so directly.
+Count Consider and Nit as Optional. Count complexity findings as Optional. A full review includes all seven rows; a focused review omits unselected dimensions. If no concrete issue survives verification, say so directly unless a selected reference provides exact no-findings text.
