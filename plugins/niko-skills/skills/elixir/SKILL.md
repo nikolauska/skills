@@ -28,6 +28,7 @@ description: >
 1. Discover the project shape.
    - Read repository instructions, `mix.exs`, touched modules, immediate callers, and focused tests.
    - Derive application modules, paths, task wrappers, and supported dependency versions from the repository.
+   - If a running development app exposes Tidewave MCP tools, verify they belong to this checkout with `File.cwd!()` and use them for runtime discovery.
 2. Classify the task and read only the matching references below.
    - Read multiple references when the behavior crosses boundaries.
    - For example, read LiveView and Phoenix files guidance for a lifecycle-sensitive upload.
@@ -42,6 +43,15 @@ description: >
    - Expand to the repository's broader test command when the change crosses contexts or persistence boundaries.
    - On failure, read the complete error, fix the smallest failure class, and rerun the narrow check.
 6. Report changed behavior, checks run, and any residual risk or skipped validation.
+
+## Tidewave
+
+- Prefer available Tidewave tools for exact dependency docs, source locations, Ecto schema discovery, bounded runtime evaluation, recent logs, read-only SQL, and browser inspection.
+- Use Tidewave only against a local development app. Never use it in production or on a shared environment containing production data.
+- Inspect schemas before SQL, default to `SELECT`, add `LIMIT`, and require explicit approval for mutations. Roll back temporary records created by smoke checks.
+- Bound runtime output with `Enum.take/2` or `inspect/2` limits. Narrow the query instead of dumping process state or tables.
+- After edits, inspect error logs; after a behavior change, exercise the changed path with runtime or browser evaluation. Tidewave complements rather than replaces formatter and focused test checks.
+- If Tidewave is unavailable, the app is not running, or `File.cwd!()` identifies another checkout, skip it and use the normal static-analysis and Mix workflow.
 
 ## Topic References
 
