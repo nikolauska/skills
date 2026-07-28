@@ -1,11 +1,28 @@
 # Niko Skills
 
-Git-backed skills for Codex, Claude Code, GitHub Copilot CLI, Oh My Pi, and Pi.
+Git-backed skill plugins for Codex, Claude Code, GitHub Copilot CLI, and Oh My Pi.
 
-The repository has one installable skill collection, `niko-skills`. The skill
-files under `plugins/niko-skills/skills/` are the canonical source. Codex,
-Claude Code, Copilot, and Oh My Pi use their marketplace catalogs and plugin
-manifests; Pi uses the repository-root `package.json` as a Git-backed Pi package.
+The repository distributes focused plugins so each environment loads only the
+workflows it needs. Each skill has one canonical home under
+`plugins/<plugin>/skills/`.
+
+## Plugins
+
+| Plugin | Skills |
+| --- | --- |
+| `niko-engineering` | `diagnose`, `review`, `simplify`, `tdd`, `handoff` |
+| `niko-delivery` | `git`, `gh-axi`, `pr` |
+| `niko-agent-tools` | `axi`, `writing-agents-md`, `writing-skills`, `reviewing-skills` |
+| `niko-product-docs` | `domain-knowledge`, `grill-with-docs`, `lavish` |
+| `niko-frontend` | `react`, `redux`, `daisyui`, `chrome-devtools-axi` |
+| `niko-native` | `cpp-pro`, `cmake`, `vsdevshell` |
+| `niko-elixir` | `elixir` |
+| `niko-godot` | `godot` |
+| `niko-email` | `mjml` |
+| `niko-clockify` | `clockify-cli` |
+
+Required skills stay in the same plugin. Skills are not duplicated across
+plugins, and no plugin has a hidden prerequisite plugin.
 
 ## Install on a device
 
@@ -14,18 +31,21 @@ private mirror, use SSH, a Git credential helper, or `gh auth login`. Do not
 put tokens in repository URLs. For non-interactive private updates, use
 `GH_TOKEN` or `GITHUB_TOKEN` in the environment.
 
+Add the marketplace once, then install each plugin needed on that device.
+Replace `<plugin>` with a name from the table above.
+
 ### Codex
 
 ```sh
 codex plugin marketplace add nikolauska/skills
-codex plugin add niko-skills@niko-skills
+codex plugin add <plugin>@niko-skills
 ```
 
 ### Claude Code
 
 ```sh
 claude plugin marketplace add nikolauska/skills
-claude plugin install niko-skills@niko-skills --scope user
+claude plugin install <plugin>@niko-skills --scope user
 ```
 
 Reload plugins with `/reload-plugins` after installation or an update.
@@ -34,84 +54,77 @@ Reload plugins with `/reload-plugins` after installation or an update.
 
 ```sh
 copilot plugin marketplace add nikolauska/skills
-copilot plugin install niko-skills@niko-skills
+copilot plugin install <plugin>@niko-skills
 ```
 
 ### Oh My Pi
 
-Install the collection through its marketplace so Oh My Pi loads the plugin
-directory rather than the repository-root Pi package:
-
 ```sh
 omp plugin marketplace add nikolauska/skills
-omp plugin install niko-skills@niko-skills
+omp plugin install <plugin>@niko-skills
 ```
 
 Start a new session after installation, or reload an existing session with
 `/reload-plugins`.
 
-### Pi
+Stock Pi is not supported because it does not provide the required plugin
+marketplace workflow.
 
-Install the repository as a user-level Pi package:
+## Migrate from `niko-skills`
 
-```sh
-pi install git:github.com/nikolauska/skills
-```
+The retired `niko-skills` plugin does not receive bundle updates. Remove it and
+install the focused plugins containing the skills used in each environment.
+Existing pinned installations may remain on their installed version.
 
-Pi discovers the canonical skill directories through the `pi.skills` package
-manifest. Restart Pi after the initial installation, or run `/reload` in an
-existing session.
+| Previously used skill | Replacement plugin |
+| --- | --- |
+| `diagnose`, `review`, `simplify`, `tdd`, `handoff` | `niko-engineering` |
+| `git`, `gh-axi`, `pr` | `niko-delivery` |
+| `axi`, `writing-agents-md`, `writing-skills`, `reviewing-skills` | `niko-agent-tools` |
+| `domain-knowledge`, `grill-with-docs`, `lavish` | `niko-product-docs` |
+| `react`, `redux`, `daisyui`, `chrome-devtools-axi` | `niko-frontend` |
+| `cpp-pro`, `cmake`, `vsdevshell` | `niko-native` |
+| `elixir` | `niko-elixir` |
+| `godot` | `niko-godot` |
+| `mjml` | `niko-email` |
+| `clockify-cli` | `niko-clockify` |
 
 ## Update
 
-Push a new commit after making changes, then refresh the marketplace and
-update the plugin:
+Push a new commit after making changes, refresh the marketplace, then update
+the affected plugin:
 
 ```sh
 codex plugin marketplace upgrade niko-skills
 claude plugin marketplace update niko-skills
-copilot plugin update niko-skills
-omp plugin upgrade niko-skills@niko-skills
-pi update --extension git:github.com/nikolauska/skills
+copilot plugin update <plugin>
+omp plugin upgrade <plugin>@niko-skills
 ```
 
-To update Pi itself and every unpinned Pi package together, run
-`pi update --all`. A Pi package installed with an `@tag` or `@commit` is pinned;
-install it again with a new ref to move it forward.
+Plugins version independently. Every change to an existing plugin must bump
+that plugin with the repository's version-bump skill:
 
-Every release must bump the version consistently in all plugin manifests,
-marketplace metadata, and `package.json`. Keep any credentials outside this
-repository.
+```sh
+node .agents/skills/version-bump/scripts/bump-version.mjs <plugin> <patch|minor|major>
+```
 
-## Skill categories
-
-The runtime layout stays flat so all five clients discover skills directly.
-Use these categories when browsing the collection:
-
-| Category | Skills |
-| --- | --- |
-| Browser and performance | `chrome-devtools-axi` |
-| Code quality and diagnosis | `diagnose`, `review`, `reviewing-skills`, `simplify` |
-| Git, GitHub, and delivery | `axi`, `gh-axi`, `git`, `glab-axi`, `pr` |
-| Languages and frameworks | `cpp-pro`, `daisyui`, `elixir`, `mjml`, `react`, `redux` |
-| Documentation and agent authoring | `domain-knowledge`, `grill-with-docs`, `writing-agents-md`, `writing-rubrics`, `writing-skills` |
-| Workflow and tooling | `clockify-cli`, `find-skills`, `handoff`, `jupyter-notebook`, `lavish`, `linear-axi`, `tdd`, `vsdevshell` |
+Use `patch` for fixes and instruction refinements, `minor` for new skills or
+backward-compatible capabilities, and `major` for removals, renames, or
+incompatible behavior. New plugins start at `1.0.0`.
 
 ## Validate locally
 
 ```sh
-python3 -m json.tool package.json >/dev/null
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
-python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null
-python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null
-python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills
+for manifest in plugins/*/.codex-plugin/plugin.json plugins/*/.claude-plugin/plugin.json plugins/*/.github/plugin/plugin.json; do python3 -m json.tool "$manifest" >/dev/null; done
+for plugin in plugins/*; do python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" "$plugin"; done
+git diff --check
 ```
 
-When available, also run `claude plugin validate .`, install the local plugin
-with `copilot plugin install ./plugins/niko-skills`, and smoke-test the Pi
-package with `pi -e .`.
+When available, also run `claude plugin validate .`, install an affected local
+plugin with `copilot plugin install ./plugins/<plugin>`, and smoke-test its
+marketplace add/update flow.
 
 `codebase-memory-mcp-axi` is intentionally not vendored here. It remains a
 separate plugin and is only a reference for the cross-client manifest layout.

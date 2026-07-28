@@ -1,22 +1,93 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "niko-skills",
-  "description": "Niko's reusable development skills for Claude Code and GitHub Copilot CLI.",
+  "description": "Focused development skill plugins for Claude Code and GitHub Copilot CLI.",
   "owner": {
     "name": "Niko Lehtovirta"
   },
   "metadata": {
-    "description": "Niko's reusable development skills for coding, review, documentation, and delivery workflows.",
-    "version": "1.0.19"
+    "description": "Install only the development workflows needed in each environment."
   },
   "plugins": [
     {
-      "name": "niko-skills",
-      "description": "Reusable development workflows for Niko's coding agents.",
-      "version": "1.0.19",
-      "source": "./plugins/niko-skills",
+      "name": "niko-engineering",
+      "description": "Engineering workflows for diagnosis, review, simplification, TDD, and handoff.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-engineering",
       "category": "Productivity",
-      "tags": ["development", "code-review", "documentation", "agents"]
+      "tags": ["development", "code-review", "testing", "agents"]
+    },
+    {
+      "name": "niko-delivery",
+      "description": "Git, GitHub, and pull-request delivery workflows for coding agents.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-delivery",
+      "category": "Productivity",
+      "tags": ["git", "github", "pull-request", "agents"]
+    },
+    {
+      "name": "niko-agent-tools",
+      "description": "Guidance for agent-facing CLIs, agent instructions, and skill authoring.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-agent-tools",
+      "category": "Productivity",
+      "tags": ["agents", "skills", "cli", "documentation"]
+    },
+    {
+      "name": "niko-product-docs",
+      "description": "Product knowledge, plan grilling, and visual document review workflows.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-product-docs",
+      "category": "Productivity",
+      "tags": ["product", "documentation", "planning", "review"]
+    },
+    {
+      "name": "niko-frontend",
+      "description": "React, Redux, daisyUI, and browser debugging workflows.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-frontend",
+      "category": "Productivity",
+      "tags": ["react", "redux", "daisyui", "browser"]
+    },
+    {
+      "name": "niko-native",
+      "description": "Modern C++, CMake, and Visual Studio build workflows.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-native",
+      "category": "Productivity",
+      "tags": ["cpp", "cmake", "visual-studio", "build"]
+    },
+    {
+      "name": "niko-elixir",
+      "description": "Elixir and Phoenix development workflows.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-elixir",
+      "category": "Productivity",
+      "tags": ["elixir", "phoenix", "ecto", "liveview"]
+    },
+    {
+      "name": "niko-godot",
+      "description": "Godot development workflows for games, tools, and exports.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-godot",
+      "category": "Productivity",
+      "tags": ["godot", "gdscript", "games", "agents"]
+    },
+    {
+      "name": "niko-email",
+      "description": "Responsive email creation and validation workflows using MJML.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-email",
+      "category": "Productivity",
+      "tags": ["mjml", "email", "responsive", "agents"]
+    },
+    {
+      "name": "niko-clockify",
+      "description": "Clockify time-tracking and reporting workflows for coding agents.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-clockify",
+      "category": "Productivity",
+      "tags": ["clockify", "time-tracking", "reporting", "agents"]
     }
   ]
 }

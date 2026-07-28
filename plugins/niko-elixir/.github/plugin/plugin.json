@@ -1,0 +1,19 @@
+{
+  "name": "niko-elixir",
+  "version": "1.0.0",
+  "description": "Elixir and Phoenix development workflows.",
+  "author": {
+    "name": "Niko Lehtovirta",
+    "url": "https://github.com/nikolauska"
+  },
+  "homepage": "https://github.com/nikolauska/skills",
+  "repository": "https://github.com/nikolauska/skills",
+  "license": "MIT",
+  "keywords": [
+    "elixir",
+    "phoenix",
+    "ecto",
+    "liveview"
+  ],
+  "skills": "skills/"
+}

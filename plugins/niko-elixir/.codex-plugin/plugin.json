@@ -1,0 +1,34 @@
+{
+  "name": "niko-elixir",
+  "version": "1.0.0",
+  "description": "Elixir and Phoenix development workflows.",
+  "author": {
+    "name": "Niko Lehtovirta",
+    "url": "https://github.com/nikolauska"
+  },
+  "homepage": "https://github.com/nikolauska/skills",
+  "repository": "https://github.com/nikolauska/skills",
+  "license": "MIT",
+  "keywords": [
+    "elixir",
+    "phoenix",
+    "ecto",
+    "liveview"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Niko Elixir",
+    "shortDescription": "Elixir and Phoenix workflows.",
+    "longDescription": "Elixir and Phoenix development workflows.",
+    "developerName": "Niko Lehtovirta",
+    "category": "Productivity",
+    "capabilities": [
+      "Instructions"
+    ],
+    "websiteURL": "https://github.com/nikolauska/skills",
+    "defaultPrompt": [
+      "Implement this Elixir or Phoenix change."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

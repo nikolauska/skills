@@ -1,7 +1,7 @@
 {
-  "name": "niko-skills",
-  "version": "1.0.19",
-  "description": "Reusable development workflows for Niko's coding agents.",
+  "name": "niko-product-docs",
+  "version": "1.0.0",
+  "description": "Product knowledge, plan grilling, and visual document review workflows.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
@@ -9,6 +9,11 @@
   "homepage": "https://github.com/nikolauska/skills",
   "repository": "https://github.com/nikolauska/skills",
   "license": "MIT",
-  "keywords": ["development", "code-review", "documentation", "agents"],
+  "keywords": [
+    "product",
+    "documentation",
+    "planning",
+    "review"
+  ],
   "skills": "skills/"
 }

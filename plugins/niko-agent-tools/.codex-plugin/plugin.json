@@ -1,0 +1,35 @@
+{
+  "name": "niko-agent-tools",
+  "version": "1.0.0",
+  "description": "Guidance for agent-facing CLIs, agent instructions, and skill authoring.",
+  "author": {
+    "name": "Niko Lehtovirta",
+    "url": "https://github.com/nikolauska"
+  },
+  "homepage": "https://github.com/nikolauska/skills",
+  "repository": "https://github.com/nikolauska/skills",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "skills",
+    "cli",
+    "documentation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Niko Agent Tools",
+    "shortDescription": "Agent tooling and authoring.",
+    "longDescription": "Guidance for agent-facing CLIs, agent instructions, and skill authoring.",
+    "developerName": "Niko Lehtovirta",
+    "category": "Productivity",
+    "capabilities": [
+      "Instructions"
+    ],
+    "websiteURL": "https://github.com/nikolauska/skills",
+    "defaultPrompt": [
+      "Create or improve this agent skill.",
+      "Update the repository agent instructions."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

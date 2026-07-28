@@ -1,0 +1,34 @@
+{
+  "name": "niko-email",
+  "version": "1.0.0",
+  "description": "Responsive email creation and validation workflows using MJML.",
+  "author": {
+    "name": "Niko Lehtovirta",
+    "url": "https://github.com/nikolauska"
+  },
+  "homepage": "https://github.com/nikolauska/skills",
+  "repository": "https://github.com/nikolauska/skills",
+  "license": "MIT",
+  "keywords": [
+    "mjml",
+    "email",
+    "responsive",
+    "agents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Niko Email",
+    "shortDescription": "MJML email workflows.",
+    "longDescription": "Responsive email creation and validation workflows using MJML.",
+    "developerName": "Niko Lehtovirta",
+    "category": "Productivity",
+    "capabilities": [
+      "Instructions"
+    ],
+    "websiteURL": "https://github.com/nikolauska/skills",
+    "defaultPrompt": [
+      "Create and compile this responsive MJML email."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
