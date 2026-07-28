@@ -1,4 +1,0 @@
-interface:
-  display_name: "Version Bump"
-  short_description: "Bump one focused plugin independently"
-  default_prompt: "Use $version-bump to bump the requested plugin's version across its manifests and marketplace entry."

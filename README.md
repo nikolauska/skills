@@ -101,11 +101,12 @@ copilot plugin update <plugin>
 omp plugin upgrade <plugin>@niko-skills
 ```
 
-Plugins version independently. Every change to an existing plugin must bump
-that plugin with the repository's version-bump skill:
+Plugins version independently. Every change to an existing plugin must use the
+repository's version script, which validates the plugin before updating its
+versions:
 
 ```sh
-node .agents/skills/version-bump/scripts/bump-version.mjs <plugin> <patch|minor|major>
+node scripts/bump-version.mjs <plugin> <patch|minor|major>
 ```
 
 Use `patch` for fixes and instruction refinements, `minor` for new skills or
@@ -118,7 +119,7 @@ incompatible behavior. New plugins start at `1.0.0`.
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
 for manifest in plugins/*/.codex-plugin/plugin.json plugins/*/.claude-plugin/plugin.json plugins/*/.github/plugin/plugin.json; do python3 -m json.tool "$manifest" >/dev/null; done
-for plugin in plugins/*; do python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" "$plugin"; done
+node scripts/validate-plugins.mjs
 git diff --check
 ```
 

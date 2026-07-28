@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
+import { execFileSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
 
 const [plugin, part, ...extra] = process.argv.slice(2);
 if (!/^niko-[a-z0-9-]+$/.test(plugin ?? "") || !new Set(["patch", "minor", "major"]).has(part) || extra.length) {
@@ -52,6 +55,12 @@ if (part === "major") numbers.splice(0, 3, numbers[0] + 1, 0, 0);
 if (part === "minor") numbers.splice(1, 2, numbers[1] + 1, 0);
 if (part === "patch") numbers[2] += 1;
 const next = numbers.join(".");
+
+const validator = process.env.PLUGIN_VALIDATOR ?? join(
+  process.env.CODEX_HOME ?? join(homedir(), ".codex"),
+  "skills/.system/plugin-creator/scripts/validate_plugin.py",
+);
+execFileSync("python3", [validator, `plugins/${plugin}`], { stdio: "inherit" });
 
 entry.version = next;
 for (const [, manifest] of manifests) manifest.version = next;

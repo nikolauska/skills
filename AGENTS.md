@@ -4,15 +4,16 @@
 ## CRITICAL
 
 - MUST: Keep every focused plugin manifest and both marketplace catalogs valid JSON.
-- MUST: Run the version-bump skill before committing every change under an existing `plugins/<plugin>/`.
+- MUST: Before committing a change under an existing `plugins/<plugin>/`, run `node scripts/bump-version.mjs <plugin> <patch|minor|major>`; the script validates the plugin before updating its versions.
 - MUST: Bump each affected plugin independently: patch for fixes or instruction refinements, minor for new skills or backward-compatible capabilities, and major for removals, renames, or incompatible behavior.
 - MUST: Initialize new plugins at version `1.0.0`.
 - NEVER: Edit plugin or marketplace version fields manually.
 - MUST: Run the plugin validator and JSON checks before committing.
+- MUST: Run `node scripts/validate-plugins.mjs` after plugin changes that are not followed by a version bump, including new plugins.
 - MUST: Run `git diff --check` before committing.
 - MUST: Use Python 3 standard-library commands as the package-manager policy for repository validation; do not add a runtime dependency for checks.
 - MUST: Treat `git diff --check` as the repository lint command.
-- MUST: Treat the JSON checks, plugin validator, and version-bump tests as the repository test suite.
+- MUST: Treat the JSON checks, changed-plugin validator, and root script tests as the repository test suite.
 - NEVER: Read, write, log, or commit `.env` files, tokens, API keys, private keys, or credential files.
 - NEVER: Put private-repository credentials in Git URLs; use SSH, credential helpers, or environment variables.
 - NEVER: Use `npx -y` or another implicit dependency downloader.
@@ -31,7 +32,7 @@
 
 - No database, generated source, or external service configuration is stored here.
 - Credentials remain in each client’s local authentication or environment configuration.
-- Existing plugins version independently. Every plugin change must update that plugin's three manifests and Claude marketplace entry through the version-bump skill.
+- Existing plugins version independently. Every plugin change must update that plugin's three manifests and Claude marketplace entry through `scripts/bump-version.mjs`.
 
 ## Execution Context
 
@@ -42,14 +43,14 @@
 ## Commands
 
 ```bash
-# test version bump
-node --test .agents/skills/version-bump/scripts/bump-version.test.mjs  # ON FAIL: fix the failing version-selection or isolation case, then rerun this command
+# test repository scripts
+node --test scripts/*.test.mjs  # ON FAIL: fix the failing version-selection, isolation, or changed-plugin validation case, then rerun this command
 # validate JSON
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && for manifest in plugins/*/.codex-plugin/plugin.json plugins/*/.claude-plugin/plugin.json plugins/*/.github/plugin/plugin.json; do python3 -m json.tool "$manifest" >/dev/null || exit; done  # ON FAIL: inspect the reported JSON file and rerun this command
-# validate plugins
-for plugin in plugins/*; do python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" "$plugin" || exit; done  # ON FAIL: fix the reported manifest or SKILL.md frontmatter errors, then rerun this command
-# bump one existing plugin
-node .agents/skills/version-bump/scripts/bump-version.mjs <plugin> <patch|minor|major>  # ON FAIL: resolve missing or mismatched metadata for the selected plugin, then rerun
+# validate changed plugins not followed by a version bump
+node scripts/validate-plugins.mjs  # ON FAIL: fix the reported manifest or SKILL.md frontmatter errors, then rerun this command
+# bump and validate one existing plugin
+node scripts/bump-version.mjs <plugin> <patch|minor|major>  # ON FAIL: resolve validation errors or mismatched metadata for the selected plugin, then rerun
 # lint whitespace
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
 ```
@@ -58,7 +59,7 @@ git diff --check  # ON FAIL: fix whitespace errors in the reported files
 
 ```
 .agents/plugins/marketplace.json          # Codex marketplace catalog
-.agents/skills/version-bump/              # Independent plugin version tool
+scripts/                                # Version bump and changed-plugin validation scripts
 .claude-plugin/marketplace.json           # Claude/Copilot marketplace catalog
 plugins/<plugin>/.codex-plugin/           # Codex manifest
 plugins/<plugin>/.claude-plugin/          # Claude manifest
@@ -82,8 +83,8 @@ README.md                                 # Installation, migration, and update 
 
 ## Testing Strategy
 
-- Runner: Node.js built-in tests for version selection, Python standard-library JSON parsing, and the Codex plugin validator.
-- Coverage: Every skill directory must contain one valid `SKILL.md`; all manifests and catalogs must parse; a bump must change only the selected plugin.
+- Runner: Node.js built-in tests for version selection and changed-plugin detection, Python standard-library JSON parsing, and the Codex plugin validator.
+- Coverage: Every changed plugin validates; all manifests and catalogs parse; a bump validates and changes only the selected plugin.
 - Client smoke tests: When installed, run `claude plugin validate .` and `copilot plugin install ./plugins/<plugin>` for an affected plugin.
 - Conventions: Validate locally before each focused commit; test marketplace add/update flows after pushing.
 
