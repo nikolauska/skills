@@ -2,36 +2,44 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 
-const part = process.argv[2];
-if (!new Set(["patch", "minor", "major"]).has(part)) {
-  console.error("Usage: node bump-version.mjs <patch|minor|major>");
+const [plugin, part, ...extra] = process.argv.slice(2);
+if (!/^niko-[a-z0-9-]+$/.test(plugin ?? "") || !new Set(["patch", "minor", "major"]).has(part) || extra.length) {
+  console.error("Usage: node bump-version.mjs <plugin> <patch|minor|major>");
   process.exit(1);
 }
 
-const files = new Map([
-  ["package.json", 1],
-  [".claude-plugin/marketplace.json", 2],
-  ["plugins/niko-skills/.codex-plugin/plugin.json", 1],
-  ["plugins/niko-skills/.claude-plugin/plugin.json", 1],
-  ["plugins/niko-skills/.github/plugin/plugin.json", 1],
-]);
-const pattern = /"version"(\s*:\s*)"([^"]+)"/g;
-const updates = [];
-const versions = [];
+const marketplacePath = ".claude-plugin/marketplace.json";
+const manifestPaths = [
+  `plugins/${plugin}/.codex-plugin/plugin.json`,
+  `plugins/${plugin}/.claude-plugin/plugin.json`,
+  `plugins/${plugin}/.github/plugin/plugin.json`,
+];
 
-for (const [file, expectedCount] of files) {
-  const source = await readFile(file, "utf8");
-  JSON.parse(source);
-  const found = [...source.matchAll(pattern)];
-  if (found.length !== expectedCount) {
-    throw new Error(`${file}: expected ${expectedCount} version field(s), found ${found.length}`);
-  }
-  versions.push(...found.map((match) => match[2]));
-  updates.push([file, source]);
+const parse = async (path) => {
+  const source = await readFile(path, "utf8");
+  return [path, JSON.parse(source)];
+};
+
+const [, marketplace] = await parse(marketplacePath);
+const entries = marketplace.plugins.filter((entry) => entry.name === plugin);
+if (entries.length !== 1) {
+  throw new Error(`${marketplacePath}: expected one ${plugin} entry, found ${entries.length}`);
 }
 
-if (new Set(versions).size !== 1) {
-  throw new Error(`Version fields are not synchronized: ${[...new Set(versions)].join(", ")}`);
+const entry = entries[0];
+if (entry.source !== `./plugins/${plugin}`) {
+  throw new Error(`${marketplacePath}: ${plugin} has unexpected source ${entry.source}`);
+}
+const manifests = await Promise.all(manifestPaths.map(parse));
+for (const [path, manifest] of manifests) {
+  if (manifest.name !== plugin) {
+    throw new Error(`${path}: expected plugin name ${plugin}, found ${manifest.name}`);
+  }
+}
+
+const versions = [entry.version, ...manifests.map(([, manifest]) => manifest.version)];
+if (versions.some((version) => typeof version !== "string") || new Set(versions).size !== 1) {
+  throw new Error(`${plugin} version fields are not synchronized: ${[...new Set(versions)].join(", ")}`);
 }
 
 const current = versions[0];
@@ -45,8 +53,11 @@ if (part === "minor") numbers.splice(1, 2, numbers[1] + 1, 0);
 if (part === "patch") numbers[2] += 1;
 const next = numbers.join(".");
 
-for (const [file, source] of updates) {
-  await writeFile(file, source.replaceAll(pattern, `"version"$1"${next}"`));
-}
+entry.version = next;
+for (const [, manifest] of manifests) manifest.version = next;
+await Promise.all([
+  writeFile(marketplacePath, `${JSON.stringify(marketplace, null, 2)}\n`),
+  ...manifests.map(([path, manifest]) => writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`)),
+]);
 
-console.log(`${current} -> ${next}`);
+console.log(`${plugin}: ${current} -> ${next}`);
