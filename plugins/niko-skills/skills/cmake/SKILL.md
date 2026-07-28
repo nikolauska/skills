@@ -33,6 +33,7 @@ Build the smallest target-based model that preserves the repository's supported 
 3. Implement the smallest change. Read [references/cmake-tutorial.md](references/cmake-tutorial.md) only for the relevant topic:
    - Project structure, language, variables, presets, and scopes.
    - Libraries, feature checks, generated files, testing, installation, exports, dependency discovery, aliases, or generator expressions.
+   - For CPM.cmake dependency fetching, read [references/cpm.md](references/cpm.md) before changing bootstrap code, package declarations, cache behavior, local-package fallback, or lock files.
 4. Configure in a new out-of-source tree using an existing preset when available. Otherwise use:
 
    ```sh
