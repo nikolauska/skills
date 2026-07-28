@@ -1,0 +1,4 @@
+interface:
+  display_name: "Version Bump"
+  short_description: "Synchronize patch, minor, or major versions"
+  default_prompt: "Use $version-bump to update every niko-skills manifest to the requested release version."
