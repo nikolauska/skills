@@ -3,12 +3,16 @@
 
 ## CRITICAL
 
-- MUST: Keep the shared plugin manifests and marketplace catalogs valid JSON.
+- MUST: Keep every focused plugin manifest and both marketplace catalogs valid JSON.
+- MUST: Run the version-bump skill before committing every change under an existing `plugins/<plugin>/`.
+- MUST: Bump each affected plugin independently: patch for fixes or instruction refinements, minor for new skills or backward-compatible capabilities, and major for removals, renames, or incompatible behavior.
+- MUST: Initialize new plugins at version `1.0.0`.
+- NEVER: Edit plugin or marketplace version fields manually.
 - MUST: Run the plugin validator and JSON checks before committing.
 - MUST: Run `git diff --check` before committing.
 - MUST: Use Python 3 standard-library commands as the package-manager policy for repository validation; do not add a runtime dependency for checks.
 - MUST: Treat `git diff --check` as the repository lint command.
-- MUST: Treat the JSON checks and plugin validator as the repository test suite.
+- MUST: Treat the JSON checks, plugin validator, and version-bump tests as the repository test suite.
 - NEVER: Read, write, log, or commit `.env` files, tokens, API keys, private keys, or credential files.
 - NEVER: Put private-repository credentials in Git URLs; use SSH, credential helpers, or environment variables.
 - NEVER: Use `npx -y` or another implicit dependency downloader.
@@ -18,30 +22,34 @@
 
 ## Domain & Context
 
-- Goal: Distribute the `niko-skills` shared skill collection from one Git repository to Codex, Claude Code, GitHub Copilot CLI, and Pi.
-- Type: Plugin marketplace and Pi package repository.
-- Source of truth: `plugins/niko-skills/skills/` contains the canonical skill payload.
-- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, the three client plugin manifests, and the repository-root Pi `package.json`.
+- Goal: Distribute focused, opt-in skill plugins from one Git repository to Codex, Claude Code, GitHub Copilot CLI, and Oh My Pi.
+- Type: Multi-plugin marketplace repository.
+- Source of truth: Each skill has one canonical home under `plugins/<plugin>/skills/`.
+- Client adapters: `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and each plugin's three client manifests.
 
 ## Data & State
 
 - No database, generated source, or external service configuration is stored here.
 - Credentials remain in each client’s local authentication or environment configuration.
-- Version changes must stay synchronized across all versioned plugin manifests, marketplace metadata, and `package.json`.
+- Existing plugins version independently. Every plugin change must update that plugin's three manifests and Claude marketplace entry through the version-bump skill.
 
 ## Execution Context
 
 - Run on: Host.
-- Distribution: Git repository; install and update through each client’s marketplace or package commands.
-- Deploys to: User-level plugin or package caches on Codex, Claude Code, GitHub Copilot CLI, and Pi.
+- Distribution: Git repository; install and update focused plugins through each client's marketplace commands.
+- Deploys to: User-level plugin caches on Codex, Claude Code, GitHub Copilot CLI, and Oh My Pi.
 
 ## Commands
 
 ```bash
+# test version bump
+node --test .agents/skills/version-bump/scripts/bump-version.test.mjs  # ON FAIL: fix the failing version-selection or isolation case, then rerun this command
 # validate JSON
-python3 -m json.tool package.json >/dev/null && python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && python3 -m json.tool plugins/niko-skills/.codex-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.claude-plugin/plugin.json >/dev/null && python3 -m json.tool plugins/niko-skills/.github/plugin/plugin.json >/dev/null  # ON FAIL: inspect the reported JSON file and rerun this command
-# validate plugin
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/niko-skills  # ON FAIL: fix manifest or SKILL.md frontmatter errors, then rerun
+python3 -m json.tool .agents/plugins/marketplace.json >/dev/null && python3 -m json.tool .claude-plugin/marketplace.json >/dev/null && for manifest in plugins/*/.codex-plugin/plugin.json plugins/*/.claude-plugin/plugin.json plugins/*/.github/plugin/plugin.json; do python3 -m json.tool "$manifest" >/dev/null || exit; done  # ON FAIL: inspect the reported JSON file and rerun this command
+# validate plugins
+for plugin in plugins/*; do python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" "$plugin" || exit; done  # ON FAIL: fix the reported manifest or SKILL.md frontmatter errors, then rerun this command
+# bump one existing plugin
+node .agents/skills/version-bump/scripts/bump-version.mjs <plugin> <patch|minor|major>  # ON FAIL: resolve missing or mismatched metadata for the selected plugin, then rerun
 # lint whitespace
 git diff --check  # ON FAIL: fix whitespace errors in the reported files
 ```
@@ -49,35 +57,34 @@ git diff --check  # ON FAIL: fix whitespace errors in the reported files
 ## Structure
 
 ```
-package.json                  # Pi package manifest
-.agents/plugins/              # Codex marketplace catalog
-.claude-plugin/               # Claude Code and Copilot marketplace catalog
-plugins/niko-skills/          # Cross-client plugin
-plugins/niko-skills/.codex-plugin/   # Codex manifest
-plugins/niko-skills/.claude-plugin/  # Claude/Copilot manifest
-plugins/niko-skills/.github/plugin/  # Copilot CLI manifest
-plugins/niko-skills/skills/   # Canonical skill payload
-README.md                     # Installation and update guide
+.agents/plugins/marketplace.json          # Codex marketplace catalog
+.agents/skills/version-bump/              # Independent plugin version tool
+.claude-plugin/marketplace.json           # Claude/Copilot marketplace catalog
+plugins/<plugin>/.codex-plugin/           # Codex manifest
+plugins/<plugin>/.claude-plugin/          # Claude manifest
+plugins/<plugin>/.github/plugin/          # Copilot CLI manifest
+plugins/<plugin>/skills/                  # Canonical skills owned by one plugin
+README.md                                 # Installation, migration, and update guide
 ```
 
 ## Patterns
 
-- **Packaging:** Keep one canonical `SKILL.md` per skill; client manifests, catalogs, and the Pi package manifest are thin adapters.
-- **Naming:** Use lowercase kebab-case for plugin and skill directories and matching frontmatter names.
-- **Organization:** Keep runtime skill directories flat; document human-facing categories in `README.md`.
+- **Packaging:** Keep one canonical `SKILL.md` per skill; the three client manifests and marketplace entries are thin adapters.
+- **Naming:** Use lowercase kebab-case for plugin and skill directories and matching manifest/frontmatter names.
+- **Organization:** Keep each plugin's runtime skill directory flat; required skill pairs stay in the same plugin and skills are never duplicated across plugins.
 - **Dependencies:** Use installed CLI binaries and ask the user to install missing tools globally; never download them implicitly.
 
 ## Search
 
-- Files: `rg --files plugins/niko-skills/skills`
-- Skill metadata: `rg -n '^(name|description):' plugins/niko-skills/skills`
+- Files: `rg --files plugins/*/skills`
+- Skill metadata: `rg -n '^(name|description):' plugins/*/skills`
 - Dependency-download policy: `rg -n 'npx -y' .`
 
 ## Testing Strategy
 
-- Runner: Python standard-library JSON parsing plus the Codex plugin validator.
-- Coverage: Every skill directory must contain one valid `SKILL.md`; all manifests, catalogs, and hook configs must parse.
-- Client smoke tests: When installed, run `claude plugin validate .`, `copilot plugin install ./plugins/niko-skills`, and `pi -e .`.
+- Runner: Node.js built-in tests for version selection, Python standard-library JSON parsing, and the Codex plugin validator.
+- Coverage: Every skill directory must contain one valid `SKILL.md`; all manifests and catalogs must parse; a bump must change only the selected plugin.
+- Client smoke tests: When installed, run `claude plugin validate .` and `copilot plugin install ./plugins/<plugin>` for an affected plugin.
 - Conventions: Validate locally before each focused commit; test marketplace add/update flows after pushing.
 
 ## Security
