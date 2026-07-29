@@ -1,0 +1,35 @@
+{
+  "name": "niko-design",
+  "version": "1.0.0",
+  "description": "UI design, motion review, animation planning, and prototyping workflows.",
+  "author": {
+    "name": "Emil Kowalski",
+    "url": "https://github.com/emilkowalski"
+  },
+  "homepage": "https://github.com/emilkowalski/skills",
+  "repository": "https://github.com/nikolauska/skills",
+  "license": "MIT",
+  "keywords": [
+    "design",
+    "animation",
+    "motion",
+    "prototype"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Niko Design",
+    "shortDescription": "UI design and motion workflows.",
+    "longDescription": "UI design, motion review, animation planning, and prototyping workflows.",
+    "developerName": "Emil Kowalski",
+    "category": "Productivity",
+    "capabilities": [
+      "Instructions"
+    ],
+    "websiteURL": "https://github.com/emilkowalski/skills",
+    "defaultPrompt": [
+      "Review the motion in this interface.",
+      "Prototype three distinct versions of this component."
+    ],
+    "brandColor": "#111827"
+  }
+}

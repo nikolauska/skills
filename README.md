@@ -15,6 +15,7 @@ workflows it needs. Each skill has one canonical home under
 | `niko-agent-tools` | `axi`, `writing-agents-md`, `writing-skills`, `reviewing-skills` |
 | `niko-product-docs` | `domain-knowledge`, `grill-with-docs`, `lavish` |
 | `niko-frontend` | `react`, `redux`, `daisyui`, `chrome-devtools-axi` |
+| `niko-design` | `animation-vocabulary`, `apple-design`, `emil-design-eng`, `find-animation-opportunities`, `improve-animations`, `prototype`, `review-animations` |
 | `niko-native` | `cpp-pro`, `cmake`, `vsdevshell` |
 | `niko-elixir` | `elixir` |
 | `niko-godot` | `godot` |

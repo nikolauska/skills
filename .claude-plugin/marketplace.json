@@ -88,6 +88,14 @@
       "source": "./plugins/niko-clockify",
       "category": "Productivity",
       "tags": ["clockify", "time-tracking", "reporting", "agents"]
+    },
+    {
+      "name": "niko-design",
+      "description": "UI design, motion review, animation planning, and prototyping workflows.",
+      "version": "1.0.0",
+      "source": "./plugins/niko-design",
+      "category": "Productivity",
+      "tags": ["design", "animation", "motion", "prototype"]
     }
   ]
 }
