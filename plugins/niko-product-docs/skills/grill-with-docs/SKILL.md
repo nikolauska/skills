@@ -36,7 +36,7 @@ description: >
 ### 3. Record confirmed functionality
 
 - When new product functionality is resolved, follow `$domain-knowledge` to draft the smallest coherent `docs/domain/` topic and `docs/domain.md` index change.
-- Mark planned functionality as approved future intent; never present it as current behavior.
+- After the user confirms the functionality is approved and implementation is next, override `$domain-knowledge` only on temporal status: document it as current product behavior, in the present tense, without planned, proposed, or future-intent qualifiers.
 - Document customer-visible behavior, business rules, terminology, value, and boundaries—not APIs, architecture, or implementation choices.
 - Show the draft and obtain approval before writing. Keep unresolved claims in the conversation.
 - If `$domain-knowledge` is unavailable, continue the grilling session and report that documentation was skipped; do not create a replacement documentation structure.

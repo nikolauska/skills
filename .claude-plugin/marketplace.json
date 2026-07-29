@@ -15,7 +15,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-engineering",
       "category": "Productivity",
-      "tags": ["development", "code-review", "testing", "agents"]
+      "tags": [
+        "development",
+        "code-review",
+        "testing",
+        "agents"
+      ]
     },
     {
       "name": "niko-delivery",
@@ -23,7 +28,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-delivery",
       "category": "Productivity",
-      "tags": ["git", "github", "pull-request", "agents"]
+      "tags": [
+        "git",
+        "github",
+        "pull-request",
+        "agents"
+      ]
     },
     {
       "name": "niko-agent-tools",
@@ -31,15 +41,25 @@
       "version": "1.0.0",
       "source": "./plugins/niko-agent-tools",
       "category": "Productivity",
-      "tags": ["agents", "skills", "cli", "documentation"]
+      "tags": [
+        "agents",
+        "skills",
+        "cli",
+        "documentation"
+      ]
     },
     {
       "name": "niko-product-docs",
       "description": "Product knowledge, plan grilling, and visual document review workflows.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./plugins/niko-product-docs",
       "category": "Productivity",
-      "tags": ["product", "documentation", "planning", "review"]
+      "tags": [
+        "product",
+        "documentation",
+        "planning",
+        "review"
+      ]
     },
     {
       "name": "niko-frontend",
@@ -47,7 +67,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-frontend",
       "category": "Productivity",
-      "tags": ["react", "redux", "daisyui", "browser"]
+      "tags": [
+        "react",
+        "redux",
+        "daisyui",
+        "browser"
+      ]
     },
     {
       "name": "niko-native",
@@ -55,7 +80,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-native",
       "category": "Productivity",
-      "tags": ["cpp", "cmake", "visual-studio", "build"]
+      "tags": [
+        "cpp",
+        "cmake",
+        "visual-studio",
+        "build"
+      ]
     },
     {
       "name": "niko-elixir",
@@ -63,7 +93,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-elixir",
       "category": "Productivity",
-      "tags": ["elixir", "phoenix", "ecto", "liveview"]
+      "tags": [
+        "elixir",
+        "phoenix",
+        "ecto",
+        "liveview"
+      ]
     },
     {
       "name": "niko-godot",
@@ -71,7 +106,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-godot",
       "category": "Productivity",
-      "tags": ["godot", "gdscript", "games", "agents"]
+      "tags": [
+        "godot",
+        "gdscript",
+        "games",
+        "agents"
+      ]
     },
     {
       "name": "niko-email",
@@ -79,7 +119,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-email",
       "category": "Productivity",
-      "tags": ["mjml", "email", "responsive", "agents"]
+      "tags": [
+        "mjml",
+        "email",
+        "responsive",
+        "agents"
+      ]
     },
     {
       "name": "niko-clockify",
@@ -87,7 +132,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-clockify",
       "category": "Productivity",
-      "tags": ["clockify", "time-tracking", "reporting", "agents"]
+      "tags": [
+        "clockify",
+        "time-tracking",
+        "reporting",
+        "agents"
+      ]
     },
     {
       "name": "niko-design",
@@ -95,7 +145,12 @@
       "version": "1.0.0",
       "source": "./plugins/niko-design",
       "category": "Productivity",
-      "tags": ["design", "animation", "motion", "prototype"]
+      "tags": [
+        "design",
+        "animation",
+        "motion",
+        "prototype"
+      ]
     }
   ]
 }
