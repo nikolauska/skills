@@ -50,4 +50,3 @@ description: >
 
 - Follow `$domain-knowledge` safety, evidence, approval, and file-ownership rules.
 - Never read secrets or credentials, and do not use external systems unless the user explicitly requests it.
-- Do not create or update `CONTEXT.md`, `CONTEXT-MAP.md`, or ADRs.
