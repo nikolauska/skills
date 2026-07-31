@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Benchmarking"
+  short_description: "Benchmark skill value with A/B probes"
+  default_prompt: "Use $skill-benchmarking to compare this skill with and without its instructions before editing it."
