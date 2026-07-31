@@ -25,7 +25,7 @@
     {
       "name": "niko-delivery",
       "description": "Git, GitHub, and pull-request delivery workflows for coding agents.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./plugins/niko-delivery",
       "category": "Productivity",
       "tags": [
