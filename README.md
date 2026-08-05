@@ -10,7 +10,7 @@ workflows it needs. Each skill has one canonical home under
 
 | Plugin | Skills |
 | --- | --- |
-| `niko-engineering` | `diagnose`, `review`, `simplify`, `tdd`, `handoff` |
+| `niko-engineering` | `diagnose`, `review`, `simplify`, `tdd`, `handoff`, `ponytail` |
 | `niko-delivery` | `git`, `gh-axi`, `pr` |
 | `niko-agent-tools` | `axi`, `writing-agents-md`, `writing-skills`, `reviewing-skills` |
 | `niko-product-docs` | `domain-knowledge`, `grill-with-docs`, `lavish` |
