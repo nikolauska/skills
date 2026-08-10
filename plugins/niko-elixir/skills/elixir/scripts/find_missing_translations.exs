@@ -26,7 +26,7 @@ case System.argv() do
 
       if messages != [] do
         IO.puts("=== #{path} ===")
-        IO.write(Expo.PO.compose(%{__struct__: Expo.Messages, messages: messages}))
+        IO.write(Expo.PO.compose(%{po | messages: messages}))
         IO.puts("")
       end
     end)

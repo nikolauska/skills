@@ -90,7 +90,7 @@
     {
       "name": "niko-elixir",
       "description": "Elixir and Phoenix development workflows.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./plugins/niko-elixir",
       "category": "Productivity",
       "tags": [
