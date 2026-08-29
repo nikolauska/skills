@@ -5,10 +5,12 @@ Check whether tests adequately guard changed observable behavior.
 ## Inspect
 
 - Each changed behavior, branch, error path, and compatibility contract mapped to a test that proves it.
-- Boundary inputs, missing data, parse failures, recovery paths, and supported configuration variants.
-- Assertions and fixtures that would fail for the named regression, remain deterministic, and clean up shared state.
+- Boundary inputs, missing data, parse failures, recovery paths, cleanup failures, and supported configuration combinations—not only each setting in isolation.
+- Assertions and fixtures that would fail for the named regression, remain deterministic, clean up shared state, and use names and filesystem features valid on every platform where the test runs.
 - Tests coupled to implementation details, timing, ordering, absolute paths, or internal mocks instead of observable behavior and established boundary seams.
+  Cross-compilation proves build compatibility only; do not count it as runtime evidence for platform-specific paths, permissions, symlinks, process behavior, or filenames.
 - Duplicate tests, trivial pass-through coverage, type-system duplication, and tests for behavior that no longer exists.
+- Fix tests that prove only the reported state while omitting adjacent states the remedy can break, such as escaping versus dangling symlinks or an existing versus concurrently replaced parent.
 
 ## Evidence threshold
 

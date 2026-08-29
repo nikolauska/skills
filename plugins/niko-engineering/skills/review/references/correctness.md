@@ -8,7 +8,11 @@ Check whether changed code does what it claims, including bugs that pass type-ch
 - Empty, null, zero, negative, maximum, first/last, and inclusive/exclusive boundaries.
 - Missing `await`, unhandled rejection, incorrect fire-and-forget work, swallowed errors, false success, unreachable code, and impossible branches.
 - Behavior that contradicts a name, signature, documentation, return shape, nullability, ordering, caller assumption, or state ownership contract.
-- Shared state mutated without required race protection.
+- Shared state mutated without required race protection. Trace check-then-use sequences explicitly: name what can change after validation, which operation consumes the stale fact, and the resulting wrong mutation.
+- Path confinement across every filesystem operation, including temporary creation and final installation. A pathname validation followed by pathname use is not confinement when a supported actor can replace a parent.
+- Supported configuration combinations that change ownership or containment, such as managed storage placed inside the source tree and broad selectors that can select the tool's own state.
+- Cleanup and durable state after failure at each open, close, remove, rename, hook, or persistence boundary.
+- Remedies that collapse distinct adjacent states, such as missing, dangling, inaccessible, and escaping paths, into one behavior without an explicit product decision.
 
 ## Evidence threshold
 
