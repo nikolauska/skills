@@ -51,7 +51,7 @@
     {
       "name": "niko-product-docs",
       "description": "Product knowledge, plan grilling, and visual document review workflows.",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "source": "./plugins/niko-product-docs",
       "category": "Productivity",
       "tags": [

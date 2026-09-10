@@ -23,7 +23,14 @@ description: >
 - Separate current behavior, confirmed business meaning, planned functionality, and unresolved questions.
 - Answer discoverable questions from the repository instead of asking the user.
 
-### 2. Grill the plan
+### 2. Check relevant history selectively
+
+- Use a local-history checkpoint only when a product boundary or rationale remains unexplained or contested, or the repository indicates that relevant behavior was previously reversed. Skip history for routine plans.
+- Inspect only the relevant local commits and diffs for prior decisions or reversals; do not mine the full history. Consult remote pull requests only when the user explicitly authorizes external access.
+- Report what the history shows separately from inferred rationale. Treat history as precedent, not proof of product policy, and do not turn accidental behavior into a binding rule.
+- Ask the user to confirm any inferred acceptance criteria or non-goals before treating them as plan constraints.
+
+### 3. Grill the plan
 
 - Ask one question at a time and wait for the answer before continuing.
 - Provide a recommended answer with each question.
@@ -33,7 +40,7 @@ description: >
 - Use concrete scenarios and edge cases to test rules, relationships, and boundaries.
 - Surface contradictions between the proposed behavior, documented domain knowledge, and current code.
 
-### 3. Record confirmed functionality
+### 4. Record confirmed functionality
 
 - When new product functionality is resolved, follow `$domain-knowledge` to draft the smallest coherent `docs/domain/` topic and `docs/domain.md` index change.
 - After the user confirms the functionality is approved and implementation is next, override `$domain-knowledge` only on temporal status: document it as current product behavior, in the present tense, without planned, proposed, or future-intent qualifiers.
@@ -41,7 +48,7 @@ description: >
 - Show the draft and obtain approval before writing. Keep unresolved claims in the conversation.
 - If `$domain-knowledge` is unavailable, continue the grilling session and report that documentation was skipped; do not create a replacement documentation structure.
 
-### 4. Finish
+### 5. Finish
 
 - Stop when the plan is decision-complete or the remaining decisions are explicitly identified as blockers.
 - Summarize the resolved decisions, remaining unknowns, and any approved domain-document changes.
