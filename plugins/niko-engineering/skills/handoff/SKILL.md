@@ -16,7 +16,7 @@ Create a brief work order that lets a fresh agent take the next action without c
 ## Workflow
 
 1. Write `Next`: one concrete action specific enough to start without prior conversation.
-2. Add only facts that change how `Next` must be executed: files, constraints, settled rules, and live blockers.
+2. Add only facts that change how `Next` must be executed: files, constraints, settled rules, live blockers, and a one-line rationale only when omitting it could change the next decision.
 3. Point to repository files, commits, tickets, or safe URLs instead of copying their contents or narrating completed work.
 4. If a previous handoff exists, merge its still-relevant constraints; never append it verbatim.
 5. Keep the result near 150 words and on one screen unless the next action is genuinely multi-step.
@@ -33,7 +33,7 @@ Omit empty optional sections. Use no other sections.
 <one concrete action in one sentence>
 
 ## What the next move needs
-- <file, constraint, settled rule, or live blocker; at most five one-line bullets>
+- <file, constraint, settled rule, live blocker, or one-line rationale whose omission could change the next decision; at most five one-line bullets>
 
 ## Pointers
 - <path, safe URL, commit, or ticket ID; addresses only>
@@ -46,6 +46,6 @@ The final imperative is required so the next session acts instead of summarizing
 ## Quality gate
 
 - `Next` is first, executable, and forward-looking.
-- Every other line changes the next action; history, dead ends, status, and deferred-work dumps are absent.
-- Rules state what to do, not the story of how they were chosen.
+- Every other line changes the next action; omit history, dead ends, status, and deferred work rather than recasting them as exclusions or non-goals.
+- Rules state what to do; include a reason only when omitting it could change the next decision, never to preserve chronology, dead ends, or status.
 - The handoff appears once unless the user requests a revision.
