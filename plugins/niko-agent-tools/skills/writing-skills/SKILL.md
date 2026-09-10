@@ -61,6 +61,16 @@ If the user asked to update an existing skill (not create a new one):
 - Preserve existing behavior unless it is a spec violation or causes mis-triggering.
 - Prioritize: trigger precision (description “when to use”), safety/guardrails, validation loop, then token efficiency.
 
+### Behavioral revisions
+
+When changing what a skill causes an agent to do:
+- Tie each candidate revision to an observed failure and the expected behavior. If no supporting example is available, label the candidate a hypothesis.
+- Call a failure recurring only with at least two independent session examples that are available with user authorization; one example can motivate a fix but is not proof of recurrence. Never require searching private transcripts or other evidence the user has not authorized.
+- Do not delay a clear safety or specification correction while waiting for repeated failures. Conversely, absence of observed failures is not permission to remove rules or guardrails.
+- Evaluate the smallest candidate change against its motivating case and a harder neighboring case. Use the same-plugin `$skill-benchmarking` workflow when it is available and authorized; it remains optional, not a hidden prerequisite. If it is unavailable, state the evaluation gap and provide practical probes rather than inventing a new framework.
+- Keep raw evidence outside the installed skill. Add a short rationale to the skill only when it helps an agent apply the instruction correctly.
+- Treat pure wording edits that do not change expected behavior as exempt from benchmark runs.
+
 ### 0) Intake (ask only what matters)
 
 Collect:
@@ -124,7 +134,7 @@ Fix all reported errors before proceeding. Each linter collects every violation 
 
 ### Quality Gate
 
-Two-phase review after validation. Target: Quality Bar (score >= 4.5, no P1 findings).
+Two-phase review after validation. Behavioral evaluation supplements rather than replaces the linters and critic gate. Target: Quality Bar (score >= 4.5, no P1 findings).
 
 #### Phase 1: Self-critic review
 
