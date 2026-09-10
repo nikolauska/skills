@@ -1,6 +1,6 @@
 {
   "name": "niko-delivery",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Git, GitHub, and pull-request delivery workflows for coding agents.",
   "author": {
     "name": "Niko Lehtovirta",

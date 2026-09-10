@@ -41,7 +41,7 @@ Use **Create mode** when the current branch has no open pull request and **Updat
 
 1. Require a clean working tree and at least one branch commit ahead of the resolved base.
 2. Run the repository's required lint, test, type-check, and build commands. Report unavailable or prohibitively large checks instead of silently skipping them.
-3. Run the `review` skill when available. Stop on must-fix findings.
+3. Run the `review` skill when available, supplying the original requested outcomes and explicit non-goals from the authorized request or confirmed linked issue. Use fresh reviewer context when available and authorized so the review assesses the diff independently; otherwise disclose the context limitation. Stop on must-fix findings.
 4. Audit commit scope and messages. If history needs rewriting, explain the exact rewrite and obtain approval before changing it; re-audit afterward.
 5. Search for related issues and include closing syntax only for a relationship confirmed by the user or explicit repository evidence.
 6. Draft the exact title and body, show both, and wait for approval.
