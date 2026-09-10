@@ -38,7 +38,7 @@
     {
       "name": "niko-agent-tools",
       "description": "Guidance for agent-facing CLIs, agent instructions, and skill authoring.",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "source": "./plugins/niko-agent-tools",
       "category": "Productivity",
       "tags": [
