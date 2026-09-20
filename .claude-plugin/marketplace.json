@@ -24,8 +24,8 @@
     },
     {
       "name": "niko-delivery",
-      "description": "Git, GitHub, and pull-request delivery workflows for coding agents.",
-      "version": "1.0.2",
+      "description": "Git and pull-request delivery workflows for coding agents.",
+      "version": "2.0.0",
       "source": "./plugins/niko-delivery",
       "category": "Productivity",
       "tags": [
@@ -50,8 +50,8 @@
     },
     {
       "name": "niko-product-docs",
-      "description": "Product knowledge, plan grilling, and visual document review workflows.",
-      "version": "1.0.3",
+      "description": "Product knowledge and plan review workflows.",
+      "version": "2.0.0",
       "source": "./plugins/niko-product-docs",
       "category": "Productivity",
       "tags": [
@@ -63,15 +63,15 @@
     },
     {
       "name": "niko-frontend",
-      "description": "React, Redux, daisyUI, and browser debugging workflows.",
-      "version": "1.0.0",
+      "description": "React, Redux, and daisyUI development workflows.",
+      "version": "2.0.0",
       "source": "./plugins/niko-frontend",
       "category": "Productivity",
       "tags": [
         "react",
         "redux",
         "daisyui",
-        "browser"
+        "frontend"
       ]
     },
     {

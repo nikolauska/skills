@@ -1,7 +1,7 @@
 {
   "name": "niko-product-docs",
-  "version": "1.0.3",
-  "description": "Product knowledge, plan grilling, and visual document review workflows.",
+  "version": "2.0.0",
+  "description": "Product knowledge and plan review workflows.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Niko Product Docs",
     "shortDescription": "Product planning and documentation.",
-    "longDescription": "Product knowledge, plan grilling, and visual document review workflows.",
+    "longDescription": "Product knowledge and plan review workflows.",
     "developerName": "Niko Lehtovirta",
     "category": "Productivity",
     "capabilities": [

@@ -1,7 +1,7 @@
 {
   "name": "niko-frontend",
-  "version": "1.0.0",
-  "description": "React, Redux, daisyUI, and browser debugging workflows.",
+  "version": "2.0.0",
+  "description": "React, Redux, and daisyUI development workflows.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
@@ -13,13 +13,13 @@
     "react",
     "redux",
     "daisyui",
-    "browser"
+    "frontend"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Niko Frontend",
     "shortDescription": "Frontend development workflows.",
-    "longDescription": "React, Redux, daisyUI, and browser debugging workflows.",
+    "longDescription": "React, Redux, and daisyUI development workflows.",
     "developerName": "Niko Lehtovirta",
     "category": "Productivity",
     "capabilities": [
@@ -28,7 +28,7 @@
     "websiteURL": "https://github.com/nikolauska/skills",
     "defaultPrompt": [
       "Implement this React interface.",
-      "Debug this page in the browser."
+      "Build this interface with React, Redux, and daisyUI."
     ],
     "brandColor": "#2563EB"
   }
