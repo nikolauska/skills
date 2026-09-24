@@ -1,13 +1,13 @@
 ---
 name: simplify
-description: Simplifies code by reducing complexity while preserving observable behavior. Use when the user asks to refactor working code or authorizes cleanup after a review; do not use for diagnosis, feature changes, or review-only requests.
+description: Refactors working code to reduce complexity while preserving observable behavior. Use when the user separately authorizes behavior-preserving refactoring or cleanup after a review; do not use for review-only requests, diagnosis, or feature implementation seeking a small diff.
 ---
 
 # Simplify
 
 Reduce complexity while preserving exact behavior. The goal is not fewer lines — it's code that is easier to read, understand, and modify. Every simplification must pass: "Would a new contributor understand this faster than the original?"
 
-Do not simplify code you don't understand yet, code that is already clean, or code you're about to rewrite entirely.
+Do not simplify code you don't understand yet, code that is already clean, or code you're about to rewrite entirely. A review finding alone does not authorize edits; obtain a separate refactoring request before applying changes.
 
 ## Guardrails
 

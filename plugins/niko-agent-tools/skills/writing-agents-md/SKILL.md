@@ -13,7 +13,7 @@ compatibility: "Codex CLI, Claude Code/Desktop, Cursor, Windsurf, Gemini, GitHub
 
 ## Objective
 
-Generate or update the single source of truth for AI coding agents. `CLAUDE.md` is generated alongside with `@AGENTS.md` import; other agent files on request. **Scope:** current working directory (CWD). All output paths are POSIX-style and relative to CWD.
+Generate or update agent context files requested by the user. `AGENTS.md` is the source of truth; when a requested `CLAUDE.md` uses `@AGENTS.md`, ensure the imported file exists. Do not create unrelated agent files. **Scope:** current working directory (CWD). All output paths are POSIX-style and relative to CWD.
 
 ## When to use / When not to use
 
@@ -22,8 +22,9 @@ Use when:
 - The user wants to onboard an AI agent to a project.
 
 Do not use when:
-- Single-file scripts, throwaway PoCs with no build config, or repos with only a README. Minimum: a build config file with at least one runnable command.
 - The user wants to review (not write) an existing AGENTS.md — use a reviewing skill instead.
+
+For a single-file script, throwaway PoC, or README-only repo, use this skill when the user explicitly requests an agent context file. Scale analysis to available evidence; never invent commands or project structure.
 
 ## Quality Bar (default)
 
@@ -39,7 +40,7 @@ The rubric: [references/agents-md-rubric.md](references/agents-md-rubric.md) (si
 - Never read, request, or paste secrets (examples: `.env`, API keys, tokens, private keys, credentials).
 - Do not browse the web or call external systems unless the user explicitly requests it.
 - Do not run destructive commands (database resets, deploys, publishes) as part of analysis/validation.
-- Only write files after explicit user approval (see User Review section).
+- An explicit request to create or update agent context files authorizes local writes within the requested scope after inspection and validation. Ask for a decision before a substantive conflict with curated context, destructive overwrite, an out-of-scope file, or any external action not explicitly requested.
 
 ## Analysis Phase
 
@@ -90,11 +91,11 @@ Also check for pre-existing agent context files (`.cursorrules`, `.windsurfrules
 
 **Staleness removal:** Auto-detect sections: remove references to nonexistent tools/paths/commands. Hybrid sections: flag removed items with `<!-- REMOVED: [item] -- verify -->`.
 
-**Conflicts:** prefer project files; if uncertain, add `<!-- REVIEW: ... -->`.
+**Conflicts:** prefer project files for verifiable facts; if existing curated context substantively conflicts and the intended merge is unclear, ask the user before writing. Do not silently replace curated decisions or treat a `<!-- REVIEW: ... -->` marker as permission to do so.
 
 **Domain term extraction:** Scan README (headings, bold/italic terms, glossary sections), doc comments in entry points, and config descriptions for domain-specific terms (acronyms, business concepts, project-specific jargon). Include terms that appear in code identifiers and would be ambiguous to an agent without context (e.g., `Workspace` meaning "tenant" not "IDE workspace"). Omit universally understood terms (API, URL, JSON). If no domain terms found, omit the Key Terms field.
 
-**No existing AGENTS.md:** Infer all sections from project files. Populate only sections with concrete evidence. **Minimum viable output:** CRITICAL, Domain & Context, and Commands must all have concrete content. If Commands would be empty, do not generate — inform user the project lacks enough structure.
+**No existing AGENTS.md:** Infer sections from project files. Populate only sections with concrete evidence. Include CRITICAL, Domain & Context, and Commands where supported; omit unsupported commands rather than inventing them. If even a useful project description cannot be established, explain the evidence gap to the user before writing.
 
 ### 1. Detect Stack & Identify Constraints
 
@@ -201,26 +202,26 @@ Re-generate when: package manager switched, test/lint framework changed, monorep
 
 ## User Review
 
-| Scenario | Show to user | Action |
-|----------|-------------|--------|
-| **New** | Summary: section name + 1-line synopsis each | Ask confirmation before writing. Show full draft on request. |
-| **Update (full)** | Changed/added/removed sections as diff; list unchanged by name only | Ask confirmation. |
-| **Update (targeted)** | Only the requested section(s) as diff | Ask confirmation. |
-| **Rejection** | N/A | Ask which sections need changes, re-analyze only those, re-present. Skip full re-analysis unless requested. |
-| **Unattended** | Nothing | Skip review; write directly. Only when user explicitly requests. |
+| Scenario | Report to user | Action |
+|----------|----------------|--------|
+| **New** | Summary: section name + 1-line synopsis each; full draft on request | Write locally after inspection and validation when explicitly requested. |
+| **Update (full)** | Changed/added/removed sections as diff; list unchanged by name only | Write locally after inspection and validation; ask about unresolved substantive curated conflicts first. |
+| **Update (targeted)** | Only the requested section(s) as diff | Write locally after inspection and validation; ask about unresolved substantive curated conflicts first. |
+| **Requested changes after review** | Revised affected sections | Re-analyze only those sections, then write; skip full re-analysis unless requested. |
+| **Unsolicited generation** | Proposed scope and summary | Ask permission before writing. |
 
-Only write files after approval.
+For explicit create/update requests, report after the local write; do not pause for review unless a user decision is needed. Such requests authorize the requested local edit, not destructive overwrite, out-of-scope files, or external actions.
 
 ## Execution
 
-After approval, write `AGENTS.md` and create or update `CLAUDE.md` in the same directory.
+After inspection and validation of the draft, write the requested agent context files and files necessary for their imports within CWD. Create or update `CLAUDE.md` only when requested. Resolve any required user decisions first.
 
-**CLAUDE.md merge strategy:**
+**CLAUDE.md merge strategy (when requested):**
 - **No existing** -> create with `@AGENTS.md` import.
 - **Already imports `@AGENTS.md`** -> preserve all content, update header comment.
 - **Has content but no import** -> read existing content; scan for section headings that overlap with AGENTS.md (`## CRITICAL`, `## Commands`, etc.). If overlaps found, warn user with specific section names and ask whether to keep (as overrides), merge, or remove duplicates. Then prepend `@AGENTS.md` import. Always preserve additional `@` imports.
 
-**CLAUDE.md content** — always includes the generated header `<!-- Generated by writing-agents-md. Custom edits (extra @imports, overrides) are preserved on re-run. -->` plus imports:
+**CLAUDE.md content (when requested)** — includes the generated header `<!-- Generated by writing-agents-md. Custom edits (extra @imports, overrides) are preserved on re-run. -->` plus imports:
 
 | Scenario | CLAUDE.md imports |
 |----------|------------------|
@@ -232,11 +233,11 @@ After approval, write `AGENTS.md` and create or update `CLAUDE.md` in the same d
 
 **Re-run scope:** From repo root -> root only (warn about stale per-package files; list packages that may need re-run). From package dir -> that package only. Never silently update files outside CWD.
 
-**Partial failure:** If AGENTS.md is written but CLAUDE.md write fails, inform the user that AGENTS.md was written successfully and CLAUDE.md needs manual creation. Do not roll back AGENTS.md. If AGENTS.md write itself fails, do not proceed to CLAUDE.md.
+**Partial failure:** If `AGENTS.md` is written but a requested `CLAUDE.md` write fails, inform the user that `AGENTS.md` was written successfully and `CLAUDE.md` needs manual creation. Do not roll back `AGENTS.md`. If an `AGENTS.md` required by the requested output fails to write, do not proceed to a file importing it.
 
 ### Other agent context files
 
-On user request only, generate equivalent files: `.cursorrules`/`.windsurfrules` (inline content), `GEMINI.md`/`CODEX.md`/`.github/copilot-instructions.md` (copy content). All include sync header `<!-- source: AGENTS.md @ [git-short-sha] -->` (if not a git repo, use `<!-- source: AGENTS.md -->`). AGENTS.md is source of truth — regenerate derived files on update. No symlinks.
+On user request only, generate equivalent files: `.cursorrules`/`.windsurfrules` (inline content), `GEMINI.md`/`CODEX.md`/`.github/copilot-instructions.md` (copy content). All include sync header `<!-- source: AGENTS.md @ [git-short-sha] -->` (if not a git repo, use `<!-- source: AGENTS.md -->`). `AGENTS.md` is the source of truth — regenerate requested derived files on update. No symlinks.
 
 **Agent-specific adjustments:** When generating for non-Claude agents, adapt Tool Preferences to that agent's capabilities (e.g., Cursor uses terminal commands; Copilot uses inline suggestions). Replace Claude-specific tool names (Read/Edit/Glob/Grep) with generic equivalents or that agent's tool names.
 
@@ -250,10 +251,10 @@ After writing, verify:
 3. **No placeholders** — no `[value]` brackets remain
 4. **No stale comments** — no HTML comments remain except: `<!-- agents-md-version: N -->`, `<!-- GAPS: ... -->`, `<!-- REVIEW: ... -->`, `<!-- REMOVED: ... -->`, and `<!-- version: YYYY-MM-DD -->`
 5. **Line count** — within budget (150 / 200 / 250)
-6. **CLAUDE.md valid** — `@` import paths resolve (glob target files)
+6. **CLAUDE.md valid (when created or updated)** — `@` import paths resolve (glob target files)
 7. **Generated dirs marked** — all codegen/build output dirs annotated in Structure
-8. **CRITICAL completeness** — at least one MUST rule each for: package manager, linting, testing. Warn user if any missing
-9. **Commands minimum set** — `install`, `lint`, and at least one `test` command exist. Warn if missing
+8. **CRITICAL completeness** — where evidence supports a package manager, linting, or testing rule, include a corresponding MUST rule; warn about missing evidence rather than inventing rules
+9. **Commands minimum set** — include evidenced `install`, `lint`, and `test` commands; warn if a relevant command is unavailable, but do not fabricate one for a simple project
 10. **Constraint consistency** — every NEVER in CRITICAL traces to a detection in Step 1 (e.g., NEVER `pip` because `uv.lock` detected). Flag orphaned NEVERs with `<!-- REVIEW: no detection basis for NEVER [item] -->`
 
 **Quality checks (11-15):**

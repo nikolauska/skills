@@ -1,6 +1,6 @@
 ---
 name: review
-description: Reviews code changes, pull requests, files, or directories across correctness, style, architecture, documentation, security, tests, and unnecessary complexity. Use before merge, when auditing code, or when requesting one or more focused review dimensions, including over-engineering or simplification; do not use when the user wants automatic fixes without a review report.
+description: Reports evidence-backed, read-only findings on code changes, pull requests, files, or directories. Use for code review or an audit of a diff, including requests to identify overengineering; do not use for implementing fixes or refactoring code.
 ---
 
 # Review

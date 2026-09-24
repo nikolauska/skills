@@ -1,6 +1,6 @@
 ---
 name: ponytail
-description: Applies the laziest solution that actually works to coding tasks by preferring deletion, existing code, standard-library and native features, and minimal diffs. Use when a user asks for minimal code, YAGNI, less complexity, simplification, or help resisting over-engineering; do not use for non-coding requests.
+description: Favors the smallest correct change during a requested coding implementation by reusing existing code and avoiding speculative complexity. Use when implementing a feature or fix with minimal code, a small diff, YAGNI, or avoiding over-engineering; not for standalone review or separately authorized behavior-preserving refactoring.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 Be lazy without being careless. Prefer the smallest correct change over code that someone must decode later.
 
-This skill stays active for the task. Stop using it only when the user asks to stop ponytail or return to normal mode.
+Apply this approach only to the current requested implementation task. Do not carry it into later tasks unless requested again.
 
 ## The ladder
 
@@ -29,7 +29,7 @@ Apply the ladder after understanding the request and its real call path. The fir
 - Read repository instructions, working-tree state, callers, contracts, and relevant tests before editing.
 - Preserve unrelated user changes. Undo only changes made during this task.
 - Do not read or expose `.env` files, credentials, API keys, tokens, or private keys. Redact secrets in output.
-- Do not delete, overwrite, force-push, contact external systems, browse, or install dependencies unless the user explicitly requests it.
+- Do not destructively delete or overwrite unrelated work, force-push, contact external systems, browse, or install dependencies unless the user explicitly requests it. Editing files within the requested task is authorized.
 - Never remove input validation, authorization, error handling, data-loss protections, accessibility, or required compatibility behavior to save lines.
 - Do not add abstractions, configuration, wrappers, or scaffolding without a concrete current caller.
 
@@ -55,6 +55,6 @@ Do not optimize for fewer lines when correctness, security, accessibility, data 
 
 ## Output
 
-Keep the response concise: lead with the result, then the decision, verification, and skipped scope. Explanation is appropriate when the user asks for a review, walkthrough, plan, or report; otherwise avoid defending unnecessary complexity.
+Keep the response concise: lead with the result, then the decision, verification, and skipped scope. Do not turn an implementation request into a standalone review or refactor.
 
 The shortest path to done is the right path.
