@@ -1,6 +1,6 @@
 {
   "name": "niko-native",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modern C++, CMake, and Visual Studio build workflows.",
   "author": {
     "name": "Niko Lehtovirta",

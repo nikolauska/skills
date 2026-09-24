@@ -51,7 +51,7 @@
     {
       "name": "niko-native",
       "description": "Modern C++, CMake, and Visual Studio build workflows.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./plugins/niko-native",
       "category": "Productivity",
       "tags": [
