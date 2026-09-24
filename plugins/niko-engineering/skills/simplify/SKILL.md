@@ -1,49 +1,20 @@
 ---
 name: simplify
-description: Refactors working code to reduce complexity while preserving observable behavior. Use when the user separately authorizes behavior-preserving refactoring or cleanup after a review; do not use for review-only requests, diagnosis, or feature implementation seeking a small diff.
+description: Implements requested features and fixes with minimal correct changes, or simplifies working code when separately authorized to refactor. Use for minimal-code implementation or behavior-preserving cleanup; not read-only review, diagnosis, or unsolicited refactoring during implementation.
 ---
 
 # Simplify
 
-Reduce complexity while preserving exact behavior. The goal is not fewer lines — it's code that is easier to read, understand, and modify. Every simplification must pass: "Would a new contributor understand this faster than the original?"
+Choose the branch the user requested. Do not turn an implementation into unrelated cleanup; a review finding alone does not authorize refactoring.
 
-Do not simplify code you don't understand yet, code that is already clean, or code you're about to rewrite entirely. A review finding alone does not authorize edits; obtain a separate refactoring request before applying changes.
+## Feature or fix
 
-## Guardrails
+Trace the affected behavior, callers, and contracts. Reuse existing code, platform features, and standard library facilities before adding code or dependencies. Make the smallest coherent change that solves the request; avoid speculative abstractions. Fix a shared root cause rather than patching symptoms in individual callers. Exercise the changed behavior with the narrowest relevant check.
 
-- Inspect repository instructions, working-tree state, callers, tests, and public contracts before editing.
-- Preserve unrelated user changes. Undo only changes made during this task; never discard the working tree to recover from a failed refactor.
-- Never remove validation, error handling, authorization, accessibility, or compatibility behavior merely to reduce code.
-- Do not read credential files, install dependencies, browse, or contact external systems unless the user explicitly requests it.
+## Separately authorized cleanup
 
-## Workflow
+Understand why the working code exists and what its callers depend on before removing or restructuring it. Prefer clearer control flow, names, and responsibility boundaries over fewer lines; leave already-clear code alone. Preserve observable behavior and existing assertions. Make coherent changes and exercise affected behavior with focused checks; if an assertion must change to pass, reconsider whether behavior changed.
 
-### 1. Understand before touching (Chesterton's Fence)
+## Boundary
 
-Before changing or removing anything, understand why it exists. Check git blame, read the context, understand the reason. Then decide if the reason still applies.
-
-### 2. Identify opportunities
-
-- **Nesting that obscures control flow** — use guard clauses or a well-named helper when it reads more directly
-- **Functions mixing distinct responsibilities** — split only along an existing conceptual boundary
-- **Nested ternaries** — replace with if/else or lookups
-- **Generic names** (`data`, `result`, `temp`) — rename to describe content
-- **Duplicated logic** — extract to shared function (rule of 3)
-- **Dead code** — remove after confirming truly unreachable
-- **Wrappers that add no policy** — inline them
-
-### 3. Apply incrementally
-
-Apply one coherent simplification at a time and run the narrowest relevant check. If it fails, undo that simplification without touching unrelated work and reconsider. Separate refactoring from feature work.
-
-### 4. Verify
-
-Run the repository's relevant formatter, lint, typecheck, and tests. Existing behavior assertions must remain unchanged; justify any test-structure-only edit. The diff must contain no unrelated changes.
-
-## Red flags
-
-- Simplification that requires modifying tests to pass (likely changed behavior)
-- "Simplified" code that is longer or harder to follow than the original
-- Removing error handling because "it makes the code cleaner"
-- Simplifying code you don't fully understand
-- Batching many simplifications into one large commit
+Minimal code must not sacrifice validation, authorization, error handling, accessibility, data integrity, or required compatibility.

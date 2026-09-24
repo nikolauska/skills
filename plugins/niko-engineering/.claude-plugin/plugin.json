@@ -1,7 +1,7 @@
 {
   "name": "niko-engineering",
-  "version": "1.1.6",
-  "description": "Engineering workflows for diagnosis, review, simplification, TDD, and handoff.",
+  "version": "2.0.0",
+  "description": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, and handoff.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
