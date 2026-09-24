@@ -1,7 +1,7 @@
 {
   "name": "niko-engineering",
-  "version": "2.0.0",
-  "description": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, and handoff.",
+  "version": "2.1.0",
+  "description": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, handoff, product handbooks, and plan review.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
@@ -18,8 +18,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Niko Engineering",
-    "shortDescription": "General engineering workflows.",
-    "longDescription": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, and handoff.",
+    "shortDescription": "Engineering and product knowledge workflows.",
+    "longDescription": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, and handoff, plus building code-informed product handbooks and reviewing plans against domain knowledge.",
     "developerName": "Niko Lehtovirta",
     "category": "Productivity",
     "capabilities": [
@@ -29,7 +29,8 @@
     "defaultPrompt": [
       "Diagnose this failure systematically.",
       "Review this change for correctness and security.",
-      "Simplify this code without changing behavior."
+      "Simplify this code without changing behavior.",
+      "Build a code-informed product handbook and review this plan against it."
     ],
     "brandColor": "#2563EB"
   }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Domain Knowledge"
+  short_description: "Explore product knowledge and challenge product plans"
+  default_prompt: "Use $domain-knowledge to find, review, or update the code-informed product handbook, or stress-test a product plan against the handbook and current behavior."

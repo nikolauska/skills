@@ -1,4 +1,0 @@
-interface:
-  display_name: "Domain Knowledge"
-  short_description: "Build a code-informed business handbook"
-  default_prompt: "Use $domain-knowledge to inspect the relevant code first, then build or improve a confirmed business handbook covering product behavior, customer value, opportunities, and reusable explanations."
