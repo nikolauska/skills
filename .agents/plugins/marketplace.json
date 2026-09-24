@@ -65,18 +65,6 @@
       "category": "Productivity"
     },
     {
-      "name": "niko-godot",
-      "source": {
-        "source": "local",
-        "path": "./plugins/niko-godot"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    },
-    {
       "name": "niko-email",
       "source": {
         "source": "local",

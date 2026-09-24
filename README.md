@@ -12,7 +12,6 @@ Focused, opt-in skill plugins for Codex, Claude Code, and GitHub Copilot CLI. Ea
 | `niko-design` | UI design, motion review, animation planning, and prototyping |
 | `niko-native` | Modern C++, CMake, and Visual Studio build workflows |
 | `niko-elixir` | Elixir and Phoenix development |
-| `niko-godot` | Godot development |
 | `niko-email` | Responsive email development with MJML |
 | `niko-clockify` | Clockify time tracking and reporting |
 

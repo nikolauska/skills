@@ -75,19 +75,6 @@
       ]
     },
     {
-      "name": "niko-godot",
-      "description": "Godot development workflows for games, tools, and exports.",
-      "version": "1.0.0",
-      "source": "./plugins/niko-godot",
-      "category": "Productivity",
-      "tags": [
-        "godot",
-        "gdscript",
-        "games",
-        "agents"
-      ]
-    },
-    {
       "name": "niko-email",
       "description": "Responsive email creation and validation workflows using MJML.",
       "version": "1.0.0",
