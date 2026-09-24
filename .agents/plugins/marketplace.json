@@ -17,18 +17,6 @@
       "category": "Productivity"
     },
     {
-      "name": "niko-delivery",
-      "source": {
-        "source": "local",
-        "path": "./plugins/niko-delivery"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    },
-    {
       "name": "niko-agent-tools",
       "source": {
         "source": "local",

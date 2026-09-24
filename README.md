@@ -7,7 +7,6 @@ Focused, opt-in skill plugins for Codex, Claude Code, and GitHub Copilot CLI. Ea
 | Plugin | Purpose |
 | --- | --- |
 | `niko-engineering` | Diagnosis, code review, minimal implementation, behavior-preserving simplification, TDD, handoff, product knowledge, and plan review |
-| `niko-delivery` | Git and pull request workflows |
 | `niko-agent-tools` | Agent-facing CLIs, agent instructions, skill authoring, and skill benchmarking |
 | `niko-frontend` | React, Redux, and daisyUI development |
 | `niko-design` | UI design, motion review, animation planning, and prototyping |

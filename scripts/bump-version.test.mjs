@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const script = fileURLToPath(new URL("bump-version.mjs", import.meta.url));
-const plugins = ["niko-frontend", "niko-delivery"];
+const plugins = ["niko-frontend", "niko-other"];
 const manifestPaths = (plugin) => [
   `plugins/${plugin}/.codex-plugin/plugin.json`,
   `plugins/${plugin}/.claude-plugin/plugin.json`,
@@ -60,7 +60,7 @@ test("bumps only the selected plugin", async () => {
     assert.equal(result.status, 0, result.stderr);
     assert.equal(result.stdout.trim(), `niko-frontend: 1.2.3 -> ${expected}`);
     assert.deepEqual(await versions(root, "niko-frontend"), Array(4).fill(expected));
-    assert.deepEqual(await versions(root, "niko-delivery"), Array(4).fill("1.2.3"));
+    assert.deepEqual(await versions(root, "niko-other"), Array(4).fill("1.2.3"));
   }
 });
 
@@ -85,7 +85,7 @@ test("rejects mismatched selected-plugin versions", async () => {
 
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /not synchronized/);
-  assert.deepEqual(await versions(root, "niko-delivery"), Array(4).fill("1.2.3"));
+  assert.deepEqual(await versions(root, "niko-other"), Array(4).fill("1.2.3"));
 });
 
 test("does not bump a plugin that fails validation", async () => {
