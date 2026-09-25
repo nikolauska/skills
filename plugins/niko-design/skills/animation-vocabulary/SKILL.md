@@ -20,12 +20,12 @@ If several terms could fit, list the best match first, then 1–2 alternates wit
 ## Instructions
 
 1. **Read for intent, not keywords.** Users describe what they *see* or *feel* ("springy", "slides off", "draws itself in"), not the technical name. Map the sensation to the glossary below.
-2. **Quote the glossary verbatim.** Its descriptions are authoritative — use them as-is, don't paraphrase.
+2. **Use the glossary accurately.** Explain a matching term concisely in your own words when helpful. Quote a glossary definition exactly only when presenting it as a quotation; never distort its meaning.
 3. **Disambiguate close terms.** When two compete (*Clip-path* vs *Mask*, *Pop in* vs *Bounce*, *Shared element transition* vs *Layout animation*), contrast them so the user can pick.
 4. **When nothing matches exactly,** name the closest term and say plainly it's an approximation, or describe the effect in the glossary's vocabulary (e.g. "that's a *stagger* of *scale-in* entrances").
 5. **Stay within this glossary.** If a term genuinely isn't here, say so rather than inventing one — though you may explain the concept using these words.
 6. **Keep it tight.** A naming question wants a name, not an essay. Lead with the term; expand only if asked.
-7. **Verify the answer.** Before responding, confirm every named term appears in the glossary and every quoted definition matches it.
+7. **Verify the answer.** Before responding, confirm every named glossary term appears below, that it fits the described effect, and that any quoted definition matches exactly. Distinguish effect names from supporting concepts (such as duration, velocity, compositing, or reduced motion); lead with an effect name when the user asks what an animation is called.
 
 ## Examples
 

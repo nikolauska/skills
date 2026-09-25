@@ -103,7 +103,7 @@
     {
       "name": "niko-design",
       "description": "UI design, motion review, animation planning, and prototyping workflows.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "./plugins/niko-design",
       "category": "Productivity",
       "tags": [

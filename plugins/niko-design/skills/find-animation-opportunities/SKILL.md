@@ -23,18 +23,18 @@ So this skill is a filter as much as a finder. Expect to reject most candidates.
 
 ## The Gate
 
-Every candidate must survive all four questions, in order. Record the answer — it goes in the report.
+Every candidate must survive all four questions, in order. Record the answer — it goes in the report. Use [STANDARDS.md](references/STANDARDS.md) for precise duration, easing, accessibility, and physicality defaults. This gate judges **new suggestions**, not whether existing motion should be removed in an audit.
 
 ### 1. Frequency — how often will a user see this?
 
 | Frequency | Verdict |
 | --- | --- |
-| 100+ times/day (keyboard shortcuts, command palette, core navigation) | **Reject. No animation. Ever.** |
-| Tens of times/day (hover states, list navigation, frequent toggles) | Reject, or suggest only near-imperceptible motion (fast, subtle) |
-| Occasional (modals, drawers, toasts, settings) | Eligible — standard animation |
-| Rare / first-time (onboarding, empty states, success, celebration) | Eligible — this is where the delight budget lives |
+| 100+ times/day or keyboard-initiated | **Reject. No animation. Ever.** |
+| Tens of times/day | Usually reject; allow only near-imperceptible, fast feedback with a clear purpose |
+| Occasional | Eligible when the other gates pass |
+| Rare / first-time | Eligible for restrained delight |
 
-Keyboard-initiated actions (command palettes, shortcuts, focus jumps) are a disqualifier, not a judgment call — repeated hundreds of times a day, animation makes them feel slow, delayed, and disconnected. Raycast has no open/close animation; that is the optimal experience.
+Keyboard-initiated actions (command palettes, shortcuts, focus jumps) are a disqualifier, not a judgment call. Raycast's instant command palette is a useful reference.
 
 ### 2. Purpose — why does this animate?
 
@@ -51,17 +51,7 @@ The answer must be one of these, named explicitly:
 
 ### 3. Speed — can it stay inside budget?
 
-The suggestion must work within the standard budgets (UI under 300ms):
-
-| Element | Duration |
-| --- | --- |
-| Press feedback | 100–160ms |
-| Tooltips, small popovers | 125–200ms |
-| Dropdowns, selects | 150–250ms |
-| Modals, drawers | 200–500ms |
-| Marketing / explanatory | Can be longer |
-
-If the moment only "works" as a slow, showy animation, it fails the gate.
+The suggestion must fit [STANDARDS.md](references/STANDARDS.md)'s applicable duration budget: UI generally stays below 300ms; a large or gesture-driven modal/drawer can take up to 500ms only when justified and input remains responsive. If the moment only works as a slow, showy animation, it fails the gate.
 
 ### 4. Function — does motion help or hinder here?
 

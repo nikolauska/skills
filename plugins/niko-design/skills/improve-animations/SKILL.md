@@ -1,13 +1,13 @@
 ---
 name: improve-animations
-description: Surveys a codebase's animation and motion code, then produces a prioritized audit and self-contained implementation plans. Use for requests to improve animations, audit motion, make an app feel better, or create an animation roadmap; it is read-only on source code and does not review a single diff or apply fixes.
+description: Audits existing animation and motion code across a codebase, prioritizes evidence-backed findings, and writes self-contained plans when requested. Use for motion audits, improving existing animations, or animation roadmaps; use find-animation-opportunities to seek new motion for currently static UI. Read-only on source code; not a single-diff review or implementation.
 ---
 
 # Improving Animations
 
 An advisor skill modeled on the audit-then-plan workflow: use the capable model for the part where judgment compounds — understanding the codebase's motion, deciding what's worth fixing, writing the spec — and hand execution to any agent, including cheaper models.
 
-It does ONE thing: survey animation and motion code, then produce prioritized findings and implementation plans. It does not review a single diff (that's `review-animations`), and it does not implement fixes itself.
+It surveys existing motion and produces prioritized findings; when plans are requested, it writes self-contained implementation plans. It also notes a few missed opportunities, but a search primarily for new motion belongs to `find-animation-opportunities`. It does not review a single diff (that's `review-animations`) or implement fixes.
 
 ## Operating Posture
 
@@ -15,7 +15,7 @@ You are a senior design engineer with a brutal eye for craft. Your job is to fin
 
 The bar comes from Emil Kowalski's animation philosophy. The workflow — recon, parallel audit, vetting, self-contained plans — is adapted from senior-advisor codebase auditing.
 
-The rule catalog with precise values lives in [AUDIT.md](AUDIT.md). The plan format lives in [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md). Load them when you audit and when you write plans.
+The eight audit categories, hunt cues, and precise motion values live in [AUDIT.md](references/AUDIT.md); load it when assessing findings. Load [PLAN-TEMPLATE.md](references/PLAN-TEMPLATE.md) when writing plans.
 
 ## Hard Rules
 
@@ -42,7 +42,7 @@ Useful sweeps: grep for `transition`, `animation`, `@keyframes`, `motion.`, `ani
 
 ### Phase 2 — Audit (parallel)
 
-Audit against the eight categories in [AUDIT.md](AUDIT.md):
+Audit against the eight categories in [AUDIT.md](references/AUDIT.md):
 
 1. Purpose & frequency
 2. Easing & duration
@@ -53,7 +53,7 @@ Audit against the eight categories in [AUDIT.md](AUDIT.md):
 7. Cohesion & tokens
 8. Missed opportunities
 
-For anything beyond a small repo, use independent read-only workers when the environment supports them; otherwise audit the categories sequentially. Give each worker the relevant [AUDIT.md](AUDIT.md) section, recon facts, an instruction to return findings only with `file:line` evidence, and Hard Rule 4 verbatim.
+For anything beyond a small repo, use independent read-only workers when the environment supports them; otherwise audit the categories sequentially. Give each worker the relevant [AUDIT.md](references/AUDIT.md) section, recon facts, an instruction to return findings only with `file:line` evidence, and Hard Rule 4 verbatim.
 
 Depth follows effort level (default `standard`):
 
@@ -76,13 +76,13 @@ Severity: **HIGH** = feel-breaking (wrong easing on UI, animation on keyboard/hi
 
 After the table, list 2–4 **missed opportunities** — places that don't animate but should (a jarring state change, a rare delight moment) — separately, since they're additive rather than corrective.
 
-Then **stop and wait for the user to select** which findings become plans. If running non-interactively, default to the top 3–5 by leverage.
+If the user requested an audit only, stop after the vetted findings and missed opportunities; do not create plan files. If plans were explicitly requested, proceed to Phase 4 for the selected findings without an unnecessary approval gate. Otherwise, for an interactive full workflow ask which findings should become plans and wait. If plans were explicitly requested but no selection was given in a noninteractive run, choose the top 3–5 by leverage.
 
 ### Phase 4 — Write plans
 
-One plan per selected finding, using [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md), written into `plans/` as `NNN-short-slug.md` (monotonic numbering; respect existing plans). Stamp each plan with `git rev-parse --short HEAD`; if the target is not a Git worktree, use `unavailable (not a Git worktree)`.
+One plan per selected finding, using [PLAN-TEMPLATE.md](references/PLAN-TEMPLATE.md), written into `plans/` as `NNN-short-slug.md` (monotonic numbering; respect existing plans). Stamp each plan with `git rev-parse --short HEAD`; if the target is not a Git worktree, use `unavailable (not a Git worktree)`.
 
-Write for the weakest executor: exact file paths and current-code excerpts, the exact target values (cubic-beziers, durations, spring configs — pulled from AUDIT.md, never approximated), the repo's own conventions with an exemplar, ordered steps, hard scope boundaries, and a verification section including how to *feel-check* the result (slow motion, frame-by-frame, real device for gestures).
+Write for the weakest executor: exact file paths and current-code excerpts, exact target values (cubic-beziers, durations, spring configs — from [AUDIT.md](references/AUDIT.md), never approximated), the repo's own conventions with an exemplar, ordered steps, hard scope boundaries, and a verification section including how to *feel-check* the result (slow motion, frame-by-frame, real device for gestures).
 
 Finish by creating or updating `plans/README.md`: recommended execution order, dependencies between plans, and a status column.
 
@@ -90,7 +90,8 @@ Finish by creating or updating `plans/README.md`: recommended execution order, d
 
 | Invocation | Behavior |
 | --- | --- |
-| bare | Full workflow: recon → audit all categories → vet → confirm → plans |
+| bare audit / audit-only request | Recon → audit → vet → findings; stop without writing plans |
+| audit and plans explicitly requested | Recon → audit → vet → plans for named findings, or top 3–5 by leverage if none named; no extra approval step |
 | `quick` / `deep` | Adjust audit effort (see table); composes with a focus |
 | a category focus (`performance`, `accessibility`, `easing`…) | Recon + audit that category only |
 | `plan <description>` | Skip the audit; recon just enough to specify, then write a single plan for the described improvement |
