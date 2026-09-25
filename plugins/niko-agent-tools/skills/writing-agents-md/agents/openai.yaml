@@ -1,4 +1,4 @@
 interface:
   display_name: "Writing AGENTS.md"
   short_description: "Write or update requested coding-agent context files"
-  default_prompt: "Use $writing-agents-md to write or update the requested agent context files. Inspect existing instructions and relevant repository evidence, preserve useful curated decisions, and write concise, actionable project-specific guidance without imposing a template or creating unrelated files. Resolve requested imports and check paths and commands. Local edits within the request need no extra approval; ask before unresolved substantive conflicts, destructive overwrites, out-of-scope edits, or external actions."
+  default_prompt: "Use $writing-agents-md to create or revise the requested agent context files. Reassess existing instructions against relevant repository evidence; keep context lean with task-specific document pointers, grounded permissions, and a clear completion boundary where needed. Preserve useful decisions and imports, check paths and commands, and ask only about unresolved substantive conflicts or out-of-scope actions."

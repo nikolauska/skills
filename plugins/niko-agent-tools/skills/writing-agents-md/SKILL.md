@@ -1,20 +1,21 @@
 ---
 name: writing-agents-md
 description: >
-  Write or update AGENTS.md, CLAUDE.md, or another requested coding-agent context file.
-  Use when the user asks to create, revise, or onboard agents with repository instructions;
-  not for a read-only review of existing instructions.
+  Create or revise requested AGENTS.md, CLAUDE.md, or other coding-agent context files.
+  Use for writing repository instructions, not read-only audits.
 compatibility: "Codex CLI, Claude Code/Desktop, Cursor, Windsurf, Gemini, GitHub Copilot (no dependencies)"
 ---
 
 # Writing agent context
 
-Write only the context files the user requested and any files required by their requested imports. An explicit request to create or update these files authorizes local edits within that scope; do not pause for routine approval.
+Write only the context files the user requested and files required by their requested imports. Local edits within that scope need no extra approval.
 
-- Read existing instructions first, then inspect only relevant repository evidence: README, build scripts, configuration, nearby source, tests, or CI as needed for the requested change. For a targeted update, investigate the affected guidance rather than reanalyzing everything. Do not read secrets, credentials, or private environment files; templates may establish variable names but should not be copied as secret values. Do not browse or contact external systems unless requested.
-- Preserve useful curated decisions and existing instructions. Correct stale facts using project evidence, but resolve substantive conflicts with the user rather than silently overwriting an unclear decision. Avoid duplicating instructions already available through an import or an applicable ancestor context file.
-- Write concise, actionable guidance for this repository and its agents: where to work, relevant conventions and boundaries, and exact commands with their working directory when evidenced. Include project-specific permissions and safety boundaries where they matter (for example, whether local tests are safe or deployments need approval). Do not infer generic bans from a tool's mere presence, invent commands, mandate a section layout, or pad the file with a stack inventory. Organize around what an agent needs to do; omit unsupported or redundant material.
-- If the user requests a `CLAUDE.md` import, check that each `@` target resolves and preserve existing content and imports. Create a referenced `AGENTS.md` only when needed for the requested import and within scope; otherwise do not create additional agent files or derived copies. Respect existing context-file conventions instead of imposing an AGENTS.md schema.
-- Before finishing, check that edited paths and imports resolve, included commands and paths match the repository, and the requested output is complete without contradictions or secrets. Run a relevant safe check when useful, not a mandatory test suite or fixed review ritual. Report what changed and any unresolved evidence gaps.
+- Read existing instructions, then inspect only the repository evidence relevant to the change (for example, build scripts, CI, or nearby code). Do not read secrets, credentials, or private environment files; do not browse unless requested.
+- Reassess each inherited instruction: keep useful project decisions, correct stale facts with evidence, and remove redundant or model-specific scaffolding that no longer helps. Resolve substantive conflicts with the user rather than silently discarding an unclear decision. Avoid repeating applicable ancestor instructions or imports.
+- Keep always-loaded context lean. Name the relevant document *and when to read it* instead of requiring a full repo map or a stack of docs before every edit. If describing skills, give them narrow task triggers; avoid mandates to load unrelated skills or follow elaborate recipes. Write for agents on different models without assuming one model's habits.
+- Give actionable project-specific paths, conventions, boundaries, and commands with their working directory when evidenced. Distinguish safe local work from actions requiring authorization: if tests use disposable fixtures and have no production access, say agents may run them, fix failures caused by their change, and rerun affected checks without pausing. Do not assume unknown commands are safe, impose exhaustive checks for trivial edits, or ask for approval at each routine step.
+- Where a workflow needs an explicit finish line, state the observable result and relevant check: implement, run or inspect the changed behavior, and fix failures caused by the change. Do not make a first draft an automatic review gate unless the project actually requires one. Omit unsupported bans, invented commands, stack inventories, and fixed section templates.
+- For a requested `CLAUDE.md` import, preserve existing content and imports and check each `@` target. Create a referenced `AGENTS.md` only if necessary and in scope; do not generate extra copies.
+- Check that edited paths and imports resolve, commands and claims match repository evidence, and instructions do not contradict each other or expose secrets. Report what changed and any unresolved evidence gaps.
 
-Do not run destructive commands, publish, deploy, or perform other out-of-scope or external actions without explicit authorization. Seek a decision before destructive overwrites or edits outside the requested scope.
+Do not run destructive commands, publish, deploy, or take other out-of-scope or external actions without authorization. Ask before destructive overwrites or edits outside the requested scope.

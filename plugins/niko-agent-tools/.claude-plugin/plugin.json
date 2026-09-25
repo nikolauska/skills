@@ -1,6 +1,6 @@
 {
   "name": "niko-agent-tools",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Guidance for agent-facing CLIs, agent instructions, and skill authoring.",
   "author": {
     "name": "Niko Lehtovirta",
