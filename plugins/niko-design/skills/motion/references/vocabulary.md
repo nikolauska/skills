@@ -1,9 +1,4 @@
----
-name: animation-vocabulary
-description: Maps vague descriptions of web animation and motion effects to precise terms from a curated glossary. Use when a user asks what an effect is called or needs vocabulary for a designer or implementation prompt; do not use to design, review, or build animations.
----
-
-# Animation Vocabulary
+# Name Mode
 
 Turn a vague description of a motion or effect into the precise term, so the user knows what to ask for.
 

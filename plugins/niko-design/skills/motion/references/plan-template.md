@@ -1,6 +1,6 @@
 # Plan Template
 
-Every plan written by `improve-animations` follows this structure. The executor may be a less capable model with zero context and zero taste — the plan must contain everything, exactly. No references to "the audit above" or "the easing we discussed."
+Every plan written in Audit mode follows this structure. The executor may be a less capable model with zero context and zero taste — the plan must contain everything, exactly. No references to "the audit above" or "the easing we discussed."
 
 ```markdown
 # NNN — <Short imperative title>
@@ -68,6 +68,6 @@ imitate (token names, file placement, prop patterns):
 ## Notes for the plan author
 
 - One plan per finding. If two findings share every file and the same fix pattern (e.g. the same easing token swap across components), they may merge into one plan.
-- Use exact values from [AUDIT.md](AUDIT.md), respecting the target repo's existing tokens; never approximate from memory.
+- Use exact values from `standards.md`, respecting the target repo's existing tokens; never approximate from memory.
 - The feel check is not optional. Motion can be mechanically correct and still feel wrong; give the executor (or the human reviewing the executor's diff) concrete things to watch for in slow motion.
 - After writing plans, create or update `plans/README.md` with: a table of plans (number, title, severity, status), the recommended execution order, and any dependencies between plans.

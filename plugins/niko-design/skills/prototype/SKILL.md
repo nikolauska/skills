@@ -5,7 +5,7 @@ description: Builds multiple genuinely different versions of one UI component be
 
 # Prototyping Variants
 
-A divergence skill. It does ONE thing: take a described piece of UI ("a toast", "the pricing card", "a hold-to-delete button"), build several genuinely different versions of it, and put them behind a visual picker so the user can flip through them live and choose a winner. It does not review existing UI (use `emil-design-eng` for general UI review or `review-animations` for animation review), plan fixes to existing motion (use `improve-animations`), or choose dependencies (handle dependency selection separately).
+A divergence skill. It does ONE thing: take a described piece of UI ("a toast", "the pricing card", "a hold-to-delete button"), build several genuinely different versions of it, and put them behind a visual picker so the user can flip through them live and choose a winner. It does not review existing UI (use `emil-design-eng` for general UI review or `motion` for animation review), plan fixes to existing motion (use `motion`), or choose dependencies (handle dependency selection separately).
 
 ## Operating Posture
 

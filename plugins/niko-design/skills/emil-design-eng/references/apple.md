@@ -1,6 +1,16 @@
-# Apple Design Reference
+# Apple Fluid Interfaces Reference
 
-Load only the section named by the task; the [root skill](../SKILL.md) contains the core mechanics and safety rules.
+How Apple builds interfaces that feel like an extension of the user, distilled from WWDC design talks — chiefly *Designing Fluid Interfaces* (WWDC 2018) — and translated to the web platform (CSS, Pointer Events, `requestAnimationFrame`, spring libraries like Motion/Framer Motion). Load only the section the task needs; workflow and guardrails live in the root skill (`SKILL.md`).
+
+The through-line: **an interface feels alive when motion starts from the current on-screen value, inherits the user's velocity, projects momentum forward, and can be grabbed and reversed at any instant.** Springs make this natural because they are inherently interruptible and velocity-aware.
+
+## Core mechanics
+
+- Give feedback on pointer-down and track a drag continuously, preserving the grab offset. Use Pointer Events and pointer capture; keep recent positions and timestamps to estimate release velocity.
+- A gesture-driven animation must start from the live presentation value, accept interruption, and retain velocity on reversal. Never block input while a transition runs. Use independent X/Y springs when velocities differ.
+- Prefer critically damped springs for ordinary UI; reserve bounce for momentum-driven gestures. Spring response is not a fixed duration. Hand release velocity into the spring, and choose a snap target from the projected endpoint rather than the release position.
+- Enter and exit along a consistent path and originate anchored surfaces from their trigger. At boundaries, resist progressively rather than freezing.
+- Replace large slides, springs, and parallax with gentle fades or static transitions for reduced motion; provide legible solid alternatives for reduced transparency and stronger contrast. Preserve keyboard operation and immediate feedback.
 
 ## Motion mechanics
 

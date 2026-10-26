@@ -1,11 +1,13 @@
 ---
 name: emil-design-eng
-description: General web UI implementation and review, including interaction polish, component behavior, motion decisions, performance, and accessibility. Use for building or assessing web interface details; use apple-design for specialist gesture, spring/physics, drag/swipe/sheet, or translucent-material behavior, not native Apple UI.
+description: General web UI implementation and review, including interaction polish, component behavior, motion decisions, Apple-inspired gestures, springs, and translucent materials, performance, and accessibility. Use for building or assessing web interface details; use motion for animation-only reviews, audits, or opportunity searches, and not for native SwiftUI or AppKit UI.
 ---
 
 # Design Engineering
 
 Build or review interfaces using the detailed guidance in [REFERENCE.md](references/REFERENCE.md). Load only the sections relevant to the request.
+
+For gesture-driven and physical interactions — drag, swipe, sheets, momentum projection, velocity handoff, interruptible springs, rubber-banding, translucent materials, or multimodal feedback — also load the relevant section of [apple.md](references/apple.md), Apple's *Designing Fluid Interfaces* guidance translated to the web.
 
 ## Workflow
 
