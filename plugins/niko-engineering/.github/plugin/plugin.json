@@ -1,6 +1,6 @@
 {
   "name": "niko-engineering",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Engineering workflows for diagnosis, review, TDD, handoff, PR descriptions, product handbooks, and plan review.",
   "author": {
     "name": "Niko Lehtovirta",
