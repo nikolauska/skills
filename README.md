@@ -8,8 +8,7 @@ Focused, opt-in skill plugins for Codex, Claude Code, and GitHub Copilot CLI. Ea
 | --- | --- |
 | `niko-engineering` | Diagnosis, code review, minimal implementation, behavior-preserving simplification, TDD, handoff, PR descriptions, product knowledge, and plan review |
 | `niko-agent-tools` | Agent-facing CLIs, agent instructions, skill authoring, and skill benchmarking |
-| `niko-frontend` | React, Redux, and daisyUI development |
-| `niko-design` | UI design, motion review, animation planning, and prototyping |
+| `niko-frontend` | React, Redux, daisyUI, UI design engineering, motion, and prototyping |
 | `niko-native` | Modern C++, CMake, and Visual Studio build workflows |
 | `niko-elixir` | Elixir and Phoenix development |
 | `niko-email` | Responsive email development with MJML |

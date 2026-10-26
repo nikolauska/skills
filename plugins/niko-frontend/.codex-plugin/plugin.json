@@ -1,7 +1,7 @@
 {
   "name": "niko-frontend",
-  "version": "2.0.0",
-  "description": "React, Redux, and daisyUI development workflows.",
+  "version": "3.0.0",
+  "description": "React, Redux, daisyUI, UI design engineering, motion, and prototyping workflows.",
   "author": {
     "name": "Niko Lehtovirta",
     "url": "https://github.com/nikolauska"
@@ -13,13 +13,16 @@
     "react",
     "redux",
     "daisyui",
-    "frontend"
+    "frontend",
+    "design",
+    "motion",
+    "prototype"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Niko Frontend",
-    "shortDescription": "Frontend development workflows.",
-    "longDescription": "React, Redux, and daisyUI development workflows.",
+    "shortDescription": "Frontend development and UI design workflows.",
+    "longDescription": "React, Redux, daisyUI, UI design engineering, motion, and prototyping workflows.",
     "developerName": "Niko Lehtovirta",
     "category": "Productivity",
     "capabilities": [
@@ -28,7 +31,8 @@
     "websiteURL": "https://github.com/nikolauska/skills",
     "defaultPrompt": [
       "Implement this React interface.",
-      "Build this interface with React, Redux, and daisyUI."
+      "Review the motion in this interface.",
+      "Prototype three distinct versions of this component."
     ],
     "brandColor": "#2563EB"
   }

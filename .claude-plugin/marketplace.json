@@ -37,15 +37,18 @@
     },
     {
       "name": "niko-frontend",
-      "description": "React, Redux, and daisyUI development workflows.",
-      "version": "2.0.0",
+      "description": "React, Redux, daisyUI, UI design engineering, motion, and prototyping workflows.",
+      "version": "3.0.0",
       "source": "./plugins/niko-frontend",
       "category": "Productivity",
       "tags": [
         "react",
         "redux",
         "daisyui",
-        "frontend"
+        "frontend",
+        "design",
+        "motion",
+        "prototype"
       ]
     },
     {
@@ -85,19 +88,6 @@
         "email",
         "responsive",
         "agents"
-      ]
-    },
-    {
-      "name": "niko-design",
-      "description": "UI design, motion review, animation planning, and prototyping workflows.",
-      "version": "2.0.0",
-      "source": "./plugins/niko-design",
-      "category": "Productivity",
-      "tags": [
-        "design",
-        "animation",
-        "motion",
-        "prototype"
       ]
     }
   ]
