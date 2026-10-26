@@ -11,8 +11,8 @@
   "plugins": [
     {
       "name": "niko-engineering",
-      "description": "Engineering workflows for diagnosis, review, minimal implementation, refactoring, TDD, handoff, PR descriptions, product handbooks, and plan review.",
-      "version": "2.2.1",
+      "description": "Engineering workflows for diagnosis, review, TDD, handoff, PR descriptions, product handbooks, and plan review.",
+      "version": "3.0.0",
       "source": "./plugins/niko-engineering",
       "category": "Productivity",
       "tags": [
