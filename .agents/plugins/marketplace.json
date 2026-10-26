@@ -77,18 +77,6 @@
       "category": "Productivity"
     },
     {
-      "name": "niko-clockify",
-      "source": {
-        "source": "local",
-        "path": "./plugins/niko-clockify"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    },
-    {
       "name": "niko-design",
       "source": {
         "source": "local",
