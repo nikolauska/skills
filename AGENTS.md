@@ -5,8 +5,8 @@ This repository distributes independently installable skill plugins for Codex, C
 ## Working on plugins
 
 - Keep plugin and skill directories lowercase kebab-case and each plugin's runtime skills flat. Keep required skill pairs in the same plugin; do not duplicate skills across plugins.
-- For an existing plugin change, bump that plugin with `node scripts/bump-version.mjs <plugin> <patch|minor|major>` before committing. Use patch for fixes or instruction refinements, minor for new skills or compatible capabilities, major for removals, renames, or incompatible behavior. Bump each affected plugin separately. The script validates the plugin and synchronizes its three manifests with its `.claude-plugin/marketplace.json` entry; never edit version fields manually.
-- Initialize new plugins at `1.0.0`. Run `node scripts/validate-plugins.mjs` after plugin changes not followed by a bump, including new plugins. The validator uses the installed Codex plugin validator (`PLUGIN_VALIDATOR` can override its path); do not download dependencies implicitly.
+- For an existing plugin change, bump that plugin with `node scripts/bump-version.mjs <plugin> <patch|minor|major>` before committing. Use patch for fixes or instruction refinements, minor for new skills or compatible capabilities, major for removals, renames, or incompatible behavior. Bump each affected plugin separately. The script synchronizes its three manifests with its `.claude-plugin/marketplace.json` entry and does not validate; never edit version fields manually.
+- Initialize new plugins at `1.0.0`. Run `node scripts/validate-plugins.mjs` after any plugin change, including new plugins. The validator uses the installed Codex plugin validator (`PLUGIN_VALIDATOR` can override its path); do not download dependencies implicitly.
 - Keep `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json`, and all three manifests under each `plugins/<plugin>/` valid JSON.
 
 ## Checking changes

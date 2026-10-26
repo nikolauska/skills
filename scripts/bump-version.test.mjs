@@ -25,7 +25,6 @@ const setup = async () => {
   };
   await mkdir(join(root, ".claude-plugin"), { recursive: true });
   await writeFile(join(root, ".claude-plugin/marketplace.json"), `${JSON.stringify(marketplace, null, 2)}\n`);
-  await writeFile(join(root, "validate_plugin.py"), "import pathlib, sys\nassert pathlib.Path(sys.argv[1]).is_dir()\n");
 
   for (const plugin of plugins) {
     for (const file of manifestPaths(plugin)) {
@@ -40,7 +39,6 @@ const setup = async () => {
 const run = (root, ...args) => spawnSync(process.execPath, [script, ...args], {
   cwd: root,
   encoding: "utf8",
-  env: { ...process.env, PLUGIN_VALIDATOR: join(root, "validate_plugin.py") },
 });
 
 const versions = async (root, plugin) => {
@@ -86,13 +84,4 @@ test("rejects mismatched selected-plugin versions", async () => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /not synchronized/);
   assert.deepEqual(await versions(root, "niko-other"), Array(4).fill("1.2.3"));
-});
-
-test("does not bump a plugin that fails validation", async () => {
-  const root = await setup();
-  await writeFile(join(root, "validate_plugin.py"), "raise SystemExit(1)\n");
-  const result = run(root, "niko-frontend", "patch");
-
-  assert.notEqual(result.status, 0);
-  assert.deepEqual(await versions(root, "niko-frontend"), Array(4).fill("1.2.3"));
 });
